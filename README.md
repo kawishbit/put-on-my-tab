@@ -2,6 +2,9 @@
 
 Simple financial app to manage the tabs of people in your life (e.g roommates, friends, family members). You sort of become the bank for the people around you. They can deposit and withdraw from you. 
 
+
+# Next JS
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
