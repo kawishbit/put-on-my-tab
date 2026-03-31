@@ -1,12 +1,30 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from "@supabase/supabase-js";
+import type { Database } from "@/types/database";
 
-const supabaseUrl = process.env.SUPABASE_URL || ''
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY || ''
+const DEFAULT_SUPABASE_URL = "http://127.0.0.1:54321";
+const DEFAULT_SUPABASE_KEY = "development-placeholder-key";
 
-if (!supabaseUrl || !supabaseKey) {
-  // It's fine for local dev without env set; calls will fail fast at runtime.
+function resolveSupabaseUrl(value: string | undefined): string {
+  if (!value) {
+    return DEFAULT_SUPABASE_URL;
+  }
+
+  try {
+    new URL(value);
+    return value;
+  } catch {
+    return DEFAULT_SUPABASE_URL;
+  }
 }
 
-export const supabase = createClient(supabaseUrl, supabaseKey, {
-  auth: { persistSession: false },
-})
+const supabaseUrl = resolveSupabaseUrl(process.env.NEXT_PUBLIC_SUPABASE_URL);
+const supabaseKey =
+  process.env.SUPABASE_SERVICE_ROLE_KEY || DEFAULT_SUPABASE_KEY;
+
+export const supabase = createClient<Database, "public">(
+  supabaseUrl,
+  supabaseKey,
+  {
+    auth: { persistSession: false },
+  },
+);

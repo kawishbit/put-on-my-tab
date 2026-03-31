@@ -1,69 +1,39 @@
-"use client"
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
 
-import { useEffect, useState } from 'react'
-import { getProviders, signIn } from 'next-auth/react'
+import { ConnectedProvidersCard } from "@/components/auth/ConnectedProvidersCard";
+import { LogoutButton } from "@/components/auth/LogoutButton";
+import { authOptions } from "@/lib/auth/options";
 
-export default function SettingsPageClient() {
-  const [providers, setProviders] = useState<any[]>([])
-  const [linked, setLinked] = useState<any[]>([])
-  const [cur, setCur] = useState({ currentPassword: '', newPassword: '' })
+export default async function SettingsPage(): Promise<React.JSX.Element> {
+  const session = await getServerSession(authOptions);
 
-  useEffect(() => {
-    async function load() {
-      const res = await fetch('/api/providers')
-      if (res.ok) setLinked(await res.json())
-    }
-    load()
-  }, [])
-
-  async function unlink(providerType: string) {
-    if (!confirm('Unlink ' + providerType + '?')) return
-    const res = await fetch('/api/providers', { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ providerType }) })
-    if (res.ok) {
-      setLinked((s) => s.filter((p) => p.provider_type !== providerType))
-      alert('Unlinked')
-    } else {
-      alert('Failed')
-    }
-  }
-
-  async function changePassword(e: React.FormEvent) {
-    e.preventDefault()
-    if (!cur.currentPassword || !cur.newPassword) { alert('Fill both'); return }
-    const res = await fetch('/api/users/change-password', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(cur) })
-    if (res.ok) { alert('Password changed') ; setCur({ currentPassword: '', newPassword: '' }) } else { const d = await res.json(); alert(d?.error || 'Failed') }
+  if (!session?.user?.id) {
+    redirect("/login?callbackUrl=%2Fsettings");
   }
 
   return (
-    <div className="max-w-lg">
-      <h1 className="text-2xl font-semibold mb-4">Settings</h1>
-
-      <section className="mb-6">
-        <h2 className="text-lg font-semibold mb-2">Linked providers</h2>
-        <div className="flex gap-2 mb-2">
-          <button onClick={() => signIn('google', { callbackUrl: '/settings' })} className="px-3 py-2 bg-primary text-white rounded">Link Google</button>
-          <button onClick={() => signIn('github', { callbackUrl: '/settings' })} className="px-3 py-2 bg-primary text-white rounded">Link GitHub</button>
+    <div className="mx-auto w-full max-w-3xl px-4 py-6">
+      <header className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-semibold text-slate-900">Settings</h1>
+          <p className="mt-1 text-sm text-slate-600">
+            Manage your login methods and account access.
+          </p>
         </div>
-        <div className="bg-white dark:bg-slate-800 rounded shadow p-4">
-          {linked.length === 0 ? <div className="text-sm text-slate-500">No linked providers</div> : (
-            linked.map((p) => (
-              <div key={p.id} className="flex items-center justify-between py-2">
-                <div>{p.provider_type}</div>
-                <button className="text-sm text-red-600" onClick={() => unlink(p.provider_type)}>Unlink</button>
-              </div>
-            ))
-          )}
-        </div>
-      </section>
+        <LogoutButton />
+      </header>
 
-      <section>
-        <h2 className="text-lg font-semibold mb-2">Change password</h2>
-        <form onSubmit={changePassword} className="space-y-2">
-          <input placeholder="Current password" type="password" className="w-full rounded border px-3 py-2" value={cur.currentPassword} onChange={(e) => setCur((s) => ({ ...s, currentPassword: e.target.value }))} />
-          <input placeholder="New password" type="password" className="w-full rounded border px-3 py-2" value={cur.newPassword} onChange={(e) => setCur((s) => ({ ...s, newPassword: e.target.value }))} />
-          <div><button className="px-4 py-2 bg-primary text-white rounded">Change password</button></div>
-        </form>
-      </section>
+      <div className="mt-6">
+        <ConnectedProvidersCard />
+      </div>
+
+      <p className="mt-6 text-sm">
+        <Link href="/" className="text-slate-800 underline underline-offset-2">
+          Back to home
+        </Link>
+      </p>
     </div>
-  )
+  );
 }

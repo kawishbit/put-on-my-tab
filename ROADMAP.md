@@ -1,123 +1,342 @@
-# Put On My Tab Roadmap
+# Put On My Tab - Project Roadmap
 
-## Summary
-- App goal: Replace spreadsheet-based per-user redundant ledger with a normalized shared transaction model.
-- Key feature: grouped transaction split (one payment by payer + parties shares), recalculated current balances.
-- Roles and policies from requirements: user/mod/admin with increasing privileges.
+**Project:** Simple financial app to manage tabs between roommates, friends, and family members.
 
-## Phase 1: Foundation (Done)
-- [x] Initiate latest NextJS project (`bun create next-app@latest putonmytab`)
-- [x] Add latest shadcn (`bunx --bun shadcn@latest init`)
+**Tech Stack:**
+- Language: TypeScript
+- Framework: Next.js (App Router)
+- API Strategy (MVP): Next.js Route Handlers + Supabase queries/RPC
+- Query Language (Later): GraphQL (optional, post-MVP)
+- Database: Supabase
+- Deployment: Vercel
+- Authentication: NextAuth.js
+- Styling: Shadcn + Tailwind
+- Bundler/Package Manager: Bun
+- Linter: Biome
 
-## Phase 2: Authentication & Layout (In Progress)
-**Dependencies:** Complete Phase 1
+---
 
-### Authentication
-- [x] Add login page UI supporting username/password + Google + GitHub (fullscreen)
-- [x] NextAuth.js config + providers
-- [x] "Connect Google/GitHub" in user settings
-- [x] Logout flow
-- [x] Secure password change flow
+## Phase 1: Foundation & Database Setup ⚙️
 
-### Layout
-- [x] Add app layout with sidebar
-- [x] Add sidebar menus (Dashboard, Transactions, Users, Categories, Settings)
-- [x] Add user balance indicator in sidebar
-- [x] Add role-aware navigation rendering (user/mod/admin)
+### 1.1 Database Schema Design
+- [x] Define Supabase tables for all entities:
+  - [x] `users` (UserId, Name, Email, Password, Avatar, CurrentBalance, LastLoginDate, CreatedAt, UpdatedAt, IsDeleted, Remarks)
+  - [x] `user_login_providers` (UserLoginProviderId, UserId, ProviderType, ProviderKey, CreatedAt, UpdatedAt, IsDeleted, Remarks)
+  - [x] `transactions` (TransactionId, Name, TransactionRemark, PaidBy, Amount, Type, Status, GroupKey, Category, CreatedAt, UpdatedAt, IsDeleted, Remarks)
+  - [x] `transaction_categories` (TransactionCategoryId, Label, CreatedAt, UpdatedAt, IsDeleted, Remarks)
+- [ ] Set up Supabase authentication backend
+- [x] Create database relationships and constraints
+- [x] Seed initial data (optional default categories)
+- [x] Create RLS (Row Level Security) policies for data access
 
-## Phase 3: Core UI Scaffolding (Planned)
-**Dependencies:** Complete Phase 2
+### 1.2 Project Structure & Configuration
+- [x] Set up TypeScript configuration
+- [x] Configure Biome linter
+- [x] Set up path aliases in `tsconfig.json`
+- [x] Create folder structure: `components/`, `lib/`, `hooks/`, `types/`, `contexts/`, `styles/`
+- [x] Set up environment variables (`.env.local`)
 
-### Dashboards
-- [ ] User Dashboard UI (balance, monthly spend, last 10 tx, category donut)
-- [ ] Admin Dashboard UI (global summary, per-user balances, monthly spend, last 10 tx, category donut)
+### 1.3 API Layer Setup (MVP)
+- [x] Define API conventions (validation, error shape, auth checks)
+- [x] Create typed server-side service layer in `lib/` for business logic
+- [x] Implement initial Next.js Route Handlers for core entities
+- [x] Use Supabase queries/RPC for complex transactional operations
+- [x] Keep transport-agnostic domain logic to allow GraphQL migration later
 
-### Transaction flows
- [ ] All transactions UI with pagination/search/filter
- [ ] User transactions UI (owner-filtered) and details
- [x] Create transaction UI (payer + parties + amount + category + group key semantics)
- [ ] Update transaction UI
- [ ] Delete transaction UI
+---
 
-### User management
- [x] All users UI (admin)
- [x] Create user flow (admin)
- [ ] Update user flow (admin)
- [x] Delete user flow (admin)
- [ ] Change own password (user)
- [ ] Reset user password (admin)
+## Phase 2: Authentication & Authorization 🔐
 
-### Transaction categories
- [x] CRUD transaction category UI
+### 2.1 Login/Logout System
+- [x] Set up NextAuth.js configuration
+- [x] Implement email/password authentication
+- [x] Create login page (`/login`)
+- [x] Create logout functionality
+- [x] Implement session management
 
-### Exports + utilities
-- [ ] Export transactions to CSV
-- [ ] Export users to CSV
-- [ ] Router checks, route correctness audit
+### 2.2 Login Providers (OAuth)
+- [x] Integrate Google OAuth provider
+- [x] Integrate GitHub OAuth provider
+- [x] Create user account linking UI (connect Google/GitHub)
+- [x] Handle existing user with new provider
 
-## Phase 4: Backend & Data Layer (Planned)
-**Dependencies:** Complete Phase 3
+### 2.3 Authorization & Policies
+- [ ] Implement policy system in database:
+  - [ ] User Policy → View own dashboard, own transactions, change own password, connect OAuth
+  - [ ] Mod Policy → Create transactions + User Policy permissions
+  - [ ] Admin Policy → All operations + Mod Policy permission
+- [ ] Create middleware for policy-based access control
+- [ ] Create authorization hooks
+- [ ] Protect routes based on user policies
 
-### Entities from README
-- [x] User model (current balance, policy role, login providers, meta)
-- [x] UserLoginProvider model (google/github linking)
-- [x] Transaction model (name, remark, paidBy, amount, type, status, category, groupKey)
-- [x] TransactionCategory model
+### 2.4 Password Management
+- [ ] Implement password hashing on backend
+- [ ] Create "Change Password" page
+- [ ] Implement admin "Reset User Password" feature
+- [ ] Add security validations
 
-- ### Supabase + authentication
-- [x] Supabase setup + schema migration
-- [x] NextAuth.js integration with Supabase user table
-- [x] Google/GitHub provider integration
-- [x] User provider link/unlink flows
+---
 
-### GraphQL + APIs
-- [x] GraphQL schema + resolvers for all entities
-- [x] Transaction logic for split group creation:
-  - payer topup deposit
-  - payer share withdraw
-  - each party share withdraw
-  - group key link
-- [ ] Update/delete group transaction consistency
+## Phase 3: Core Entity Management 🗂️
 
-### Policies
-- [x] Implement User policy (personal data, own tx, change password, link providers)
-- [x] Implement Mod policy (+ create tx)
-- [x] Implement Admin policy (+ all tx/users/categories, reset passwords)
-- [x] Supabase row-level security (RLS) per role
+### 3.1 User Management (Admin Only)
+- [ ] Create "Create User" form and API
+- [ ] Create "View All Users" page with table
+- [ ] Create "Update User" form and API
+- [ ] Create "Delete User" functionality
+- [ ] Create "Update User Policy" feature
+- [ ] Create "Reset User Password" feature
 
-### Balance engine
-- [x] Recalculate current balance on tx add/update/delete
-- [ ] Ensure negative/positive semantics align (user zero start, owed vs owing)
-- [ ] Transaction statuses handling (pending/completed/cancelled)
+### 3.2 Transaction Category Management (Admin Only)
+- [ ] Create "Create Category" form and API
+- [ ] Create "View All Categories" page
+- [ ] Create "Update Category" form and API
+- [ ] Create "Delete Category" functionality
+- [ ] Implement category dropdown in transaction forms
 
-## Phase 5: Testing & QA
+### 3.3 User Settings Page
+- [ ] Create user profile/settings page (`/settings`)
+- [ ] Display user balance
+- [ ] Implement change password form
+- [ ] Implement Google/GitHub account connection UI
+- [ ] Implement account disconnection functionality
 
-### Unit tests
-- [ ] Utility functions (splits, math, formatting)
-- [ ] Auth flows (login, provider, session)
-- [ ] Transaction split logic
-- [ ] Policy checks
+---
 
-### Integration tests
-- [ ] GraphQL endpoint CRUD tests
-- [ ] Supabase queries with RLS tests
-- [ ] Auth and user policy tests
-- [ ] Transaction group consistency tests
+## Phase 4: Transaction Management 💳
 
-### E2E tests
-- [ ] Login flows (email/password, Google, GitHub)
-- [ ] Create transaction as A+B+C split scenario (balance updates)
-- [ ] Edit transaction and re-verify balances
-- [ ] Delete transaction and verify rollback balance
-- [ ] CSV export content validation
+### 4.1 Create Transaction Flow
+- [ ] Create transaction form component with:
+  - [ ] Transaction name field
+  - [ ] Remarks field
+  - [ ] Amount field (positive numbers only)
+  - [ ] Paid By dropdown (user select)
+  - [ ] Parties involved multi-select (array of users)
+  - [ ] Category dropdown (from transaction categories)
+  - [ ] Type selection (Deposit/Withdraw)
+- [ ] Implement backend transaction creation logic:
+  - [ ] Validate input
+  - [ ] Generate GroupKey for related transactions
+  - [ ] Create 4 transaction records (1 deposit + N withdraws split equally)
+  - [ ] Calculate and update user balances
+- [ ] Create transaction form page (`/transactions/create`)
+- [ ] Implement form validation and error handling
 
-### Manual QA
-- [ ] Role-based enforcement (user vs mod vs admin)
-- [ ] Data correctness in dashboard summaries
-- [ ] Mobile/responsiveness and UX on small screens
-- [ ] Cross-browser verification (Chrome, Firefox, Safari)
+### 4.2 View Transactions
+- [ ] Create "All Transactions" page with:
+  - [ ] Filterable/sortable transaction table
+  - [ ] Display: Name, Paid By, Amount, Type, Status, Date, Category
+  - [ ] Pagination support
+- [ ] Create "User Transactions" page (user-specific filtered view)
 
-## How to use this roadmap
-1. Update checkboxes as tasks progress.
-2. Mark blockers with **[BLOCKED]**.
-3. Prefer one task per PR and update this file on completion.
+### 4.3 Update Transaction
+- [ ] Create edit transaction form page (`/transactions/[id]/edit`)
+- [ ] Implement update transaction API
+- [ ] Handle recalculation of balances when updating
+- [ ] Only allow admin/mod to update transactions
+
+### 4.4 Delete Transaction
+- [ ] Implement soft-delete functionality for transactions
+- [ ] Recalculate affected user balances
+- [ ] Only allow admin to delete transactions
+
+### 4.5 Transaction Status Management
+- [ ] Implement status transitions (pending → completed, cancelled)
+- [ ] Create UI for status updates
+- [ ] Handle balance calculations based on status
+
+---
+
+## Phase 5: Dashboard Pages 📊
+
+### 5.1 Admin Dashboard (`/admin/dashboard`)
+- [ ] Summary section:
+  - [ ] Total transactions count
+  - [ ] Total system balance
+  - [ ] Active users count
+- [ ] Balance overview:
+  - [ ] List all users with current balances
+  - [ ] Visual indicator of credits/debits
+- [ ] Monthly expenditure:
+  - [ ] Total spending by month
+  - [ ] Comparison with previous months
+- [ ] Last 10 transactions:
+  - [ ] Table with recent transactions
+  - [ ] Quick link to details
+- [ ] Donut chart:
+  - [ ] Categorized transactions visualization
+  - [ ] Breakdown by TransactionCategory
+- [ ] More metrics (TBD):
+  - [ ] Top spenders
+  - [ ] Most frequent categories
+  - [ ] Pending transactions
+
+### 5.2 User Dashboard (`/dashboard`)
+- [ ] User balance display (prominent)
+- [ ] Monthly expenditure (personal)
+- [ ] Last 10 user transactions
+- [ ] Donut chart:
+  - [ ] User's transactions by category
+  - [ ] Visual breakdown of spending
+- [ ] Quick action buttons:
+  - [ ] Create new transaction
+  - [ ] View all user transactions
+
+---
+
+## Phase 6: Data Export Features 📥
+
+### 6.1 Export Transactions to CSV
+- [ ] Create export endpoint
+- [ ] Implement CSV generation
+- [ ] Add download button on transactions page
+- [ ] Filter exported data based on user policy
+
+### 6.2 Export Users to CSV
+- [ ] Create export endpoint
+- [ ] Implement CSV generation with user data
+- [ ] Add download button on users page
+- [ ] Admin-only access
+
+---
+
+## Phase 7: UI Components & Styling 🎨
+
+### 7.1 Layout Components
+- [ ] Create main navigation/header component
+- [ ] Create sidebar for admin routes
+- [ ] Create footer component
+- [ ] Implement responsive design
+
+### 7.2 Common Components (using Shadcn)
+- [ ] Form inputs: Text, Select, Multi-select, Date, Number
+- [ ] Tables with sorting and pagination
+- [ ] Cards for summary data
+- [ ] Modals for confirmations
+- [ ] Toast notifications for feedback
+- [ ] Loading spinners
+
+### 7.3 Page Templates
+- [ ] Dashboard template
+- [ ] Form template
+- [ ] Table/List template
+- [ ] Settings template
+
+---
+
+## Phase 8: Testing & Quality Assurance ✅
+
+### 8.1 Unit Testing
+- [ ] Test transaction creation logic
+- [ ] Test balance calculation logic
+- [ ] Test authorization checks
+- [ ] Test authentication flows
+
+### 8.2 Integration Testing
+- [ ] Test end-to-end transaction flow
+- [ ] Test user creation and management
+- [ ] Test policy enforcement
+
+### 8.3 End-to-End Testing
+- [ ] Test login/logout flows
+- [ ] Test transaction creation, update, delete
+- [ ] Test dashboard rendering
+- [ ] Test data export
+
+---
+
+## Phase 9: Deployment & Optimization 🚀
+
+### 9.1 Pre-Deployment Checklist
+- [ ] Environment variables configured for production
+- [ ] Database backups set up
+- [ ] RLS policies verified
+- [ ] Security review
+- [ ] Performance optimization (caching, lazy loading)
+
+### 9.2 Deployment to Vercel
+- [ ] Connect repository to Vercel
+- [ ] Set environment variables in Vercel
+- [ ] Configure custom domain (if applicable)
+- [ ] Set up CI/CD pipeline
+
+### 9.3 Monitoring & Maintenance
+- [ ] Set up error logging (Sentry, LogRocket, etc.)
+- [ ] Monitor database performance
+- [ ] Regular security audits
+- [ ] Backup procedures
+
+---
+
+## Implementation Priorities
+
+### MVP (Minimum Viable Product)
+**Core functionality to launch:**
+1. Phase 1: Database setup + basic schema
+2. Phase 2: Authentication (email/password only)
+3. Phase 3.1: Basic user management
+4. Phase 4.1: Create transactions with the multi-split logic
+5. Phase 4.2: View all transactions
+6. Phase 5.2: Basic user dashboard
+7. Phase 7.1 & 7.2: Essential UI components
+
+### Post-MVP
+- OAuth providers (Google/GitHub)
+- Admin dashboard with advanced metrics
+- Data export features
+- Additional dashboard visualizations
+- Advanced transaction filtering/search
+- GraphQL adoption (only if API pain points appear)
+
+### GraphQL Later Path (Decision Gate)
+Adopt GraphQL only after MVP if at least one of these is true:
+1. Multiple clients need the same backend (web + mobile + external integrations)
+2. Repeated overfetching/underfetching slows feature delivery
+3. Dashboard queries become hard to maintain with route handlers/RPC
+
+If triggered, execute in this order:
+- [ ] Choose GraphQL approach (Supabase GraphQL vs custom Apollo server)
+- [ ] Expose existing service layer through GraphQL resolvers
+- [ ] Add GraphQL client for selected dashboard/analytics screens first
+- [ ] Keep REST/Route Handlers for stable flows during migration
+- [ ] Migrate endpoint-by-endpoint with parity checks
+
+---
+
+## Dependencies & Blockers
+
+| Task | Depends On |
+|------|-----------|
+| Authentication | Database schema, NextAuth config |
+| Authorization | Authentication system |
+| Transaction creation | Categories, User management, Authentication |
+| Dashboards | Transaction management, User management |
+| Data export | Transaction/User management complete |
+| GraphQL adoption (optional) | MVP stability, proven query complexity, multi-client demand |
+| Deployment | All core features, testing complete |
+
+---
+
+## Notes
+
+- **GraphQL Integration:** Defer by default. Start API-first with Route Handlers + Supabase; adopt GraphQL only after MVP if clear pain points exist.
+- **Current Balance Calculation:** Should be updated atomically when transactions are created/updated/deleted
+- **Soft Deletes:** All entities support soft deletes with `IsDeleted` flag
+- **Group Key:** Random UUID generated server-side for transaction grouping
+- **User Onboarding:** No self-registration; admin adds users and provides credentials
+- **API Rate Limiting:** Implement to prevent abuse
+- **Error Handling:** Comprehensive error messages for all operations
+
+### API-First Implementation Guardrails (MVP)
+- Prefer server-side aggregation for dashboard metrics (SQL views or Supabase RPC)
+- Centralize business rules (split logic, balance recalculation, policy checks) in service functions
+- Keep API contracts typed and stable to simplify future GraphQL layering
+- Avoid exposing raw table access patterns directly to UI components
+
+---
+
+## Last Updated
+March 31, 2026
+
+## Status
+🟡 In Progress

@@ -13,7 +13,6 @@ This implementation is inefficient, one problem for example is you will have dup
 
 Language: Typescript
 Framework: NextJS 
-Query Language: GraphQL 
 Database: Supabase 
 Server/Deployment: Vercel
 Linter: Biome 
@@ -164,17 +163,7 @@ Remarks
 - User-A logs in using Google
 - User-A can login.
 
-# To Do For Agent
-
 For a detailed roadmap with phases, dependencies, and testing tasks, see [ROADMAP.md](ROADMAP.md).
-
-**Current Focus:** Phase 2 - Authentication & Layout
-
-Quick status:
-- ✅ Phase 1: Foundation complete
-- 🔄 Phase 2: Authentication & Layout (in progress)
-- ⏳ Phase 3: Feature UI Scaffolding (planned)
-- ⏳ Phase 4: Backend & Data Layer (planned)
 
 # NextJS Documentation
 
