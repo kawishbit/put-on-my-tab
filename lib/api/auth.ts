@@ -2,9 +2,8 @@ import { getServerSession } from "next-auth";
 import { ApiError } from "@/lib/api/errors";
 
 import { authOptions } from "@/lib/auth/options";
+import { isUserPolicy } from "@/lib/auth/policies";
 import type { UserPolicy } from "@/types/database";
-
-const VALID_POLICIES: UserPolicy[] = ["user", "mod", "admin"];
 
 export interface RequestContext {
   userId: string | null;
@@ -26,8 +25,7 @@ export async function getRequestContext(
   const userId = request.headers.get("x-user-id");
   const requestedPolicy = request.headers.get("x-user-policy");
 
-  const policy =
-    VALID_POLICIES.find((candidate) => candidate === requestedPolicy) ?? null;
+  const policy = isUserPolicy(requestedPolicy) ? requestedPolicy : null;
 
   return {
     userId,

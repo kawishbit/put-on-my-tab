@@ -61,13 +61,17 @@
 - [x] Handle existing user with new provider
 
 ### 2.3 Authorization & Policies
-- [ ] Implement policy system in database:
-  - [ ] User Policy → View own dashboard, own transactions, change own password, connect OAuth
-  - [ ] Mod Policy → Create transactions + User Policy permissions
-  - [ ] Admin Policy → All operations + Mod Policy permission
-- [ ] Create middleware for policy-based access control
-- [ ] Create authorization hooks
-- [ ] Protect routes based on user policies
+- [x] Implement policy system in database:
+  - [x] User Policy → View own dashboard, own transactions, change own password, connect OAuth
+  - [x] Mod Policy → Create transactions + User Policy permissions
+  - [x] Admin Policy → All operations + Mod Policy permission
+- [x] Create middleware for policy-based access control
+- [x] Create authorization hooks
+- [x] Protect routes based on user policies
+
+Implementation note (Mar 31, 2026):
+- Existing [supabase/migrations/002_rls_policies.sql](supabase/migrations/002_rls_policies.sql) already implements DB-level RLS policy separation for user/mod/admin.
+- Added app-level policy enforcement through Next.js middleware and reusable authorization hooks to align route/API access with the same policy model.
 
 ### 2.4 Password Management
 - [ ] Implement password hashing on backend
