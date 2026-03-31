@@ -7,7 +7,7 @@ I have multiple tables in a spreadsheet (one table per roommate). Each table has
 
 This implementation is inefficient, one problem for example is you will have duplicate transactions in each table if it involves everyone. The goal is to move this implementation into a web app that we're building. Here are some scenarios that can happen and we will look at it from the perspective of old implementation and new implementation.
 
-# New Implementation: NextJS + Typescript + API + Supabase + GraphQL + Vercel + NextAuth.JS
+# New Implementation
 
 ## Tech Stack
 
@@ -16,7 +16,11 @@ Framework: NextJS
 Query Language: GraphQL 
 Database: Supabase 
 Server/Deployment: Vercel
+Linter: Biome 
 Authentication: NextAuth.js using normal creds or google or github
+Styling: Shadcn + Tailwind
+Bundler: Bun 
+Package Manager: Bun 
 
 ## Features 
 
@@ -26,13 +30,13 @@ Authentication: NextAuth.js using normal creds or google or github
   - monthly expenditure
   - last 10 transactions
   - more to be added
-  - Donut chart showing the all transactions categorized into transactiontype
+  - Donut chart showing the all transactions categorized into transactionCategory
 - User Dashboard 
   - User balance 
   - monthly expenditure 
   - last 10 transactions 
   - more to be added
-  - Donut chart showing the user transactions categorized into transactiontype
+  - Donut chart showing the user transactions categorized into transactionCategory
 - All transactions
 - Create transaction
 - Update transaction
@@ -43,20 +47,21 @@ Authentication: NextAuth.js using normal creds or google or github
 - Update user policy
 - Delete user
 - View all users
-- System Configuration page 
-- CRUD Transaction type 
+- CRUD Transaction Category 
 - Login (admin and user should have the same login page)
-- Set system currency 
-- Set configurations
-
-##  User Type
-There is only 1 user type, everything is managed by policies.
+- Export transactions into csv 
+- Export users into csv 
+- Change password
+- Connect account to Google (for login) 
+- Connect account to Github (for login)
 
 ## Policies 
 - User policy => it will allow you to:
-  - Check balance 
   - View User Dashboard
   - View transactions belonging to you
+  - Change own password
+  - Connect account to Google (for login) 
+  - Connect account to Github (for login)
 - Mod Policy => it will allow you to:
   - Create transaction
   - Anything in User Policy
@@ -68,9 +73,9 @@ There is only 1 user type, everything is managed by policies.
   - Update user
   - Update user policy
   - Delete user
+  - Reset User's password
   - View all users
-  - Edit system config 
-  - CRUD transaction type 
+  - CRUD transaction category 
   - View Admin Dashboard
   - Anything in Mod Policy 
   - Anything in User Policy
@@ -78,24 +83,98 @@ There is only 1 user type, everything is managed by policies.
 
 ## Entities 
 
-### Transaction 
-TransactionID 
-Note 
-PaidBy 
-Amount => supports negative value for something like debt, withdrawal, etc
-Parties => other users involved in the transaction. 
-
-
 ### User 
 UserId
 Name
+Email 
+Password 
+Avatar
+CurrentBalance => calculcated every time a transaction involving this user is added or updated or deleted
+LastLoginDate
+CreatedAt
+UpdatedAt
+IsDeleted
+Remarks
 
 
+### UserLoginProvider
+UserLoginProviderId
+UserId
+ProviderType (google, github)
+ProviderKey => ID Token from providers
+CreatedAt
+UpdatedAt
+IsDeleted
+Remarks
 
 
+### Transaction 
+TransactionId 
+Name 
+TransactionRemark
+PaidBy 
+Amount => positive number only 
+Type => Deposit or Withdraw
+Status => pending, completed, cancelled 
+GroupKey => To indicate that multiple transactions are related to each other, empty means not related to any other transactions
+Category
+CreatedAt
+UpdatedAt
+IsDeleted
+Remarks
+
+### TransactionCategory
+TransactionCategoryId 
+Label 
+CreatedAt
+UpdatedAt
+IsDeleted
+Remarks
 
 
+## Transaction Flow
 
+- There are User A, B and C.
+- Assume that each one has 0 balance.
+- User A, B and C ride an uber from home to work. 
+- User-A pays the bill that costs $30. 
+- User-A adds a new transaction to the system. 
+- The form will ask for a transaction name, remarks, amount, paid by and parties involved (an array of other users).
+- User-A fills in the form, sets in User-A as Paid By, adds User-B and User-C as parties.
+- UI will send this data to the backend.
+- Create transaction logic will process the data.
+- It will be separated into 4 transaction records with the same group key: 
+  - Transaction 1 = User-A tops up $30 into the system (amount=30,type=deposit,status=completed,category=transport,group-key=sample-random-group-key) 
+  - Transaction 2 = User-A pays $10 (amount=10,type=withdraw,status=completed,category=transport,group-key=sample-random-group-key) 
+  - Transaction 3 = User-B pays $10 (amount=10,type=withdraw,status=completed,category=transport,group-key=sample-random-group-key) 
+  - Transaction 4 = User-C pays $10 (amount=10,type=withdraw,status=completed,category=transport,group-key=sample-random-group-key) 
+- After this transaction, User-A's balance is 20, User-B's balance is -10, User-C's balance is -10
+
+## Login Flow
+
+- User-A cannot register since there's no registration feature 
+- User-A asks User-X (admin) to add him
+- User-X with admin policy privilege adds User-A and set his password
+- User-X tells User-A the password in real life
+- User-A logs in with the email and password
+- User-A accesses the system
+- User-A goes to user setting page
+- User-A connects his personal Google and Github to the system
+- User-A logs out
+- User-A logs in using Google
+- User-A can login.
+
+# To Do For Agent
+
+For a detailed roadmap with phases, dependencies, and testing tasks, see [ROADMAP.md](ROADMAP.md).
+
+**Current Focus:** Phase 2 - Authentication & Layout
+
+Quick status:
+- ✅ Phase 1: Foundation complete
+- 🔄 Phase 2: Authentication & Layout (in progress)
+- ⏳ Phase 3: Feature UI Scaffolding (planned)
+- ⏳ Phase 4: Backend & Data Layer (planned)
 
 # NextJS Documentation
 
