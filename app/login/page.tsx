@@ -25,7 +25,7 @@ function mapNextAuthErrorToMessage(errorCode: string | null): string | null {
 
 export default function LoginPage(): React.JSX.Element {
   const router = useRouter();
-  const [callbackUrl, setCallbackUrl] = useState("/");
+  const [callbackUrl, setCallbackUrl] = useState("/dashboard");
   const [oauthAvailability, setOauthAvailability] = useState<OauthAvailability>(
     DEFAULT_OAUTH_AVAILABILITY,
   );
@@ -42,7 +42,7 @@ export default function LoginPage(): React.JSX.Element {
       const authError = currentSearchParams.get("error");
       const resolvedProviders = await getProviders();
 
-      setCallbackUrl(requestedCallbackUrl || "/");
+      setCallbackUrl(requestedCallbackUrl || "/dashboard");
       setError(mapNextAuthErrorToMessage(authError));
       setOauthAvailability({
         google: Boolean(resolvedProviders?.google),
@@ -77,10 +77,14 @@ export default function LoginPage(): React.JSX.Element {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4">
-      <section className="w-full max-w-md rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-        <h1 className="text-2xl font-semibold text-slate-900">Login</h1>
-        <p className="mt-1 text-sm text-slate-600">
+    <div className="w-full max-w-lg">
+      <section className="relative overflow-hidden rounded-3xl border border-white/70 bg-white/90 p-8 shadow-2xl shadow-slate-300/40 backdrop-blur">
+        <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-emerald-200/40 blur-2xl" />
+
+        <h1 className="font-heading text-3xl font-semibold text-slate-900">
+          Welcome back
+        </h1>
+        <p className="mt-2 text-sm text-slate-600">
           Sign in with your email and password provided by an admin.
         </p>
 
@@ -98,7 +102,7 @@ export default function LoginPage(): React.JSX.Element {
             required
             value={email}
             onChange={(event) => setEmail(event.target.value)}
-            className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 outline-none ring-slate-400 placeholder:text-slate-400 focus:ring-2"
+            className="app-field"
             placeholder="you@example.com"
           />
 
@@ -115,16 +119,16 @@ export default function LoginPage(): React.JSX.Element {
             required
             value={password}
             onChange={(event) => setPassword(event.target.value)}
-            className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 outline-none ring-slate-400 placeholder:text-slate-400 focus:ring-2"
+            className="app-field"
             placeholder="••••••••"
           />
 
-          {error ? <p className="text-sm text-red-600">{error}</p> : null}
+          {error ? <p className="app-alert-error">{error}</p> : null}
 
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60"
+            className="app-button-primary w-full"
           >
             {isSubmitting ? "Signing in..." : "Sign in"}
           </button>
@@ -140,7 +144,7 @@ export default function LoginPage(): React.JSX.Element {
               <button
                 type="button"
                 onClick={() => void signIn("google", { callbackUrl })}
-                className="w-full rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 transition hover:bg-slate-100"
+                className="app-button-secondary w-full"
               >
                 Sign in with Google
               </button>
@@ -150,7 +154,7 @@ export default function LoginPage(): React.JSX.Element {
               <button
                 type="button"
                 onClick={() => void signIn("github", { callbackUrl })}
-                className="w-full rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-800 transition hover:bg-slate-100"
+                className="app-button-secondary w-full"
               >
                 Sign in with GitHub
               </button>
@@ -161,10 +165,10 @@ export default function LoginPage(): React.JSX.Element {
         <p className="mt-5 text-sm text-slate-600">
           Need access? Contact your admin to create your account.
         </p>
-        <p className="mt-2 text-sm">
+        <p className="mt-2 text-sm text-slate-600">
           <Link
             href="/"
-            className="text-slate-800 underline underline-offset-2"
+            className="font-medium text-slate-800 underline underline-offset-2"
           >
             Back to home
           </Link>

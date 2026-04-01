@@ -87,8 +87,8 @@ export function ConnectedProvidersCard(): React.JSX.Element {
   }
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-slate-900">
+    <section className="app-surface">
+      <h2 className="font-heading text-xl font-semibold text-slate-900">
         Connected Accounts
       </h2>
       <p className="mt-1 text-sm text-slate-600">
@@ -96,7 +96,7 @@ export function ConnectedProvidersCard(): React.JSX.Element {
         password.
       </p>
 
-      {error ? <p className="mt-4 text-sm text-red-600">{error}</p> : null}
+      {error ? <p className="mt-4 app-alert-error">{error}</p> : null}
 
       {isLoading ? (
         <p className="mt-4 text-sm text-slate-600">Loading providers...</p>
@@ -172,7 +172,7 @@ function ProviderRow({
           type="button"
           onClick={onAction}
           disabled={disabled}
-          className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
+          className="app-button-secondary px-3 py-1.5 text-sm"
         >
           {actionLabel}
         </button>

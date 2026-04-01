@@ -72,8 +72,10 @@ export function PasswordManagementCard(): React.JSX.Element {
   }
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 className="text-lg font-semibold text-slate-900">Password</h2>
+    <section className="app-surface">
+      <h2 className="font-heading text-xl font-semibold text-slate-900">
+        Password
+      </h2>
       <p className="mt-1 text-sm text-slate-600">
         Use a strong password with at least 12 characters, uppercase/lowercase
         letters, numbers, and symbols.
@@ -93,7 +95,7 @@ export function PasswordManagementCard(): React.JSX.Element {
             required
             value={currentPassword}
             onChange={(event) => setCurrentPassword(event.target.value)}
-            className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 outline-none ring-slate-400 placeholder:text-slate-400 focus:ring-2"
+            className="app-field"
           />
         </div>
 
@@ -112,7 +114,7 @@ export function PasswordManagementCard(): React.JSX.Element {
             maxLength={72}
             value={newPassword}
             onChange={(event) => setNewPassword(event.target.value)}
-            className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 outline-none ring-slate-400 placeholder:text-slate-400 focus:ring-2"
+            className="app-field"
           />
         </div>
 
@@ -131,21 +133,21 @@ export function PasswordManagementCard(): React.JSX.Element {
             maxLength={72}
             value={confirmNewPassword}
             onChange={(event) => setConfirmNewPassword(event.target.value)}
-            className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-slate-900 outline-none ring-slate-400 placeholder:text-slate-400 focus:ring-2"
+            className="app-field"
           />
         </div>
 
         {changeState.error ? (
-          <p className="text-sm text-red-600">{changeState.error}</p>
+          <p className="app-alert-error">{changeState.error}</p>
         ) : null}
         {changeState.success ? (
-          <p className="text-sm text-green-700">{changeState.success}</p>
+          <p className="app-alert-success">{changeState.success}</p>
         ) : null}
 
         <button
           type="submit"
           disabled={changeState.isSubmitting}
-          className="rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60"
+          className="app-button-primary"
         >
           {changeState.isSubmitting ? "Updating..." : "Change password"}
         </button>

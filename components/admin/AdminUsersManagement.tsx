@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
 
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import type { PublicUser, UserPolicy } from "@/types/database";
 
 type ApiSuccess<TData> = {
@@ -75,8 +77,10 @@ export function AdminUsersManagement(): React.JSX.Element {
     null,
   );
   const [resetPassword, setResetPassword] = useState("");
+  const [deleteTargetUserId, setDeleteTargetUserId] = useState<string | null>(
+    null,
+  );
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
 
   const userById = useMemo(() => {
     return new Map(users.map((user) => [user.user_id, user]));
@@ -111,7 +115,6 @@ export function AdminUsersManagement(): React.JSX.Element {
 
   function startEdit(user: PublicUser): void {
     setError(null);
-    setSuccess(null);
     setEditForm({
       userId: user.user_id,
       name: user.name,
@@ -130,7 +133,6 @@ export function AdminUsersManagement(): React.JSX.Element {
   ): Promise<void> {
     event.preventDefault();
     setError(null);
-    setSuccess(null);
     setIsSubmitting(true);
 
     const response = await fetch("/api/users", {
@@ -154,14 +156,14 @@ export function AdminUsersManagement(): React.JSX.Element {
 
     if (!response.ok || !("data" in payload)) {
       setIsSubmitting(false);
-      setError(getApiErrorMessage(payload, "Failed to create user."));
+      toast.error(getApiErrorMessage(payload, "Failed to create user."));
       return;
     }
 
     setCreateForm(INITIAL_CREATE_FORM);
     setUsers((previous) => [payload.data, ...previous]);
     setIsSubmitting(false);
-    setSuccess("User created successfully.");
+    toast.success("User created successfully.");
   }
 
   async function onUpdateUser(
@@ -174,7 +176,6 @@ export function AdminUsersManagement(): React.JSX.Element {
     }
 
     setError(null);
-    setSuccess(null);
     setIsSubmitting(true);
 
     const response = await fetch(`/api/users/${editForm.userId}`, {
@@ -201,7 +202,7 @@ export function AdminUsersManagement(): React.JSX.Element {
 
     if (!response.ok || !("data" in payload)) {
       setIsSubmitting(false);
-      setError(getApiErrorMessage(payload, "Failed to update user."));
+      toast.error(getApiErrorMessage(payload, "Failed to update user."));
       return;
     }
 
@@ -219,7 +220,7 @@ export function AdminUsersManagement(): React.JSX.Element {
         : null,
     );
     setIsSubmitting(false);
-    setSuccess("User updated successfully.");
+    toast.success("User updated successfully.");
   }
 
   async function onDeleteUser(userId: string): Promise<void> {
@@ -230,21 +231,11 @@ export function AdminUsersManagement(): React.JSX.Element {
     }
 
     if (user.policy === "admin") {
-      setError("Admin users cannot be deleted from the app.");
-      setSuccess(null);
-      return;
-    }
-
-    const confirmed = window.confirm(
-      `Delete user ${user.email}? This performs a soft delete.`,
-    );
-
-    if (!confirmed) {
+      toast.error("Admin users cannot be deleted from the app.");
       return;
     }
 
     setError(null);
-    setSuccess(null);
     setIsSubmitting(true);
 
     const response = await fetch(`/api/users/${userId}`, {
@@ -254,7 +245,7 @@ export function AdminUsersManagement(): React.JSX.Element {
     if (!response.ok) {
       const payload = (await response.json()) as ApiErrorResponse;
       setIsSubmitting(false);
-      setError(getApiErrorMessage(payload, "Failed to delete user."));
+      toast.error(getApiErrorMessage(payload, "Failed to delete user."));
       return;
     }
 
@@ -265,7 +256,7 @@ export function AdminUsersManagement(): React.JSX.Element {
     setResetTargetUserId((previous) => (previous === userId ? null : previous));
     setResetPassword("");
     setIsSubmitting(false);
-    setSuccess("User deleted successfully.");
+    toast.success("User deleted successfully.");
   }
 
   async function onResetPassword(
@@ -278,7 +269,6 @@ export function AdminUsersManagement(): React.JSX.Element {
     }
 
     setError(null);
-    setSuccess(null);
     setIsSubmitting(true);
 
     const response = await fetch(
@@ -300,42 +290,40 @@ export function AdminUsersManagement(): React.JSX.Element {
 
     if (!response.ok || !("data" in payload)) {
       setIsSubmitting(false);
-      setError(getApiErrorMessage(payload, "Failed to reset password."));
+      toast.error(getApiErrorMessage(payload, "Failed to reset password."));
       return;
     }
 
     setResetPassword("");
     setResetTargetUserId(null);
     setIsSubmitting(false);
-    setSuccess("Password reset successfully.");
+    toast.success("Password reset successfully.");
   }
 
   return (
-    <div className="mx-auto w-full max-w-6xl space-y-6 px-4 py-6">
+    <div className="mx-auto w-full max-w-6xl space-y-6">
       <header className="space-y-2">
-        <h1 className="text-2xl font-semibold text-slate-900">
-          Admin User Management
-        </h1>
-        <p className="text-sm text-slate-600">
+        <h1 className="app-title">Admin User Management</h1>
+        <p className="app-subtitle">
           Create, view, update, delete, and reset passwords for users.
         </p>
         <div className="flex flex-wrap gap-3 text-sm">
           <Link
             href="/settings"
-            className="text-slate-800 underline underline-offset-2"
+            className="font-medium text-slate-800 underline underline-offset-2"
           >
             Back to settings
           </Link>
           <Link
             href="/"
-            className="text-slate-800 underline underline-offset-2"
+            className="font-medium text-slate-800 underline underline-offset-2"
           >
             Back to home
           </Link>
         </div>
       </header>
 
-      <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <section className="app-surface">
         <h2 className="text-lg font-semibold text-slate-900">Create User</h2>
 
         <form
@@ -359,7 +347,7 @@ export function AdminUsersManagement(): React.JSX.Element {
                   name: event.target.value,
                 }))
               }
-              className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900"
+              className="app-field"
             />
           </div>
 
@@ -381,7 +369,7 @@ export function AdminUsersManagement(): React.JSX.Element {
                   email: event.target.value,
                 }))
               }
-              className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900"
+              className="app-field"
             />
           </div>
 
@@ -405,7 +393,7 @@ export function AdminUsersManagement(): React.JSX.Element {
                   password: event.target.value,
                 }))
               }
-              className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900"
+              className="app-field"
             />
           </div>
 
@@ -425,7 +413,7 @@ export function AdminUsersManagement(): React.JSX.Element {
                   policy: event.target.value as UserPolicy,
                 }))
               }
-              className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900"
+              className="app-field"
             >
               <option value="user">user</option>
               <option value="mod">mod</option>
@@ -449,7 +437,7 @@ export function AdminUsersManagement(): React.JSX.Element {
                   avatar: event.target.value,
                 }))
               }
-              className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900"
+              className="app-field"
             />
           </div>
 
@@ -469,7 +457,7 @@ export function AdminUsersManagement(): React.JSX.Element {
                   remarks: event.target.value,
                 }))
               }
-              className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900"
+              className="app-field"
             />
           </div>
 
@@ -477,7 +465,7 @@ export function AdminUsersManagement(): React.JSX.Element {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60"
+              className="app-button-primary"
             >
               {isSubmitting ? "Saving..." : "Create user"}
             </button>
@@ -485,13 +473,13 @@ export function AdminUsersManagement(): React.JSX.Element {
         </form>
       </section>
 
-      <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <section className="app-surface">
         <div className="flex items-center justify-between gap-3">
           <h2 className="text-lg font-semibold text-slate-900">All Users</h2>
           <button
             type="button"
             onClick={() => void loadUsers()}
-            className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+            className="app-button-secondary px-3 py-1.5"
           >
             Refresh
           </button>
@@ -505,7 +493,7 @@ export function AdminUsersManagement(): React.JSX.Element {
           <div className="mt-4 overflow-x-auto">
             <table className="min-w-full border-collapse text-sm">
               <thead>
-                <tr className="border-b border-slate-200 text-left text-slate-600">
+                <tr className="border-b border-slate-200 bg-slate-100/80 text-left text-slate-600">
                   <th className="px-2 py-2 font-medium">Name</th>
                   <th className="px-2 py-2 font-medium">Email</th>
                   <th className="px-2 py-2 font-medium">Policy</th>
@@ -534,7 +522,7 @@ export function AdminUsersManagement(): React.JSX.Element {
                         <button
                           type="button"
                           onClick={() => startEdit(user)}
-                          className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-100"
+                          className="app-button-secondary px-3 py-1.5 text-xs"
                         >
                           Edit
                         </button>
@@ -542,19 +530,18 @@ export function AdminUsersManagement(): React.JSX.Element {
                           type="button"
                           onClick={() => {
                             setError(null);
-                            setSuccess(null);
                             setResetTargetUserId(user.user_id);
                             setResetPassword("");
                           }}
-                          className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-100"
+                          className="app-button-secondary px-3 py-1.5 text-xs"
                         >
                           Reset password
                         </button>
                         {user.policy !== "admin" ? (
                           <button
                             type="button"
-                            onClick={() => void onDeleteUser(user.user_id)}
-                            className="rounded-md border border-red-300 bg-white px-3 py-1.5 text-xs font-medium text-red-700 transition hover:bg-red-50"
+                            onClick={() => setDeleteTargetUserId(user.user_id)}
+                            className="inline-flex items-center justify-center rounded-xl border border-red-300 bg-white px-3 py-1.5 text-xs font-medium text-red-700 transition hover:bg-red-50"
                           >
                             Delete
                           </button>
@@ -574,7 +561,7 @@ export function AdminUsersManagement(): React.JSX.Element {
       </section>
 
       {editForm ? (
-        <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <section className="app-surface">
           <h2 className="text-lg font-semibold text-slate-900">Edit User</h2>
           <p className="mt-1 text-sm text-slate-600">
             Editing {userById.get(editForm.userId)?.email}
@@ -602,7 +589,7 @@ export function AdminUsersManagement(): React.JSX.Element {
                       : previous,
                   )
                 }
-                className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900"
+                className="app-field"
               />
             </div>
 
@@ -625,7 +612,7 @@ export function AdminUsersManagement(): React.JSX.Element {
                       : previous,
                   )
                 }
-                className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900"
+                className="app-field"
               />
             </div>
 
@@ -649,7 +636,7 @@ export function AdminUsersManagement(): React.JSX.Element {
                       : previous,
                   )
                 }
-                className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900"
+                className="app-field"
               >
                 <option value="user">user</option>
                 <option value="mod">mod</option>
@@ -674,7 +661,7 @@ export function AdminUsersManagement(): React.JSX.Element {
                       : previous,
                   )
                 }
-                className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900"
+                className="app-field"
               />
             </div>
 
@@ -695,7 +682,7 @@ export function AdminUsersManagement(): React.JSX.Element {
                       : previous,
                   )
                 }
-                className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900"
+                className="app-field"
               />
             </div>
 
@@ -722,7 +709,7 @@ export function AdminUsersManagement(): React.JSX.Element {
                       : previous,
                   )
                 }
-                className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900"
+                className="app-field"
               />
             </div>
 
@@ -730,14 +717,14 @@ export function AdminUsersManagement(): React.JSX.Element {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60"
+                className="app-button-primary"
               >
                 {isSubmitting ? "Saving..." : "Save changes"}
               </button>
               <button
                 type="button"
                 onClick={() => setEditForm(null)}
-                className="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+                className="app-button-secondary"
               >
                 Cancel
               </button>
@@ -747,7 +734,7 @@ export function AdminUsersManagement(): React.JSX.Element {
       ) : null}
 
       {resetTargetUserId ? (
-        <section className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <section className="app-surface">
           <h2 className="text-lg font-semibold text-slate-900">
             Reset User Password
           </h2>
@@ -774,7 +761,7 @@ export function AdminUsersManagement(): React.JSX.Element {
                 maxLength={72}
                 value={resetPassword}
                 onChange={(event) => setResetPassword(event.target.value)}
-                className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900"
+                className="app-field"
               />
             </div>
 
@@ -782,7 +769,7 @@ export function AdminUsersManagement(): React.JSX.Element {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60"
+                className="app-button-primary"
               >
                 {isSubmitting ? "Updating..." : "Reset password"}
               </button>
@@ -792,7 +779,7 @@ export function AdminUsersManagement(): React.JSX.Element {
                   setResetTargetUserId(null);
                   setResetPassword("");
                 }}
-                className="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+                className="app-button-secondary"
               >
                 Cancel
               </button>
@@ -801,8 +788,34 @@ export function AdminUsersManagement(): React.JSX.Element {
         </section>
       ) : null}
 
-      {error ? <p className="text-sm text-red-600">{error}</p> : null}
-      {success ? <p className="text-sm text-green-700">{success}</p> : null}
+      {error ? <p className="app-alert-error">{error}</p> : null}
+
+      <ConfirmDialog
+        open={deleteTargetUserId !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setDeleteTargetUserId(null);
+          }
+        }}
+        title="Delete user?"
+        description={
+          deleteTargetUserId
+            ? `This will soft-delete ${userById.get(deleteTargetUserId)?.email ?? "the selected user"}.`
+            : "This will soft-delete the selected user."
+        }
+        confirmLabel="Delete"
+        isPending={isSubmitting}
+        isDestructive
+        onConfirm={async () => {
+          if (!deleteTargetUserId) {
+            return;
+          }
+
+          const targetId = deleteTargetUserId;
+          setDeleteTargetUserId(null);
+          await onDeleteUser(targetId);
+        }}
+      />
     </div>
   );
 }

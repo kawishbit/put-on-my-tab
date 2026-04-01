@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { toast } from "sonner";
 
+import { FormPageTemplate } from "@/components/layout/PageTemplates";
 import type {
   PublicUser,
   TransactionCategory,
@@ -76,7 +78,6 @@ export function TransactionEditForm({
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -186,26 +187,25 @@ export function TransactionEditForm({
     }
 
     setError(null);
-    setSuccess(null);
     setIsSubmitting(true);
 
     const amount = Number(form.amount);
 
     if (!Number.isFinite(amount) || amount <= 0) {
       setIsSubmitting(false);
-      setError("Amount must be a positive number.");
+      toast.error("Amount must be a positive number.");
       return;
     }
 
     if (!form.paidBy) {
       setIsSubmitting(false);
-      setError("Please select who paid for this transaction.");
+      toast.error("Please select who paid for this transaction.");
       return;
     }
 
     if (involvedParties.length === 0) {
       setIsSubmitting(false);
-      setError("Select at least one party involved.");
+      toast.error("Select at least one party involved.");
       return;
     }
 
@@ -231,50 +231,32 @@ export function TransactionEditForm({
 
     if (!response.ok || !("data" in payload)) {
       setIsSubmitting(false);
-      setError(getApiErrorMessage(payload, "Failed to update transaction."));
+      toast.error(getApiErrorMessage(payload, "Failed to update transaction."));
       return;
     }
 
     setGroupKey(payload.data.groupKey);
     setIsSubmitting(false);
-    setSuccess("Transaction updated successfully.");
+    toast.success("Transaction updated successfully.");
   }
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-4 py-6">
-      <header className="space-y-2">
-        <h1 className="text-2xl font-semibold text-slate-900">
-          Edit Transaction
-        </h1>
-        <p className="text-sm text-slate-600">
-          Update transaction details for this group.
-        </p>
-        {groupKey ? (
-          <p className="text-xs text-slate-500">Group key: {groupKey}</p>
-        ) : null}
-      </header>
-
-      {error ? (
-        <p className="mt-4 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
-          {error}
-        </p>
+    <FormPageTemplate
+      title="Edit Transaction"
+      subtitle="Update transaction details for this group."
+    >
+      {groupKey ? (
+        <p className="text-xs text-slate-500">Group key: {groupKey}</p>
       ) : null}
 
-      {success ? (
-        <p className="mt-4 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
-          {success}
-        </p>
-      ) : null}
+      {error ? <p className="mt-4 app-alert-error">{error}</p> : null}
 
       {isLoading || !form ? (
         <p className="mt-5 rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-600">
           Loading transaction...
         </p>
       ) : (
-        <form
-          onSubmit={onSubmit}
-          className="mt-6 space-y-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm"
-        >
+        <form onSubmit={onSubmit} className="app-surface mt-6 space-y-4">
           <label className="block text-sm text-slate-700">
             <span className="mb-1 block font-medium">Transaction name</span>
             <input
@@ -290,7 +272,7 @@ export function TransactionEditForm({
                     : previous,
                 )
               }
-              className="w-full rounded-md border border-slate-300 px-3 py-2"
+              className="app-field"
               required
               maxLength={200}
               disabled={isSubmitting}
@@ -314,7 +296,7 @@ export function TransactionEditForm({
                     : previous,
                 )
               }
-              className="w-full rounded-md border border-slate-300 px-3 py-2"
+              className="app-field"
               required
               disabled={isSubmitting}
             />
@@ -334,7 +316,7 @@ export function TransactionEditForm({
                     : previous,
                 )
               }
-              className="w-full rounded-md border border-slate-300 px-3 py-2"
+              className="app-field"
               disabled={isSubmitting}
             >
               <option value="pending">Pending</option>
@@ -357,7 +339,7 @@ export function TransactionEditForm({
                     : previous,
                 )
               }
-              className="w-full rounded-md border border-slate-300 px-3 py-2"
+              className="app-field"
               disabled={isSubmitting}
               required
             >
@@ -383,7 +365,7 @@ export function TransactionEditForm({
                     : previous,
                 )
               }
-              className="w-full rounded-md border border-slate-300 px-3 py-2"
+              className="app-field"
               disabled={isSubmitting}
             >
               <option value="">No category</option>
@@ -412,7 +394,7 @@ export function TransactionEditForm({
                     : previous,
                 )
               }
-              className="w-full rounded-md border border-slate-300 px-3 py-2"
+              className="app-field"
               rows={3}
               maxLength={1500}
               disabled={isSubmitting}
@@ -421,7 +403,7 @@ export function TransactionEditForm({
 
           <fieldset className="block text-sm text-slate-700">
             <legend className="mb-1 block font-medium">Parties involved</legend>
-            <div className="max-h-52 space-y-2 overflow-y-auto rounded-md border border-slate-300 p-3">
+            <div className="max-h-52 space-y-2 overflow-y-auto rounded-xl border border-slate-200 bg-slate-50 p-3">
               {users.length === 0 ? (
                 <p className="text-xs text-slate-500">No users available.</p>
               ) : (
@@ -475,7 +457,7 @@ export function TransactionEditForm({
           <button
             type="submit"
             disabled={isSubmitting}
-            className="inline-flex rounded-md bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-70"
+            className="app-button-primary"
           >
             Save transaction
           </button>
@@ -485,17 +467,17 @@ export function TransactionEditForm({
       <div className="mt-6 flex flex-wrap gap-3 text-sm">
         <Link
           href="/transactions"
-          className="text-slate-800 underline underline-offset-2"
+          className="font-medium text-slate-800 underline underline-offset-2"
         >
           Back to all transactions
         </Link>
         <Link
           href="/transactions/mine"
-          className="text-slate-800 underline underline-offset-2"
+          className="font-medium text-slate-800 underline underline-offset-2"
         >
           Back to my transactions
         </Link>
       </div>
-    </div>
+    </FormPageTemplate>
   );
 }

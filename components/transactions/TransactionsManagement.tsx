@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
+import { toast } from "sonner";
 
+import { TablePageTemplate } from "@/components/layout/PageTemplates";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import type {
   PublicUser,
   TransactionCategory,
@@ -114,7 +117,10 @@ export function TransactionsManagement({
   const [isLoading, setIsLoading] = useState(true);
   const [isMutating, setIsMutating] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<{
+    id: string;
+    name: string;
+  } | null>(null);
 
   const canEdit = policy === "mod" || policy === "admin";
   const canDelete = policy === "admin";
@@ -231,16 +237,7 @@ export function TransactionsManagement({
       return;
     }
 
-    const confirmed = window.confirm(
-      "Delete this transaction group? This performs a soft delete.",
-    );
-
-    if (!confirmed) {
-      return;
-    }
-
     setError(null);
-    setSuccess(null);
     setIsMutating(true);
 
     const response = await fetch(`/api/transactions/${transactionId}`, {
@@ -250,12 +247,12 @@ export function TransactionsManagement({
     if (!response.ok) {
       const payload = (await response.json()) as ApiErrorResponse;
       setIsMutating(false);
-      setError(getApiErrorMessage(payload, "Failed to delete transaction."));
+      toast.error(getApiErrorMessage(payload, "Failed to delete transaction."));
       return;
     }
 
     setIsMutating(false);
-    setSuccess("Transaction deleted successfully.");
+    toast.success("Transaction deleted successfully.");
     await loadTransactions();
   }
 
@@ -264,7 +261,6 @@ export function TransactionsManagement({
     status: TransactionStatus,
   ): Promise<void> {
     setError(null);
-    setSuccess(null);
     setIsMutating(true);
 
     const response = await fetch(`/api/transactions/${transactionId}/status`, {
@@ -281,39 +277,35 @@ export function TransactionsManagement({
 
     if (!response.ok || !("data" in payload)) {
       setIsMutating(false);
-      setError(
+      toast.error(
         getApiErrorMessage(payload, "Failed to update transaction status."),
       );
       return;
     }
 
     setIsMutating(false);
-    setSuccess("Transaction status updated successfully.");
+    toast.success("Transaction status updated successfully.");
     await loadTransactions();
   }
 
   const pageCount = Math.max(Math.ceil(total / filters.pageSize), 1);
 
   return (
-    <div className="mx-auto w-full max-w-7xl space-y-5 px-4 py-6">
-      <header className="space-y-2">
-        <h1 className="text-2xl font-semibold text-slate-900">
-          {scope === "mine" ? "My Transactions" : "All Transactions"}
-        </h1>
-        <p className="text-sm text-slate-600">
-          Filter, sort, paginate, and manage transactions.
-        </p>
+    <TablePageTemplate
+      title={scope === "mine" ? "My Transactions" : "All Transactions"}
+      subtitle="Filter, sort, paginate, and manage transactions."
+      actions={
         <div className="flex flex-wrap gap-3 text-sm">
           <Link
             href="/"
-            className="text-slate-800 underline underline-offset-2"
+            className="font-medium text-slate-800 underline underline-offset-2"
           >
             Back to home
           </Link>
           {policy !== "user" ? (
             <Link
               href="/transactions/create"
-              className="text-slate-800 underline underline-offset-2"
+              className="font-medium text-slate-800 underline underline-offset-2"
             >
               Create transaction
             </Link>
@@ -321,7 +313,7 @@ export function TransactionsManagement({
           {scope === "all" ? (
             <Link
               href="/transactions/mine"
-              className="text-slate-800 underline underline-offset-2"
+              className="font-medium text-slate-800 underline underline-offset-2"
             >
               View my transactions
             </Link>
@@ -329,28 +321,18 @@ export function TransactionsManagement({
             policy !== "user" && (
               <Link
                 href="/transactions"
-                className="text-slate-800 underline underline-offset-2"
+                className="font-medium text-slate-800 underline underline-offset-2"
               >
                 View all transactions
               </Link>
             )
           )}
         </div>
-      </header>
+      }
+    >
+      {error ? <p className="app-alert-error">{error}</p> : null}
 
-      {error ? (
-        <p className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
-          {error}
-        </p>
-      ) : null}
-
-      {success ? (
-        <p className="rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
-          {success}
-        </p>
-      ) : null}
-
-      <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+      <section className="app-surface">
         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
           <label className="text-sm text-slate-700">
             <span className="mb-1 block font-medium">Search</span>
@@ -363,7 +345,7 @@ export function TransactionsManagement({
                   search: event.target.value,
                 }));
               }}
-              className="w-full rounded-md border border-slate-300 px-3 py-2"
+              className="app-field"
               placeholder="Search by name"
             />
           </label>
@@ -379,7 +361,7 @@ export function TransactionsManagement({
                   status: event.target.value as FiltersState["status"],
                 }));
               }}
-              className="w-full rounded-md border border-slate-300 px-3 py-2"
+              className="app-field"
             >
               <option value="">All statuses</option>
               <option value="pending">Pending</option>
@@ -399,7 +381,7 @@ export function TransactionsManagement({
                   type: event.target.value as FiltersState["type"],
                 }));
               }}
-              className="w-full rounded-md border border-slate-300 px-3 py-2"
+              className="app-field"
             >
               <option value="">All types</option>
               <option value="deposit">Deposit</option>
@@ -418,7 +400,7 @@ export function TransactionsManagement({
                   category: event.target.value,
                 }));
               }}
-              className="w-full rounded-md border border-slate-300 px-3 py-2"
+              className="app-field"
             >
               <option value="">All categories</option>
               {categories.map((category) => (
@@ -444,7 +426,7 @@ export function TransactionsManagement({
                     paidBy: event.target.value,
                   }));
                 }}
-                className="w-full rounded-md border border-slate-300 px-3 py-2"
+                className="app-field"
               >
                 <option value="">All users</option>
                 {users.map((user) => (
@@ -467,7 +449,7 @@ export function TransactionsManagement({
                   sortBy: event.target.value as FiltersState["sortBy"],
                 }));
               }}
-              className="w-full rounded-md border border-slate-300 px-3 py-2"
+              className="app-field"
             >
               <option value="created_at">Created at</option>
               <option value="amount">Amount</option>
@@ -488,7 +470,7 @@ export function TransactionsManagement({
                   sortOrder: event.target.value as FiltersState["sortOrder"],
                 }));
               }}
-              className="w-full rounded-md border border-slate-300 px-3 py-2"
+              className="app-field"
             >
               <option value="desc">Descending</option>
               <option value="asc">Ascending</option>
@@ -506,7 +488,7 @@ export function TransactionsManagement({
                   pageSize: Number.parseInt(event.target.value, 10),
                 }));
               }}
-              className="w-full rounded-md border border-slate-300 px-3 py-2"
+              className="app-field"
             >
               <option value={10}>10</option>
               <option value={20}>20</option>
@@ -516,10 +498,10 @@ export function TransactionsManagement({
         </div>
       </section>
 
-      <section className="overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-sm">
+      <section className="app-table-shell">
         <table className="w-full min-w-[980px] border-collapse text-sm">
           <thead>
-            <tr className="bg-slate-100 text-left text-slate-700">
+            <tr className="bg-slate-100/80 text-left text-slate-700">
               <th className="px-3 py-2">Name</th>
               <th className="px-3 py-2">Paid By</th>
               <th className="px-3 py-2">Amount</th>
@@ -588,7 +570,7 @@ export function TransactionsManagement({
                       {canEdit ? (
                         <Link
                           href={`/transactions/${transaction.transaction_id}/edit`}
-                          className="rounded-md border border-slate-300 px-2 py-1 text-xs text-slate-700 hover:bg-slate-100"
+                          className="app-button-secondary px-2 py-1 text-xs"
                         >
                           Edit
                         </Link>
@@ -605,7 +587,7 @@ export function TransactionsManagement({
                                 "completed",
                               )
                             }
-                            className="rounded-md border border-emerald-300 px-2 py-1 text-xs text-emerald-700 hover:bg-emerald-50 disabled:opacity-60"
+                            className="inline-flex items-center justify-center rounded-xl border border-emerald-300 px-2 py-1 text-xs font-medium text-emerald-700 transition hover:bg-emerald-50 disabled:opacity-60"
                           >
                             Mark completed
                           </button>
@@ -618,7 +600,7 @@ export function TransactionsManagement({
                                 "cancelled",
                               )
                             }
-                            className="rounded-md border border-amber-300 px-2 py-1 text-xs text-amber-700 hover:bg-amber-50 disabled:opacity-60"
+                            className="inline-flex items-center justify-center rounded-xl border border-amber-300 px-2 py-1 text-xs font-medium text-amber-700 transition hover:bg-amber-50 disabled:opacity-60"
                           >
                             Cancel
                           </button>
@@ -630,9 +612,12 @@ export function TransactionsManagement({
                           type="button"
                           disabled={isMutating}
                           onClick={() =>
-                            void onDelete(transaction.transaction_id)
+                            setDeleteTarget({
+                              id: transaction.transaction_id,
+                              name: transaction.name,
+                            })
                           }
-                          className="rounded-md border border-red-300 px-2 py-1 text-xs text-red-700 hover:bg-red-50 disabled:opacity-60"
+                          className="inline-flex items-center justify-center rounded-xl border border-red-300 px-2 py-1 text-xs font-medium text-red-700 transition hover:bg-red-50 disabled:opacity-60"
                         >
                           Delete
                         </button>
@@ -646,7 +631,7 @@ export function TransactionsManagement({
         </table>
       </section>
 
-      <section className="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 shadow-sm">
+      <section className="app-surface flex items-center justify-between px-4 py-3 text-sm text-slate-700">
         <span>
           Total: {total} transaction records | Page {currentPage} of {pageCount}
         </span>
@@ -657,7 +642,7 @@ export function TransactionsManagement({
             onClick={() =>
               setCurrentPage((previous) => Math.max(previous - 1, 1))
             }
-            className="rounded-md border border-slate-300 px-3 py-1.5 hover:bg-slate-100 disabled:opacity-60"
+            className="app-button-secondary px-3 py-1.5"
           >
             Previous
           </button>
@@ -667,12 +652,39 @@ export function TransactionsManagement({
             onClick={() =>
               setCurrentPage((previous) => Math.min(previous + 1, pageCount))
             }
-            className="rounded-md border border-slate-300 px-3 py-1.5 hover:bg-slate-100 disabled:opacity-60"
+            className="app-button-secondary px-3 py-1.5"
           >
             Next
           </button>
         </div>
       </section>
-    </div>
+
+      <ConfirmDialog
+        open={deleteTarget !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setDeleteTarget(null);
+          }
+        }}
+        title="Delete transaction group?"
+        description={
+          deleteTarget
+            ? `This will soft-delete the transaction group for "${deleteTarget.name}" and recalculate balances.`
+            : "This will soft-delete the selected transaction group and recalculate balances."
+        }
+        confirmLabel="Delete"
+        isPending={isMutating}
+        isDestructive
+        onConfirm={async () => {
+          if (!deleteTarget) {
+            return;
+          }
+
+          const targetId = deleteTarget.id;
+          setDeleteTarget(null);
+          await onDelete(targetId);
+        }}
+      />
+    </TablePageTemplate>
   );
 }
