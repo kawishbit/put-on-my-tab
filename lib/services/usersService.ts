@@ -8,6 +8,33 @@ const USER_PUBLIC_COLUMNS =
   "user_id,name,email,avatar,current_balance,last_login_date,created_at,updated_at,is_deleted,remarks,policy";
 const PASSWORD_SALT_ROUNDS = 12;
 
+type ActiveUserPolicyRow = {
+  user_id: string;
+  policy: "user" | "mod" | "admin";
+  is_deleted: boolean;
+};
+
+async function getActiveUserPolicyRow(
+  userId: string,
+): Promise<ActiveUserPolicyRow> {
+  const { data, error } = await supabase
+    .from("users")
+    .select("user_id,policy,is_deleted")
+    .eq("user_id", userId)
+    .eq("is_deleted", false)
+    .maybeSingle();
+
+  if (error) {
+    throw new ApiError(500, "user_lookup_failed", error.message, error);
+  }
+
+  if (!data) {
+    throw new ApiError(404, "user_not_found", "User was not found");
+  }
+
+  return data as ActiveUserPolicyRow;
+}
+
 export async function listUsers(): Promise<PublicUser[]> {
   const { data, error } = await supabase
     .from("users")
@@ -70,6 +97,16 @@ export async function updateUser(
 }
 
 export async function deleteUser(userId: string): Promise<void> {
+  const user = await getActiveUserPolicyRow(userId);
+
+  if (user.policy === "admin") {
+    throw new ApiError(
+      403,
+      "admin_delete_blocked",
+      "Admin users cannot be deleted from the app. Delete directly from the database if required.",
+    );
+  }
+
   const { error } = await supabase
     .from("users")
     .update({ is_deleted: true } as never)

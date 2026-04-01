@@ -229,6 +229,12 @@ export function AdminUsersManagement(): React.JSX.Element {
       return;
     }
 
+    if (user.policy === "admin") {
+      setError("Admin users cannot be deleted from the app.");
+      setSuccess(null);
+      return;
+    }
+
     const confirmed = window.confirm(
       `Delete user ${user.email}? This performs a soft delete.`,
     );
@@ -544,13 +550,19 @@ export function AdminUsersManagement(): React.JSX.Element {
                         >
                           Reset password
                         </button>
-                        <button
-                          type="button"
-                          onClick={() => void onDeleteUser(user.user_id)}
-                          className="rounded-md border border-red-300 bg-white px-3 py-1.5 text-xs font-medium text-red-700 transition hover:bg-red-50"
-                        >
-                          Delete
-                        </button>
+                        {user.policy !== "admin" ? (
+                          <button
+                            type="button"
+                            onClick={() => void onDeleteUser(user.user_id)}
+                            className="rounded-md border border-red-300 bg-white px-3 py-1.5 text-xs font-medium text-red-700 transition hover:bg-red-50"
+                          >
+                            Delete
+                          </button>
+                        ) : (
+                          <span className="px-3 py-1.5 text-xs font-medium text-slate-500">
+                            Protected admin
+                          </span>
+                        )}
                       </div>
                     </td>
                   </tr>

@@ -42,14 +42,24 @@ export default async function SettingsPage(): Promise<React.JSX.Element> {
         </Link>
       </p>
       {isAdmin ? (
-        <p className="mt-2 text-sm">
-          <Link
-            href="/settings/admin/users"
-            className="text-slate-800 underline underline-offset-2"
-          >
-            Go to admin user management
-          </Link>
-        </p>
+        <div className="mt-2 space-y-1 text-sm">
+          <p>
+            <Link
+              href="/settings/admin/users"
+              className="text-slate-800 underline underline-offset-2"
+            >
+              Go to admin user management
+            </Link>
+          </p>
+          <p>
+            <Link
+              href="/settings/admin/categories"
+              className="text-slate-800 underline underline-offset-2"
+            >
+              Go to admin category management
+            </Link>
+          </p>
+        </div>
       ) : null}
     </div>
   );

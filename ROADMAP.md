@@ -113,11 +113,16 @@ Implementation note (Apr 1, 2026):
 - Added soft-delete user service support and protected nested admin settings/API routes in middleware.
 
 ### 3.2 Transaction Category Management (Admin Only)
-- [ ] Create "Create Category" form and API
-- [ ] Create "View All Categories" page
-- [ ] Create "Update Category" form and API
-- [ ] Create "Delete Category" functionality
-- [ ] Implement category dropdown in transaction forms
+- [x] Create "Create Category" form and API
+- [x] Create "View All Categories" page
+- [x] Create "Update Category" form and API
+- [x] Create "Delete Category" functionality
+- [x] Implement category dropdown in transaction forms
+
+Implementation note (Apr 1, 2026):
+- Added admin category management page at `/settings/admin/categories` with create/view/update/delete actions.
+- Added admin-only category dynamic API endpoint (`PATCH/DELETE /api/transaction-categories/[categoryId]`) and soft-delete category service support.
+- Added transaction create page at `/transactions/create` with category dropdown populated from active categories.
 
 ### 3.3 User Settings Page
 - [ ] Create user profile/settings page (`/settings`)

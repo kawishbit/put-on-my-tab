@@ -40,13 +40,30 @@ export default async function Home(): Promise<React.JSX.Element> {
                 >
                   Manage connected accounts
                 </Link>
-                {session.user.policy === "admin" ? (
+                {(session.user.policy === "admin" ||
+                  session.user.policy === "mod") && (
                   <Link
-                    href="/settings/admin/users"
+                    href="/transactions/create"
                     className="inline-flex rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
                   >
-                    Manage users
+                    Create transaction
                   </Link>
+                )}
+                {session.user.policy === "admin" ? (
+                  <>
+                    <Link
+                      href="/settings/admin/users"
+                      className="inline-flex rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+                    >
+                      Manage users
+                    </Link>
+                    <Link
+                      href="/settings/admin/categories"
+                      className="inline-flex rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+                    >
+                      Manage categories
+                    </Link>
+                  </>
                 ) : null}
               </div>
             </div>

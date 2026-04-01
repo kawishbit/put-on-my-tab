@@ -56,3 +56,17 @@ export async function updateTransactionCategory(
 
   return data;
 }
+
+export async function deleteTransactionCategory(
+  transactionCategoryId: string,
+): Promise<void> {
+  const { error } = await supabase
+    .from("transaction_categories")
+    .update({ is_deleted: true } as never)
+    .eq("transaction_category_id", transactionCategoryId)
+    .eq("is_deleted", false);
+
+  if (error) {
+    throw new ApiError(500, "category_delete_failed", error.message, error);
+  }
+}
