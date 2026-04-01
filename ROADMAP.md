@@ -210,26 +210,33 @@ Implementation note (Apr 1, 2026):
 ## Phase 5: Dashboard Pages 📊
 
 ### 5.1 Admin Dashboard (`/admin/dashboard`)
-- [ ] Summary section:
-  - [ ] Total transactions count
-  - [ ] Total system balance
-  - [ ] Active users count
-- [ ] Balance overview:
-  - [ ] List all users with current balances
-  - [ ] Visual indicator of credits/debits
-- [ ] Monthly expenditure:
-  - [ ] Total spending by month
-  - [ ] Comparison with previous months
-- [ ] Last 10 transactions:
-  - [ ] Table with recent transactions
-  - [ ] Quick link to details
-- [ ] Donut chart:
-  - [ ] Categorized transactions visualization
-  - [ ] Breakdown by TransactionCategory
-- [ ] More metrics (TBD):
-  - [ ] Top spenders
-  - [ ] Most frequent categories
-  - [ ] Pending transactions
+- [x] Summary section:
+  - [x] Total transactions count
+  - [x] Total system balance
+  - [x] Active users count
+- [x] Balance overview:
+  - [x] List all users with current balances
+  - [x] Visual indicator of credits/debits
+- [x] Monthly expenditure:
+  - [x] Total spending by month
+  - [x] Comparison with previous months
+- [x] Last 10 transactions:
+  - [x] Table with recent transactions
+  - [x] Quick link to details
+- [x] Donut chart:
+  - [x] Categorized transactions visualization
+  - [x] Breakdown by TransactionCategory
+- [x] More metrics (TBD):
+  - [x] Top spenders
+  - [x] Most frequent categories
+  - [x] Pending transactions
+
+Implementation note (Apr 1, 2026):
+- Added admin-only dashboard page at `/admin/dashboard` with summary cards (total transactions, total system balance, active users) and pending transaction visibility.
+- Added balance overview for active users with credit/debit visual indicators and monthly completed-spending trend with current-vs-previous month comparison.
+- Added recent transactions table (last 10 deposit/group records) with direct quick links to transaction details (`/transactions/[transactionId]/edit`).
+- Added category donut chart (completed spending by category) plus additional KPI blocks for top spenders and most frequent categories.
+- Added reusable server-side analytics aggregation service (`lib/services/adminDashboardService.ts`) and admin dashboard navigation links.
 
 ### 5.2 User Dashboard (`/dashboard`)
 - [ ] User balance display (prominent)

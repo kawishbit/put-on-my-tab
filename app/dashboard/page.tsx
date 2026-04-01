@@ -101,6 +101,9 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
             Jump directly into user and category controls.
           </p>
           <div className="mt-4 flex flex-wrap gap-3">
+            <Link href="/admin/dashboard" className="app-button-primary">
+              Open Admin Dashboard
+            </Link>
             <Link href="/settings/admin/users" className="app-button-secondary">
               Manage Users
             </Link>

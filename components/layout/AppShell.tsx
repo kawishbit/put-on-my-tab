@@ -26,6 +26,12 @@ const NAV_ITEMS: NavItem[] = [
   },
   { href: "/settings", label: "Settings", requireAuth: true },
   {
+    href: "/admin/dashboard",
+    label: "Admin Dashboard",
+    requireAuth: true,
+    allowedPolicies: ["admin"],
+  },
+  {
     href: "/settings/admin/users",
     label: "Users",
     requireAuth: true,
