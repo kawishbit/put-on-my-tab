@@ -20,7 +20,7 @@ export default async function EditTransactionPage(
   }
 
   if (session.user.policy === "user") {
-    redirect("/transactions/mine");
+    redirect("/my-transactions");
   }
 
   const { transactionId } = await props.params;

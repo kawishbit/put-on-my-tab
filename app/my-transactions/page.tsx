@@ -4,18 +4,14 @@ import { getServerSession } from "next-auth";
 import { TransactionsManagement } from "@/components/transactions/TransactionsManagement";
 import { authOptions } from "@/lib/auth/options";
 
-export default async function TransactionsPage(): Promise<React.JSX.Element> {
+export default async function MyTransactionsPage(): Promise<React.JSX.Element> {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.id) {
-    redirect("/login?callbackUrl=%2Ftransactions");
-  }
-
-  if (session.user.policy !== "admin") {
-    redirect("/dashboard");
+    redirect("/login?callbackUrl=%2Fmy-transactions");
   }
 
   return (
-    <TransactionsManagement policy={session.user.policy} initialScope="all" />
+    <TransactionsManagement policy={session.user.policy} initialScope="mine" />
   );
 }

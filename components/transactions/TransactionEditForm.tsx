@@ -472,7 +472,7 @@ export function TransactionEditForm({
           Back to all transactions
         </Link>
         <Link
-          href="/transactions/mine"
+          href="/my-transactions"
           className="font-medium text-slate-800 underline underline-offset-2"
         >
           Back to my transactions

@@ -7,14 +7,8 @@ import { authOptions } from "@/lib/auth/options";
 import {
   getAdminDashboardData,
   getUserDashboardData,
-} from "@/lib/services/adminDashboardService";
-
-const BALANCE_FORMATTER = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
-});
+} from "@/lib/services/dashboardService";
+import { formatCurrencyAmount } from "@/lib/utils/currency";
 
 const PERCENT_FORMATTER = new Intl.NumberFormat("en-US", {
   minimumFractionDigits: 1,
@@ -110,9 +104,9 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
     redirect("/login?callbackUrl=%2Fdashboard");
   }
 
+  const isAdmin = session.user.policy === "admin";
   const canCreate =
     session.user.policy === "admin" || session.user.policy === "mod";
-  const isAdmin = session.user.policy === "admin";
 
   const [userDashboard, adminDashboard] = await Promise.all([
     getUserDashboardData(session.user.id),
@@ -130,37 +124,7 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
       subtitle="Personal and team tab insights in one workspace."
     >
       <main className="app-surface">
-        <div className="grid gap-5 lg:grid-cols-[1.3fr_0.9fr]">
-          <div>
-            <p className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-slate-700">
-              Put On My Tab
-            </p>
-            <h1 className="mt-3 font-heading text-3xl font-semibold text-slate-900 md:text-4xl">
-              Keep shared expenses organized.
-            </h1>
-            <p className="mt-3 max-w-2xl text-sm text-slate-600 md:text-base">
-              Create transactions, review activity, and manage access without
-              jumping across screens.
-            </p>
-
-            <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-              <Link href="/transactions" className="app-button-secondary">
-                View Transactions
-              </Link>
-              <Link href="/transactions/mine" className="app-button-secondary">
-                My Ledger
-              </Link>
-              {canCreate ? (
-                <Link
-                  href="/transactions/create"
-                  className="app-button-primary"
-                >
-                  New Transaction
-                </Link>
-              ) : null}
-            </div>
-          </div>
-
+        <div>
           <section className="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-5">
             <div className="space-y-3">
               <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
@@ -178,15 +142,24 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
                   Current balance
                 </p>
                 <p className="font-heading text-2xl font-semibold text-slate-900">
-                  {BALANCE_FORMATTER.format(
-                    userDashboard.summary.currentBalance,
-                  )}
+                  {formatCurrencyAmount(userDashboard.summary.currentBalance)}
                 </p>
               </div>
               <div className="flex flex-wrap gap-2 pt-1">
                 <Link href="/settings" className="app-button-secondary">
                   Open Settings
                 </Link>
+                <Link href="/my-transactions" className="app-button-secondary">
+                  My Transactions
+                </Link>
+                {canCreate ? (
+                  <Link
+                    href="/transactions/create"
+                    className="app-button-primary"
+                  >
+                    Add Transaction
+                  </Link>
+                ) : null}
               </div>
             </div>
           </section>
@@ -204,14 +177,9 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Link href="/transactions/mine" className="app-button-secondary">
+            <Link href="/my-transactions" className="app-button-secondary">
               View All My Transactions
             </Link>
-            {canCreate ? (
-              <Link href="/transactions/create" className="app-button-primary">
-                Create New Transaction
-              </Link>
-            ) : null}
           </div>
         </div>
 
@@ -233,7 +201,7 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
                   <article key={point.monthKey}>
                     <div className="mb-1 flex items-center justify-between text-sm text-slate-700">
                       <p className="font-medium">{point.monthLabel}</p>
-                      <p>{BALANCE_FORMATTER.format(point.amount)}</p>
+                      <p>{formatCurrencyAmount(point.amount)}</p>
                     </div>
                     <div className="h-2 rounded-full bg-slate-100">
                       <div
@@ -323,7 +291,7 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
                         {transaction.name}
                       </td>
                       <td className="px-4 py-3 text-slate-700">
-                        {BALANCE_FORMATTER.format(transaction.amount)}
+                        {formatCurrencyAmount(transaction.amount)}
                       </td>
                       <td className="px-4 py-3">
                         <span
@@ -399,7 +367,7 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
                 Total system balance
               </p>
               <p className="mt-2 font-heading text-3xl font-semibold text-slate-900">
-                {BALANCE_FORMATTER.format(
+                {formatCurrencyAmount(
                   adminDashboard.summary.totalSystemBalance,
                 )}
               </p>
@@ -445,7 +413,7 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
                             : "text-rose-700"
                         }`}
                       >
-                        {BALANCE_FORMATTER.format(item.balance)}
+                        {formatCurrencyAmount(item.balance)}
                       </p>
                     </div>
                     <div className="mt-2 h-2 rounded-full bg-slate-100">
@@ -495,7 +463,7 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
                     <article key={point.monthKey}>
                       <div className="mb-1 flex items-center justify-between text-sm text-slate-700">
                         <p className="font-medium">{point.monthLabel}</p>
-                        <p>{BALANCE_FORMATTER.format(point.amount)}</p>
+                        <p>{formatCurrencyAmount(point.amount)}</p>
                       </div>
                       <div className="h-2 rounded-full bg-slate-100">
                         <div
@@ -557,7 +525,7 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
                             {transaction.paidByUserName}
                           </td>
                           <td className="px-4 py-3 text-slate-700">
-                            {BALANCE_FORMATTER.format(transaction.amount)}
+                            {formatCurrencyAmount(transaction.amount)}
                           </td>
                           <td className="px-4 py-3">
                             <span
@@ -631,7 +599,7 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
                         </div>
                         <div className="text-right text-sm">
                           <p className="font-medium text-slate-900">
-                            {BALANCE_FORMATTER.format(item.amount)}
+                            {formatCurrencyAmount(item.amount)}
                           </p>
                           <p className="text-xs text-slate-500">
                             {PERCENT_FORMATTER.format(item.percentage)}%
@@ -670,7 +638,7 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
                       >
                         <p className="text-sm text-slate-800">{item.name}</p>
                         <p className="text-sm font-semibold text-slate-900">
-                          {BALANCE_FORMATTER.format(item.spent)}
+                          {formatCurrencyAmount(item.spent)}
                         </p>
                       </div>
                     ))

@@ -171,7 +171,7 @@ Implementation note (Apr 1, 2026):
 - [x] Create "User Transactions" page (user-specific filtered view)
 
 Implementation note (Apr 1, 2026):
-- Added transactions listing pages at `/transactions` and `/transactions/mine` with filterable/sortable tables and pagination.
+- Added transactions listing pages at `/transactions` and `/my-transactions` with filterable/sortable tables and pagination.
 - Extended `GET /api/transactions` with typed filters (`status`, `type`, `category`, `paidBy`, `search`), sorting (`sortBy`, `sortOrder`), scope (`all`/`mine`), and pagination (`page`, `pageSize`).
 - Enhanced transaction list payload with paid-by user and category labels for table display.
 
@@ -236,7 +236,7 @@ Implementation note (Apr 1, 2026):
 - Added balance overview for active users with credit/debit visual indicators and monthly completed-spending trend with current-vs-previous month comparison.
 - Added recent transactions table (last 10 deposit/group records) with direct quick links to transaction details (`/transactions/[transactionId]/edit`).
 - Added category donut chart (completed spending by category) plus additional KPI blocks for top spenders and most frequent categories.
-- Added reusable server-side analytics aggregation service (`lib/services/adminDashboardService.ts`) and admin dashboard navigation links.
+- Added reusable server-side analytics aggregation service (`lib/services/dashboardService.ts`) and admin dashboard navigation links.
 
 ### 5.2 User Dashboard (`/dashboard`)
 - [x] User balance display (prominent)

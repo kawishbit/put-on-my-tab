@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 import { TablePageTemplate } from "@/components/layout/PageTemplates";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import { formatCurrencyAmount } from "@/lib/utils/currency";
 import type {
   PublicUser,
   TransactionCategory,
@@ -77,13 +78,6 @@ function getApiErrorMessage(payload: unknown, fallback: string): string {
   }
 
   return fallback;
-}
-
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(amount);
 }
 
 function formatDateTime(value: string): string {
@@ -312,7 +306,7 @@ export function TransactionsManagement({
           ) : null}
           {scope === "all" ? (
             <Link
-              href="/transactions/mine"
+              href="/my-transactions"
               className="font-medium text-slate-800 underline underline-offset-2"
             >
               View my transactions
@@ -551,7 +545,7 @@ export function TransactionsManagement({
                     {transaction.paid_by_user_name ?? transaction.paid_by}
                   </td>
                   <td className="px-3 py-2 text-slate-700">
-                    {formatCurrency(transaction.amount)}
+                    {formatCurrencyAmount(transaction.amount)}
                   </td>
                   <td className="px-3 py-2 text-slate-700">
                     {transaction.type}

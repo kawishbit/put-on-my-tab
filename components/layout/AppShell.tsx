@@ -1,5 +1,14 @@
 "use client";
 
+import {
+  BookUser,
+  CirclePlus,
+  House,
+  List,
+  Settings,
+  Tags,
+  Users,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -10,30 +19,51 @@ import { LogoutButton } from "@/components/auth/LogoutButton";
 type NavItem = {
   href: string;
   label: string;
+  icon: React.ComponentType<{ className?: string }>;
   requireAuth?: boolean;
   allowedPolicies?: Array<"user" | "mod" | "admin">;
 };
 
 const NAV_ITEMS: NavItem[] = [
-  { href: "/dashboard", label: "Dashboard", requireAuth: true },
-  { href: "/transactions", label: "Transactions", requireAuth: true },
-  { href: "/transactions/mine", label: "My Ledger", requireAuth: true },
+  { href: "/dashboard", label: "Home", icon: House, requireAuth: true },
   {
     href: "/transactions/create",
-    label: "New Transaction",
+    label: "Add Trx",
+    icon: CirclePlus,
     requireAuth: true,
     allowedPolicies: ["mod", "admin"],
   },
-  { href: "/settings", label: "Settings", requireAuth: true },
+  {
+    href: "/my-transactions",
+    label: "My Trx",
+    icon: BookUser,
+    requireAuth: true,
+  },
+  {
+    href: "/transactions",
+    label: "All Trx",
+    icon: List,
+    requireAuth: true,
+    allowedPolicies: ["admin"],
+  },
+  {
+    href: "/settings",
+    label: "Settings",
+    icon: Settings,
+    requireAuth: true,
+    allowedPolicies: ["admin"],
+  },
   {
     href: "/settings/admin/users",
     label: "Users",
+    icon: Users,
     requireAuth: true,
     allowedPolicies: ["admin"],
   },
   {
     href: "/settings/admin/categories",
-    label: "Categories",
+    label: "Trx Categories",
+    icon: Tags,
     requireAuth: true,
     allowedPolicies: ["admin"],
   },
@@ -146,44 +176,46 @@ export function AppShell({
         }`}
       >
         <div className="mx-auto flex w-full max-w-[1400px] items-center justify-between px-4 py-3 md:px-6">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 lg:flex-1">
             <Link
               href={session?.user?.id ? "/dashboard" : "/"}
               className="group inline-flex items-center gap-3"
+              aria-label="Home"
+              title="Home"
             >
               <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 text-sm font-bold text-white shadow-lg shadow-slate-500/30">
                 PT
               </span>
-              <span>
-                <span className="block font-heading text-sm font-semibold text-slate-900">
-                  Put On My Tab
-                </span>
-                <span className="block text-xs text-slate-500">
-                  Shared tabs workspace
-                </span>
-              </span>
             </Link>
-          </div>
 
-          <div className="hidden items-center gap-2 lg:flex">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`app-top-nav-link ${
-                  item.href === activeHref ? "app-top-nav-link-active" : ""
-                }`}
-              >
-                {item.label}
-              </Link>
-            ))}
+            <div className="hidden items-center gap-2 md:flex">
+              {navItems.map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    aria-label={item.label}
+                    title={item.label}
+                    className={`app-top-nav-link ${
+                      item.href === activeHref ? "app-top-nav-link-active" : ""
+                    }`}
+                  >
+                    <Icon className="h-4 w-4" />
+                    <span className="hidden xl:inline">{item.label}</span>
+                    <span className="xl:hidden sr-only">{item.label}</span>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
 
           <div className="flex items-center gap-3 text-right">
             <button
               type="button"
               onClick={() => setIsMobileMenuOpen((previous) => !previous)}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 lg:hidden"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 md:hidden"
               aria-label="Toggle menu"
             >
               <span className="text-lg leading-none">≡</span>
@@ -192,7 +224,7 @@ export function AppShell({
               <p className="text-xs text-slate-500">Checking session...</p>
             ) : session?.user?.email ? (
               <>
-                <div className="hidden lg:block">
+                <div className="hidden md:block">
                   <p className="text-xs font-medium text-slate-800">
                     {session.user.email}
                   </p>
@@ -200,14 +232,14 @@ export function AppShell({
                     {session.user.policy}
                   </p>
                 </div>
-                <div className="hidden lg:block">
+                <div className="hidden md:block">
                   <LogoutButton />
                 </div>
               </>
             ) : (
               <Link
                 href="/login"
-                className="hidden app-top-nav-link lg:inline-flex"
+                className="hidden app-top-nav-link md:inline-flex"
               >
                 Sign in
               </Link>
@@ -218,7 +250,7 @@ export function AppShell({
 
       {isMobileMenuOpen ? (
         <div
-          className="fixed inset-0 z-50 lg:hidden"
+          className="fixed inset-0 z-50 md:hidden"
           role="dialog"
           aria-modal="true"
         >
@@ -242,17 +274,24 @@ export function AppShell({
             </div>
 
             <nav className="space-y-1">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`app-side-nav-link ${
-                    item.href === activeHref ? "app-side-nav-link-active" : ""
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {navItems.map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`app-side-nav-link ${
+                      item.href === activeHref ? "app-side-nav-link-active" : ""
+                    }`}
+                    aria-label={item.label}
+                    title={item.label}
+                  >
+                    <Icon className="h-4 w-4" />
+                    <span>{item.label}</span>
+                  </Link>
+                );
+              })}
             </nav>
 
             <div className="mt-6 border-t border-slate-200 pt-4">
