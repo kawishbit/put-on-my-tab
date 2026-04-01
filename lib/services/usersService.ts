@@ -49,6 +49,25 @@ export async function listUsers(): Promise<PublicUser[]> {
   return data as PublicUser[];
 }
 
+export async function getUserById(userId: string): Promise<PublicUser> {
+  const { data, error } = await supabase
+    .from("users")
+    .select(USER_PUBLIC_COLUMNS)
+    .eq("user_id", userId)
+    .eq("is_deleted", false)
+    .maybeSingle();
+
+  if (error) {
+    throw new ApiError(500, "user_fetch_failed", error.message, error);
+  }
+
+  if (!data) {
+    throw new ApiError(404, "user_not_found", "User was not found");
+  }
+
+  return data as PublicUser;
+}
+
 export async function createUser(input: UserInsert): Promise<PublicUser> {
   const hashedPassword = await hash(input.password, PASSWORD_SALT_ROUNDS);
 

@@ -6,6 +6,14 @@ import { ConnectedProvidersCard } from "@/components/auth/ConnectedProvidersCard
 import { LogoutButton } from "@/components/auth/LogoutButton";
 import { PasswordManagementCard } from "@/components/auth/PasswordManagementCard";
 import { authOptions } from "@/lib/auth/options";
+import { getUserById } from "@/lib/services/usersService";
+
+const BALANCE_FORMATTER = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+});
 
 export default async function SettingsPage(): Promise<React.JSX.Element> {
   const session = await getServerSession(authOptions);
@@ -14,6 +22,7 @@ export default async function SettingsPage(): Promise<React.JSX.Element> {
     redirect("/login?callbackUrl=%2Fsettings");
   }
 
+  const user = await getUserById(session.user.id);
   const isAdmin = session.user.policy === "admin";
 
   return (
@@ -27,6 +36,20 @@ export default async function SettingsPage(): Promise<React.JSX.Element> {
         </div>
         <LogoutButton />
       </header>
+
+      <section className="mt-6 rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 className="text-lg font-semibold text-slate-900">Account</h2>
+        <p className="mt-1 text-sm text-slate-600">Signed in as {user.email}</p>
+
+        <div className="mt-4 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3">
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+            Current balance
+          </p>
+          <p className="mt-1 text-2xl font-semibold text-slate-900">
+            {BALANCE_FORMATTER.format(user.current_balance)}
+          </p>
+        </div>
+      </section>
 
       <div className="mt-6">
         <ConnectedProvidersCard />

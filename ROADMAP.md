@@ -125,11 +125,16 @@ Implementation note (Apr 1, 2026):
 - Added transaction create page at `/transactions/create` with category dropdown populated from active categories.
 
 ### 3.3 User Settings Page
-- [ ] Create user profile/settings page (`/settings`)
-- [ ] Display user balance
-- [ ] Implement change password form
-- [ ] Implement Google/GitHub account connection UI
-- [ ] Implement account disconnection functionality
+- [x] Create user profile/settings page (`/settings`)
+- [x] Display user balance
+- [x] Implement change password form
+- [x] Implement Google/GitHub account connection UI
+- [x] Implement account disconnection functionality
+
+Implementation note (Apr 1, 2026):
+- Completed user settings page at `/settings` with account summary and current balance display for the authenticated user.
+- Added self-service password change form wired to authenticated endpoint (`POST /api/auth/change-password`) with validation and success/error feedback.
+- Added connected provider management UI with connect/disconnect actions for Google and GitHub, backed by `GET/DELETE /api/auth/connected-providers` with guardrails preventing disconnection of the last login provider.
 
 ---
 
