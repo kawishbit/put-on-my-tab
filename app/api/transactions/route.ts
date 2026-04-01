@@ -9,8 +9,12 @@ import {
   createSplitTransaction,
   listTransactions,
 } from "@/lib/services/transactionsService";
+import type { TransactionType } from "@/types/database";
 
 const transactionStatusSchema = z.enum(["pending", "completed", "cancelled"]);
+const transactionTypeSchema = z.enum(["deposit", "withdraw"]);
+const sortBySchema = z.enum(["created_at", "amount", "name", "status", "type"]);
+const sortOrderSchema = z.enum(["asc", "desc"]);
 
 const createSplitTransactionSchema = z.object({
   name: z.string().trim().min(1).max(200),
@@ -29,22 +33,69 @@ export async function GET(request: Request): Promise<Response> {
 
     const { searchParams } = new URL(request.url);
     const requestedStatus = searchParams.get("status");
+    const requestedType = searchParams.get("type");
     const requestedPaidBy = searchParams.get("paidBy");
+    const requestedCategory = searchParams.get("category");
+    const requestedSearch = searchParams.get("search");
+    const requestedScope = searchParams.get("scope");
+    const requestedPage = searchParams.get("page");
+    const requestedPageSize = searchParams.get("pageSize");
+    const requestedSortBy = searchParams.get("sortBy");
+    const requestedSortOrder = searchParams.get("sortOrder");
 
     const status = requestedStatus
       ? transactionStatusSchema.parse(requestedStatus)
       : undefined;
 
+    const type = requestedType
+      ? transactionTypeSchema.parse(requestedType)
+      : undefined;
+
+    const category = requestedCategory
+      ? uuidSchema.safeParse(requestedCategory).success
+        ? requestedCategory
+        : undefined
+      : undefined;
+
+    const page = requestedPage ? Number.parseInt(requestedPage, 10) : 1;
+    const pageSize = requestedPageSize
+      ? Number.parseInt(requestedPageSize, 10)
+      : 20;
+
+    const sortBy = requestedSortBy
+      ? sortBySchema.parse(requestedSortBy)
+      : undefined;
+
+    const sortOrder = requestedSortOrder
+      ? sortOrderSchema.parse(requestedSortOrder)
+      : undefined;
+
+    const mineOnly = requestedScope === "mine";
+
+    const paidByFromRequest =
+      requestedPaidBy && uuidSchema.safeParse(requestedPaidBy).success
+        ? requestedPaidBy
+        : undefined;
+
     const paidBy =
       context.policy === "user"
         ? context.userId
-        : requestedPaidBy && z.uuid().safeParse(requestedPaidBy).success
-          ? requestedPaidBy
-          : undefined;
+        : mineOnly
+          ? context.userId
+          : paidByFromRequest;
+
+    const typeFilter = type as TransactionType | undefined;
 
     const transactions = await listTransactions({
       paidBy,
       status,
+      type: typeFilter,
+      category,
+      search: requestedSearch?.trim() || undefined,
+      page: Number.isFinite(page) ? page : 1,
+      pageSize: Number.isFinite(pageSize) ? pageSize : 20,
+      sortBy,
+      sortOrder,
     });
 
     return ok(transactions);

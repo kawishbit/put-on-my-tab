@@ -164,27 +164,46 @@ Implementation note (Apr 1, 2026):
 - Updated user listing access so mod/admin can load participants in the transaction form via `GET /api/users`.
 
 ### 4.2 View Transactions
-- [ ] Create "All Transactions" page with:
-  - [ ] Filterable/sortable transaction table
-  - [ ] Display: Name, Paid By, Amount, Type, Status, Date, Category
-  - [ ] Pagination support
-- [ ] Create "User Transactions" page (user-specific filtered view)
+- [x] Create "All Transactions" page with:
+  - [x] Filterable/sortable transaction table
+  - [x] Display: Name, Paid By, Amount, Type, Status, Date, Category
+  - [x] Pagination support
+- [x] Create "User Transactions" page (user-specific filtered view)
+
+Implementation note (Apr 1, 2026):
+- Added transactions listing pages at `/transactions` and `/transactions/mine` with filterable/sortable tables and pagination.
+- Extended `GET /api/transactions` with typed filters (`status`, `type`, `category`, `paidBy`, `search`), sorting (`sortBy`, `sortOrder`), scope (`all`/`mine`), and pagination (`page`, `pageSize`).
+- Enhanced transaction list payload with paid-by user and category labels for table display.
 
 ### 4.3 Update Transaction
-- [ ] Create edit transaction form page (`/transactions/[id]/edit`)
-- [ ] Implement update transaction API
-- [ ] Handle recalculation of balances when updating
-- [ ] Only allow admin/mod to update transactions
+- [x] Create edit transaction form page (`/transactions/[id]/edit`)
+- [x] Implement update transaction API
+- [x] Handle recalculation of balances when updating
+- [x] Only allow admin/mod to update transactions
+
+Implementation note (Apr 1, 2026):
+- Added edit transaction page at `/transactions/[transactionId]/edit` and edit details API (`GET /api/transactions/[transactionId]`).
+- Added update endpoint (`PATCH /api/transactions/[transactionId]`) restricted to mod/admin.
+- Added Supabase RPC `update_split_transaction` to replace split-group records atomically and trigger balance recomputation.
 
 ### 4.4 Delete Transaction
-- [ ] Implement soft-delete functionality for transactions
-- [ ] Recalculate affected user balances
-- [ ] Only allow admin to delete transactions
+- [x] Implement soft-delete functionality for transactions
+- [x] Recalculate affected user balances
+- [x] Only allow admin to delete transactions
+
+Implementation note (Apr 1, 2026):
+- Added admin-only delete endpoint (`DELETE /api/transactions/[transactionId]`) to soft-delete all records in a transaction group.
+- Added Supabase RPC `soft_delete_transaction_group` and centralized balance recomputation after deletion.
 
 ### 4.5 Transaction Status Management
-- [ ] Implement status transitions (pending → completed, cancelled)
-- [ ] Create UI for status updates
-- [ ] Handle balance calculations based on status
+- [x] Implement status transitions (pending → completed, cancelled)
+- [x] Create UI for status updates
+- [x] Handle balance calculations based on status
+
+Implementation note (Apr 1, 2026):
+- Added status update endpoint (`PATCH /api/transactions/[transactionId]/status`) restricted to mod/admin.
+- Added UI actions on the transactions table to transition `pending` groups to `completed` or `cancelled`.
+- Added Supabase RPC `update_transaction_group_status` with transition guardrails and balance recomputation.
 
 ---
 
@@ -377,7 +396,7 @@ If triggered, execute in this order:
 ---
 
 ## Last Updated
-March 31, 2026
+April 1, 2026
 
 ## Status
 🟡 In Progress

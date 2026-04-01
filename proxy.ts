@@ -25,9 +25,6 @@ const ROUTE_REQUIREMENTS: Record<string, RouteRequirement> = {
     allowedPolicies: ["admin"],
     methods: ["POST"],
   },
-  "/api/users": {
-    allowedPolicies: ["admin"],
-  },
   "/api/users/reset-password": {
     allowedPolicies: ["admin"],
     methods: ["POST"],
@@ -46,6 +43,14 @@ function getRouteRequirement(
     pathname.startsWith("/api/users/") &&
     pathname !== "/api/users/reset-password"
   ) {
+    return { allowedPolicies: ["admin"] };
+  }
+
+  if (pathname === "/api/users") {
+    if (method === "GET") {
+      return { allowedPolicies: ["mod", "admin"] };
+    }
+
     return { allowedPolicies: ["admin"] };
   }
 

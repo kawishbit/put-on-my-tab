@@ -49,6 +49,18 @@ export default async function Home(): Promise<React.JSX.Element> {
                     Create transaction
                   </Link>
                 )}
+                <Link
+                  href="/transactions"
+                  className="inline-flex rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+                >
+                  View transactions
+                </Link>
+                <Link
+                  href="/transactions/mine"
+                  className="inline-flex rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+                >
+                  My transactions
+                </Link>
                 {session.user.policy === "admin" ? (
                   <>
                     <Link

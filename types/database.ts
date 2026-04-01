@@ -160,6 +160,42 @@ export interface Database {
           transaction_ids: string[];
         }[];
       };
+      update_split_transaction: {
+        Args: {
+          p_transaction_id: string;
+          p_name: string;
+          p_transaction_remark: string | null;
+          p_paid_by: string;
+          p_amount: number;
+          p_parties: string[];
+          p_category: string | null;
+          p_status: TransactionStatus;
+        };
+        Returns: {
+          group_key: string;
+          transaction_ids: string[];
+        }[];
+      };
+      soft_delete_transaction_group: {
+        Args: {
+          p_transaction_id: string;
+        };
+        Returns: {
+          group_key: string;
+          transaction_ids: string[];
+        }[];
+      };
+      update_transaction_group_status: {
+        Args: {
+          p_transaction_id: string;
+          p_status: TransactionStatus;
+        };
+        Returns: unknown;
+      };
+      recompute_user_balances: {
+        Args: Record<string, never>;
+        Returns: unknown;
+      };
     };
     Enums: {
       user_policy: UserPolicy;
