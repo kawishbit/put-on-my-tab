@@ -92,6 +92,11 @@ interface GroupIdentity {
   groupKey: string;
 }
 
+type GroupIdentityRow = {
+  transaction_id: string;
+  group_key: string;
+};
+
 async function getGroupIdentityByTransactionId(
   transactionId: string,
 ): Promise<GroupIdentity> {
@@ -110,9 +115,11 @@ async function getGroupIdentityByTransactionId(
     throw new ApiError(404, "transaction_not_found", "Transaction not found");
   }
 
+  const row = data as GroupIdentityRow;
+
   return {
-    transactionId: data.transaction_id,
-    groupKey: data.group_key,
+    transactionId: row.transaction_id,
+    groupKey: row.group_key,
   };
 }
 

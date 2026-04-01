@@ -328,6 +328,52 @@ Implementation note (Apr 1, 2026):
 
 ---
 
+## Phase 10: Multi-Database Architecture (MikroORM) 🧩
+
+### 10.1 Data Access Abstraction
+- [ ] Introduce repository interfaces for core entities (`users`, `transactions`, `transaction_categories`, `user_login_providers`)
+- [ ] Move transaction business rules (split, status transitions, balance recalculation) from DB RPC-first design to service-layer orchestration
+- [ ] Keep Route Handler contracts stable while swapping data providers underneath
+
+### 10.2 MikroORM Core Setup
+- [ ] Add MikroORM packages and base config
+- [ ] Define shared entities and mapping strategy compatible with SQL + Mongo drivers
+- [ ] Add migration workflows for SQL drivers and a separate initialization/seed strategy for MongoDB
+
+### 10.3 Database Provider Selection via Env
+- [x] Add env selector (example: `DB_PROVIDER=supabase|sqlite|mysql|mongodb`)
+- [x] Implement provider factory that boots the correct MikroORM driver/config at runtime
+- [x] Add per-provider env validation (`DATABASE_URL`, sqlite file path, mysql credentials, mongodb url)
+- [ ] Document local dev presets for each provider
+
+Implementation note (Apr 1, 2026):
+- Added `DB_PROVIDER` selection with supported values `supabase|sqlite|mysql|mongodb` and environment validation in startup configuration.
+- Added provider factory scaffolding with fail-fast behavior for providers not implemented yet.
+- Kept Supabase as the default and currently implemented provider to preserve existing behavior.
+
+### 10.4 Provider Implementations
+- [ ] `supabase-postgres` provider (default): preserve current behavior and schema compatibility
+- [ ] `sqlite` provider (local-first): support single-node development/testing mode
+- [ ] `mysql` provider: support SQL production alternative
+- [ ] `mongodb` provider: support document model alternative with explicit feature-parity caveats
+
+### 10.5 Feature Parity and Compatibility Matrix
+- [ ] Define and track parity matrix for transaction flows (create/list/update/delete/status)
+- [ ] Define policy enforcement strategy outside DB-native RLS so behavior is consistent across providers
+- [ ] Add fallback behavior for SQL-only features (joins, strict constraints, advanced aggregations)
+- [ ] Add fallback behavior for Mongo-only differences (no relational joins, denormalization patterns)
+
+### 10.6 Testing and Rollout
+- [ ] Add provider-specific integration test suites (SQLite, MySQL, MongoDB, Supabase/Postgres)
+- [ ] Add cross-provider contract tests to ensure API response parity
+- [ ] Add staged rollout plan: Supabase/Postgres baseline -> SQLite local -> MySQL -> MongoDB
+
+Implementation notes:
+- MikroORM supports PostgreSQL/MySQL/SQLite/MongoDB via different drivers, but SQL and Mongo feature parity is not automatic.
+- Keep Supabase/Postgres as the default baseline provider for production until parity gates are met.
+
+---
+
 ## Implementation Priorities
 
 ### MVP (Minimum Viable Product)
@@ -347,6 +393,7 @@ Implementation note (Apr 1, 2026):
 - Additional dashboard visualizations
 - Advanced transaction filtering/search
 - GraphQL adoption (only if API pain points appear)
+- Phase 10 multi-database architecture via MikroORM (env-selected provider)
 
 ### GraphQL Later Path (Decision Gate)
 Adopt GraphQL only after MVP if at least one of these is true:
@@ -373,6 +420,7 @@ If triggered, execute in this order:
 | Dashboards | Transaction management, User management |
 | Data export | Transaction/User management complete |
 | GraphQL adoption (optional) | MVP stability, proven query complexity, multi-client demand |
+| Multi-database architecture (MikroORM) | Stable service/repository boundaries, transaction parity tests, migration strategy per provider |
 | Deployment | All core features, testing complete |
 
 ---
@@ -386,6 +434,7 @@ If triggered, execute in this order:
 - **User Onboarding:** No self-registration; admin adds users and provides credentials
 - **API Rate Limiting:** Implement to prevent abuse
 - **Error Handling:** Comprehensive error messages for all operations
+- **Multi-Database Direction:** Adopt a provider architecture with MikroORM and env-based database selection (`supabase`, `sqlite`, `mysql`, `mongodb`) while keeping API behavior consistent.
 
 ### API-First Implementation Guardrails (MVP)
 - Prefer server-side aggregation for dashboard metrics (SQL views or Supabase RPC)

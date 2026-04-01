@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import { getActiveProviderDescriptor } from "@/lib/data/providerFactory";
 import type { Database } from "@/types/database";
 
 const DEFAULT_SUPABASE_URL = "http://127.0.0.1:54321";
@@ -21,6 +22,7 @@ const supabaseUrl = resolveSupabaseUrl(
   process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL,
 );
 const supabaseKey = process.env.SUPABASE_SECRET_KEY || DEFAULT_SUPABASE_KEY;
+const provider = getActiveProviderDescriptor();
 
 export const supabase = createClient<Database, "public">(
   supabaseUrl,
@@ -33,3 +35,5 @@ export const supabase = createClient<Database, "public">(
     },
   },
 );
+
+export const activeDatabaseProvider = provider.provider;

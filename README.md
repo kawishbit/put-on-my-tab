@@ -185,6 +185,26 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) or [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Database Provider Selection (Phase 10)
+
+The app now supports selecting a database provider via environment variable:
+
+- `DB_PROVIDER=supabase|sqlite|mysql|mongodb`
+
+Current implementation status:
+
+- Implemented now: `supabase` (default)
+- Planned next: `sqlite`, `mysql`, `mongodb`
+
+Provider-specific env requirements:
+
+- `supabase`: uses `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SECRET_KEY`
+- `sqlite`: requires `SQLITE_DB_PATH`
+- `mysql`: requires `MYSQL_DATABASE_URL`
+- `mongodb`: requires `MONGODB_URL`
+
+If a non-implemented provider is selected, the app will fail fast with a clear startup error.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

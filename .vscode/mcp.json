@@ -3,6 +3,13 @@
     "supabase": {
       "type": "http",
       "url": "https://mcp.supabase.com/mcp?project_ref=ygdngfrapsfyandoxcfk&features=docs%2Cdatabase%2Cdebugging%2Cdevelopment"
+    },
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp",
+      "headers": {
+        "CONTEXT7_API_KEY": "ctx7sk-50ef9a14-9f62-4e2f-a848-d21262909818"
+      }
     }
   }
 }
