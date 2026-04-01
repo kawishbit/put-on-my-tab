@@ -22,7 +22,7 @@ const createUserSchema = z.object({
 export async function GET(request: Request): Promise<Response> {
   try {
     const context = await getRequestContext(request);
-    requirePolicy(context, ["admin"]);
+    requirePolicy(context, ["mod", "admin"]);
 
     const users = await listUsers();
     return ok(users);

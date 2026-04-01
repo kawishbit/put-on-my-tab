@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
-import type { TransactionCategory, TransactionStatus } from "@/types/database";
+import type { PublicUser, TransactionCategory } from "@/types/database";
 
 type ApiSuccess<TData> = {
   data: TData;
@@ -19,18 +19,17 @@ type FormState = {
   name: string;
   transactionRemark: string;
   amount: string;
+  paidBy: string;
   category: string;
-  status: TransactionStatus;
-  partiesInvolved: string;
+  partiesInvolved: string[];
 };
 
-const INITIAL_FORM_STATE: FormState = {
+const INITIAL_FORM_STATE: Omit<FormState, "paidBy"> = {
   name: "",
   transactionRemark: "",
   amount: "",
   category: "",
-  status: "completed",
-  partiesInvolved: "",
+  partiesInvolved: [],
 };
 
 function getApiErrorMessage(payload: unknown, fallback: string): string {
@@ -54,23 +53,18 @@ function toNullableString(value: string): string | null {
   return trimmed.length > 0 ? trimmed : null;
 }
 
-function parseParties(rawParties: string): string[] {
-  return rawParties
-    .split(",")
-    .map((entry) => entry.trim())
-    .filter(
-      (entry, index, source) =>
-        entry.length > 0 && source.indexOf(entry) === index,
-    );
-}
-
 export function TransactionCreateForm({
-  paidByUserId,
+  initialPaidByUserId,
 }: {
-  paidByUserId: string;
+  initialPaidByUserId: string;
 }): React.JSX.Element {
-  const [form, setForm] = useState<FormState>(INITIAL_FORM_STATE);
+  const [form, setForm] = useState<FormState>({
+    ...INITIAL_FORM_STATE,
+    paidBy: initialPaidByUserId,
+  });
+  const [users, setUsers] = useState<PublicUser[]>([]);
   const [categories, setCategories] = useState<TransactionCategory[]>([]);
+  const [isLoadingUsers, setIsLoadingUsers] = useState(true);
   const [isLoadingCategories, setIsLoadingCategories] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -78,6 +72,50 @@ export function TransactionCreateForm({
 
   useEffect(() => {
     let isActive = true;
+
+    async function loadUsers(): Promise<void> {
+      setIsLoadingUsers(true);
+
+      const response = await fetch("/api/users", {
+        method: "GET",
+        cache: "no-store",
+      });
+
+      const payload = (await response.json()) as
+        | ApiSuccess<PublicUser[]>
+        | ApiErrorResponse;
+
+      if (!isActive) {
+        return;
+      }
+
+      if (!response.ok || !("data" in payload)) {
+        setError(getApiErrorMessage(payload, "Failed to load users."));
+        setIsLoadingUsers(false);
+        return;
+      }
+
+      setUsers(payload.data);
+      setForm((previous) => {
+        const hasPaidBy = payload.data.some(
+          (user) => user.user_id === previous.paidBy,
+        );
+
+        if (hasPaidBy) {
+          return previous;
+        }
+
+        return {
+          ...previous,
+          paidBy:
+            payload.data.find((user) => user.user_id === initialPaidByUserId)
+              ?.user_id ??
+            payload.data[0]?.user_id ??
+            "",
+        };
+      });
+      setIsLoadingUsers(false);
+    }
 
     async function loadCategories(): Promise<void> {
       setIsLoadingCategories(true);
@@ -105,16 +143,16 @@ export function TransactionCreateForm({
       setIsLoadingCategories(false);
     }
 
+    void loadUsers();
     void loadCategories();
 
     return () => {
       isActive = false;
     };
-  }, []);
+  }, [initialPaidByUserId]);
 
-  const parsedParties = useMemo(
-    () => parseParties(form.partiesInvolved),
-    [form.partiesInvolved],
+  const involvedParties = Array.from(
+    new Set([...form.partiesInvolved, form.paidBy].filter(Boolean)),
   );
 
   async function onSubmit(
@@ -133,6 +171,18 @@ export function TransactionCreateForm({
       return;
     }
 
+    if (!form.paidBy) {
+      setIsSubmitting(false);
+      setError("Please select who paid for this transaction.");
+      return;
+    }
+
+    if (involvedParties.length === 0) {
+      setIsSubmitting(false);
+      setError("Select at least one party involved.");
+      return;
+    }
+
     const response = await fetch("/api/transactions", {
       method: "POST",
       headers: {
@@ -141,11 +191,10 @@ export function TransactionCreateForm({
       body: JSON.stringify({
         name: form.name,
         transactionRemark: toNullableString(form.transactionRemark),
-        paidBy: paidByUserId,
+        paidBy: form.paidBy,
         amount,
         category: form.category.length > 0 ? form.category : null,
-        status: form.status,
-        partiesInvolved: parsedParties,
+        partiesInvolved: involvedParties,
       }),
     });
 
@@ -159,7 +208,10 @@ export function TransactionCreateForm({
       return;
     }
 
-    setForm(INITIAL_FORM_STATE);
+    setForm({
+      ...INITIAL_FORM_STATE,
+      paidBy: form.paidBy,
+    });
     setIsSubmitting(false);
     setSuccess(
       `Transaction created successfully. Group key: ${payload.data.groupKey}`,
@@ -231,6 +283,31 @@ export function TransactionCreateForm({
         </label>
 
         <label className="block text-sm text-slate-700">
+          <span className="mb-1 block font-medium">Paid by</span>
+          <select
+            value={form.paidBy}
+            onChange={(event) =>
+              setForm((previous) => ({
+                ...previous,
+                paidBy: event.target.value,
+              }))
+            }
+            className="w-full rounded-md border border-slate-300 px-3 py-2"
+            disabled={isSubmitting || isLoadingUsers}
+            required
+          >
+            {users.length === 0 ? (
+              <option value="">No users available</option>
+            ) : null}
+            {users.map((user) => (
+              <option key={user.user_id} value={user.user_id}>
+                {user.name} ({user.email})
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label className="block text-sm text-slate-700">
           <span className="mb-1 block font-medium">Category</span>
           <select
             value={form.category}
@@ -256,25 +333,6 @@ export function TransactionCreateForm({
         </label>
 
         <label className="block text-sm text-slate-700">
-          <span className="mb-1 block font-medium">Status</span>
-          <select
-            value={form.status}
-            onChange={(event) =>
-              setForm((previous) => ({
-                ...previous,
-                status: event.target.value as TransactionStatus,
-              }))
-            }
-            className="w-full rounded-md border border-slate-300 px-3 py-2"
-            disabled={isSubmitting}
-          >
-            <option value="pending">Pending</option>
-            <option value="completed">Completed</option>
-            <option value="cancelled">Cancelled</option>
-          </select>
-        </label>
-
-        <label className="block text-sm text-slate-700">
           <span className="mb-1 block font-medium">Transaction remark</span>
           <textarea
             value={form.transactionRemark}
@@ -291,25 +349,53 @@ export function TransactionCreateForm({
           />
         </label>
 
-        <label className="block text-sm text-slate-700">
-          <span className="mb-1 block font-medium">Parties involved</span>
-          <textarea
-            value={form.partiesInvolved}
-            onChange={(event) =>
-              setForm((previous) => ({
-                ...previous,
-                partiesInvolved: event.target.value,
-              }))
-            }
-            className="w-full rounded-md border border-slate-300 px-3 py-2"
-            rows={3}
-            placeholder="Comma-separated user UUIDs"
-            disabled={isSubmitting}
-          />
+        <fieldset className="block text-sm text-slate-700">
+          <legend className="mb-1 block font-medium">Parties involved</legend>
+          <div className="max-h-52 space-y-2 overflow-y-auto rounded-md border border-slate-300 p-3">
+            {users.length === 0 ? (
+              <p className="text-xs text-slate-500">No users available.</p>
+            ) : (
+              users.map((user) => {
+                const isChecked = form.partiesInvolved.includes(user.user_id);
+
+                return (
+                  <label
+                    key={user.user_id}
+                    className="flex items-center gap-2 text-sm text-slate-700"
+                  >
+                    <input
+                      type="checkbox"
+                      value={user.user_id}
+                      checked={isChecked}
+                      onChange={(event) =>
+                        setForm((previous) => {
+                          const nextParties = event.target.checked
+                            ? [...previous.partiesInvolved, user.user_id]
+                            : previous.partiesInvolved.filter(
+                                (partyId) => partyId !== user.user_id,
+                              );
+
+                          return {
+                            ...previous,
+                            partiesInvolved: nextParties,
+                          };
+                        })
+                      }
+                      disabled={isSubmitting || isLoadingUsers}
+                    />
+                    <span>{user.name}</span>
+                    <span className="text-xs text-slate-500">
+                      ({user.email})
+                    </span>
+                  </label>
+                );
+              })
+            )}
+          </div>
           <span className="mt-1 block text-xs text-slate-500">
-            Parsed parties: {parsedParties.length}
+            Total involved in split (including payer): {involvedParties.length}
           </span>
-        </label>
+        </fieldset>
 
         <button
           type="submit"

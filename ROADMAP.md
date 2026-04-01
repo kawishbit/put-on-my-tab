@@ -142,20 +142,26 @@ Implementation note (Apr 1, 2026):
 
 ### 4.1 Create Transaction Flow
 - [ ] Create transaction form component with:
-  - [ ] Transaction name field
-  - [ ] Remarks field
-  - [ ] Amount field (positive numbers only)
-  - [ ] Paid By dropdown (user select)
-  - [ ] Parties involved multi-select (array of users)
-  - [ ] Category dropdown (from transaction categories)
-  - [ ] Type selection (Deposit/Withdraw)
-- [ ] Implement backend transaction creation logic:
-  - [ ] Validate input
-  - [ ] Generate GroupKey for related transactions
-  - [ ] Create 4 transaction records (1 deposit + N withdraws split equally)
-  - [ ] Calculate and update user balances
-- [ ] Create transaction form page (`/transactions/create`)
-- [ ] Implement form validation and error handling
+  - [x] Transaction name field
+  - [x] Remarks field
+  - [x] Amount field (positive numbers only)
+  - [x] Paid By dropdown (user select)
+  - [x] Parties involved multi-select (array of users)
+  - [x] Category dropdown (from transaction categories)
+  - [x] Type selection (Deposit/Withdraw)
+- [x] Implement backend transaction creation logic:
+  - [x] Validate input
+  - [x] Generate GroupKey for related transactions
+  - [x] Create 4 transaction records (1 deposit + N withdraws split equally)
+  - [x] Calculate and update user balances
+- [x] Create transaction form page (`/transactions/create`)
+- [x] Implement form validation and error handling
+
+Implementation note (Apr 1, 2026):
+- Completed Phase 4.1 split-transaction creation flow end-to-end.
+- Transaction create page (`/transactions/create`) is restricted to mod/admin and now supports transaction name, remark, positive amount, paid-by user selection, parties involved multi-select, and category selection.
+- Backend `POST /api/transactions` validates request payload and invokes Supabase RPC `create_split_transaction` to atomically create one deposit + N withdraw transactions with a shared `group_key` and update user balances.
+- Updated user listing access so mod/admin can load participants in the transaction form via `GET /api/users`.
 
 ### 4.2 View Transactions
 - [ ] Create "All Transactions" page with:

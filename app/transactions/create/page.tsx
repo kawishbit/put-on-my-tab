@@ -15,5 +15,5 @@ export default async function CreateTransactionPage(): Promise<React.JSX.Element
     redirect("/");
   }
 
-  return <TransactionCreateForm paidByUserId={session.user.id} />;
+  return <TransactionCreateForm initialPaidByUserId={session.user.id} />;
 }
