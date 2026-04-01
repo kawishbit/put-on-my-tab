@@ -5,6 +5,7 @@ import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { z } from "zod";
 
+import { emailSchema } from "@/lib/api/validation";
 import {
   ensureCredentialsProviderForUser,
   linkProviderToUser,
@@ -23,7 +24,7 @@ type AuthUserRow = {
 type OauthAppUserRow = Omit<AuthUserRow, "password">;
 
 const credentialsSchema = z.object({
-  email: z.email(),
+  email: emailSchema,
   password: z.string().min(1),
 });
 

@@ -30,7 +30,7 @@ export function ConnectedProvidersCard(): React.JSX.Element {
     setError(null);
     setIsLoading(true);
 
-    const response = await fetch("/api/auth/providers", {
+    const response = await fetch("/api/auth/connected-providers", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -63,7 +63,7 @@ export function ConnectedProvidersCard(): React.JSX.Element {
     setError(null);
     setIsUpdating(true);
 
-    const response = await fetch("/api/auth/providers", {
+    const response = await fetch("/api/auth/connected-providers", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

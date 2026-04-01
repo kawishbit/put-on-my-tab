@@ -13,7 +13,10 @@ const AUTH_REQUIRED_POLICIES: readonly UserPolicy[] = ["user", "mod", "admin"];
 
 const ROUTE_REQUIREMENTS: Record<string, RouteRequirement> = {
   "/settings": { allowedPolicies: AUTH_REQUIRED_POLICIES },
-  "/api/auth/providers": { allowedPolicies: AUTH_REQUIRED_POLICIES },
+  "/api/auth/connected-providers": {
+    allowedPolicies: AUTH_REQUIRED_POLICIES,
+  },
+  "/api/auth/change-password": { allowedPolicies: AUTH_REQUIRED_POLICIES },
   "/api/transactions": {
     allowedPolicies: ["mod", "admin"],
     methods: ["POST"],
@@ -25,12 +28,27 @@ const ROUTE_REQUIREMENTS: Record<string, RouteRequirement> = {
   "/api/users": {
     allowedPolicies: ["admin"],
   },
+  "/api/users/reset-password": {
+    allowedPolicies: ["admin"],
+    methods: ["POST"],
+  },
 };
 
 function getRouteRequirement(
   pathname: string,
   method: string,
 ): RouteRequirement | null {
+  if (pathname.startsWith("/settings/admin")) {
+    return { allowedPolicies: ["admin"] };
+  }
+
+  if (
+    pathname.startsWith("/api/users/") &&
+    pathname !== "/api/users/reset-password"
+  ) {
+    return { allowedPolicies: ["admin"] };
+  }
+
   for (const [route, requirement] of Object.entries(ROUTE_REQUIREMENTS)) {
     if (pathname !== route) {
       continue;
@@ -115,5 +133,5 @@ export async function proxy(request: NextRequest): Promise<NextResponse> {
 }
 
 export const config = {
-  matcher: ["/settings", "/api/:path*"],
+  matcher: ["/settings/:path*", "/api/:path*"],
 };

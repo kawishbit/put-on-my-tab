@@ -17,14 +17,19 @@ function resolveSupabaseUrl(value: string | undefined): string {
   }
 }
 
-const supabaseUrl = resolveSupabaseUrl(process.env.NEXT_PUBLIC_SUPABASE_URL);
-const supabaseKey =
-  process.env.SUPABASE_SERVICE_ROLE_KEY || DEFAULT_SUPABASE_KEY;
+const supabaseUrl = resolveSupabaseUrl(
+  process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL,
+);
+const supabaseKey = process.env.SUPABASE_SECRET_KEY || DEFAULT_SUPABASE_KEY;
 
 export const supabase = createClient<Database, "public">(
   supabaseUrl,
   supabaseKey,
   {
-    auth: { persistSession: false },
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false,
+      detectSessionInUrl: false,
+    },
   },
 );

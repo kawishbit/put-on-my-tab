@@ -24,7 +24,7 @@
   - [x] `user_login_providers` (UserLoginProviderId, UserId, ProviderType, ProviderKey, CreatedAt, UpdatedAt, IsDeleted, Remarks)
   - [x] `transactions` (TransactionId, Name, TransactionRemark, PaidBy, Amount, Type, Status, GroupKey, Category, CreatedAt, UpdatedAt, IsDeleted, Remarks)
   - [x] `transaction_categories` (TransactionCategoryId, Label, CreatedAt, UpdatedAt, IsDeleted, Remarks)
-- [ ] Set up Supabase authentication backend
+- [x] Set up Supabase authentication backend
 - [x] Create database relationships and constraints
 - [x] Seed initial data (optional default categories)
 - [x] Create RLS (Row Level Security) policies for data access
@@ -42,6 +42,15 @@
 - [x] Implement initial Next.js Route Handlers for core entities
 - [x] Use Supabase queries/RPC for complex transactional operations
 - [x] Keep transport-agnostic domain logic to allow GraphQL migration later
+
+Implementation note (Apr 1, 2026):
+- Updated Supabase server client initialization to use modern key naming (`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` and `SUPABASE_SECRET_KEY`) only.
+- Added migration `supabase/migrations/005_harden_function_search_paths.sql` to harden function `search_path` settings flagged by Supabase security advisor.
+- Updated environment template to use publishable/secret key terminology only.
+
+Implementation note (Apr 1, 2026):
+- Completed Supabase-backed authentication wiring through NextAuth credentials and OAuth providers, with identity/provider linking stored in `users` and `user_login_providers`.
+- Added authenticated route protection using session token policy checks in middleware and API auth helpers.
 
 ---
 
@@ -74,22 +83,34 @@ Implementation note (Mar 31, 2026):
 - Added app-level policy enforcement through Next.js middleware and reusable authorization hooks to align route/API access with the same policy model.
 
 ### 2.4 Password Management
-- [ ] Implement password hashing on backend
-- [ ] Create "Change Password" page
-- [ ] Implement admin "Reset User Password" feature
-- [ ] Add security validations
+- [x] Implement password hashing on backend
+- [x] Create "Change Password" page
+- [x] Implement admin "Reset User Password" feature
+- [x] Add security validations
+
+Implementation note (Mar 31, 2026):
+- Added centralized strong password validation (length, character mix, no spaces, bcrypt-safe max length).
+- Implemented authenticated self-service password change endpoint with current-password verification and password-reuse blocking.
+- Implemented admin-only user password reset endpoint with policy checks (to be used by Phase 3.1 user management UI actions).
+- Added settings UI for self-service password change only.
+- Password updates are hashed with bcrypt rounds and preserve credentials provider linkage for sign-in.
 
 ---
 
 ## Phase 3: Core Entity Management 🗂️
 
 ### 3.1 User Management (Admin Only)
-- [ ] Create "Create User" form and API
-- [ ] Create "View All Users" page with table
-- [ ] Create "Update User" form and API
-- [ ] Create "Delete User" functionality
-- [ ] Create "Update User Policy" feature
-- [ ] Create "Reset User Password" feature
+- [x] Create "Create User" form and API
+- [x] Create "View All Users" page with table
+- [x] Create "Update User" form and API
+- [x] Create "Delete User" functionality
+- [x] Create "Update User Policy" feature
+- [x] Create "Reset User Password" feature (from user table row action, no raw UUID input)
+
+Implementation note (Apr 1, 2026):
+- Added admin user management page at `/settings/admin/users` with create/view/update/delete actions and policy update controls.
+- Added admin-only dynamic user endpoints (`PATCH/DELETE /api/users/[userId]` and `POST /api/users/[userId]/reset-password`) so reset-password is handled from a user row action rather than raw UUID input.
+- Added soft-delete user service support and protected nested admin settings/API routes in middleware.
 
 ### 3.2 Transaction Category Management (Admin Only)
 - [ ] Create "Create Category" form and API

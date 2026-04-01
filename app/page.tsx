@@ -33,12 +33,22 @@ export default async function Home(): Promise<React.JSX.Element> {
                 Policy:{" "}
                 <span className="font-medium">{session.user.policy}</span>
               </p>
-              <Link
-                href="/settings"
-                className="inline-flex rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
-              >
-                Manage connected accounts
-              </Link>
+              <div className="flex flex-wrap gap-2">
+                <Link
+                  href="/settings"
+                  className="inline-flex rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+                >
+                  Manage connected accounts
+                </Link>
+                {session.user.policy === "admin" ? (
+                  <Link
+                    href="/settings/admin/users"
+                    className="inline-flex rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+                  >
+                    Manage users
+                  </Link>
+                ) : null}
+              </div>
             </div>
           ) : (
             <div className="space-y-3">

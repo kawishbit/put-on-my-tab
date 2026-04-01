@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 
 import { ConnectedProvidersCard } from "@/components/auth/ConnectedProvidersCard";
 import { LogoutButton } from "@/components/auth/LogoutButton";
+import { PasswordManagementCard } from "@/components/auth/PasswordManagementCard";
 import { authOptions } from "@/lib/auth/options";
 
 export default async function SettingsPage(): Promise<React.JSX.Element> {
@@ -12,6 +13,8 @@ export default async function SettingsPage(): Promise<React.JSX.Element> {
   if (!session?.user?.id) {
     redirect("/login?callbackUrl=%2Fsettings");
   }
+
+  const isAdmin = session.user.policy === "admin";
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 py-6">
@@ -29,11 +32,25 @@ export default async function SettingsPage(): Promise<React.JSX.Element> {
         <ConnectedProvidersCard />
       </div>
 
+      <div className="mt-6">
+        <PasswordManagementCard />
+      </div>
+
       <p className="mt-6 text-sm">
         <Link href="/" className="text-slate-800 underline underline-offset-2">
           Back to home
         </Link>
       </p>
+      {isAdmin ? (
+        <p className="mt-2 text-sm">
+          <Link
+            href="/settings/admin/users"
+            className="text-slate-800 underline underline-offset-2"
+          >
+            Go to admin user management
+          </Link>
+        </p>
+      ) : null}
     </div>
   );
 }

@@ -3,13 +3,17 @@ import { z } from "zod";
 import { getRequestContext, requirePolicy } from "@/lib/api/auth";
 import { toErrorResponse } from "@/lib/api/errors";
 import { ok } from "@/lib/api/http";
-import { parseJson } from "@/lib/api/validation";
+import {
+  emailSchema,
+  parseJson,
+  strongPasswordSchema,
+} from "@/lib/api/validation";
 import { createUser, listUsers } from "@/lib/services/usersService";
 
 const createUserSchema = z.object({
   name: z.string().trim().min(1),
-  email: z.email(),
-  password: z.string().min(8),
+  email: emailSchema,
+  password: strongPasswordSchema,
   avatar: z.url().nullable().optional(),
   remarks: z.string().trim().max(1000).nullable().optional(),
   policy: z.enum(["user", "mod", "admin"]).default("user"),

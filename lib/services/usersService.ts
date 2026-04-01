@@ -1,10 +1,12 @@
-import { hash } from "bcryptjs";
+import { compare, hash } from "bcryptjs";
 import { ApiError } from "@/lib/api/errors";
+import { ensureCredentialsProviderForUser } from "@/lib/services/userLoginProvidersService";
 import { supabase } from "@/lib/supabaseServer";
 import type { PublicUser, UserInsert, UserUpdate } from "@/types/database";
 
 const USER_PUBLIC_COLUMNS =
   "user_id,name,email,avatar,current_balance,last_login_date,created_at,updated_at,is_deleted,remarks,policy";
+const PASSWORD_SALT_ROUNDS = 12;
 
 export async function listUsers(): Promise<PublicUser[]> {
   const { data, error } = await supabase
@@ -21,7 +23,7 @@ export async function listUsers(): Promise<PublicUser[]> {
 }
 
 export async function createUser(input: UserInsert): Promise<PublicUser> {
-  const hashedPassword = await hash(input.password, 12);
+  const hashedPassword = await hash(input.password, PASSWORD_SALT_ROUNDS);
 
   const { data, error } = await supabase
     .from("users")
@@ -48,7 +50,7 @@ export async function updateUser(
   if (input.password) {
     updatePayload = {
       ...input,
-      password: await hash(input.password, 12),
+      password: await hash(input.password, PASSWORD_SALT_ROUNDS),
     };
   }
 
@@ -65,4 +67,118 @@ export async function updateUser(
   }
 
   return data as PublicUser;
+}
+
+export async function deleteUser(userId: string): Promise<void> {
+  const { error } = await supabase
+    .from("users")
+    .update({ is_deleted: true } as never)
+    .eq("user_id", userId)
+    .eq("is_deleted", false);
+
+  if (error) {
+    throw new ApiError(500, "user_delete_failed", error.message, error);
+  }
+}
+
+type UserPasswordRow = {
+  user_id: string;
+  password: string;
+  is_deleted: boolean;
+};
+
+async function getActiveUserPasswordRow(
+  userId: string,
+): Promise<UserPasswordRow> {
+  const { data, error } = await supabase
+    .from("users")
+    .select("user_id,password,is_deleted")
+    .eq("user_id", userId)
+    .eq("is_deleted", false)
+    .maybeSingle();
+
+  if (error) {
+    throw new ApiError(
+      500,
+      "user_password_lookup_failed",
+      error.message,
+      error,
+    );
+  }
+
+  if (!data) {
+    throw new ApiError(404, "user_not_found", "User was not found");
+  }
+
+  return data as UserPasswordRow;
+}
+
+export async function changeOwnPassword(
+  userId: string,
+  currentPassword: string,
+  nextPassword: string,
+): Promise<void> {
+  const userRow = await getActiveUserPasswordRow(userId);
+  const isCurrentPasswordValid = await compare(
+    currentPassword,
+    userRow.password,
+  );
+
+  if (!isCurrentPasswordValid) {
+    throw new ApiError(
+      400,
+      "invalid_current_password",
+      "Current password is incorrect",
+    );
+  }
+
+  const isPasswordReused = await compare(nextPassword, userRow.password);
+
+  if (isPasswordReused) {
+    throw new ApiError(
+      400,
+      "password_reuse_blocked",
+      "New password must be different from your current password",
+    );
+  }
+
+  const hashedPassword = await hash(nextPassword, PASSWORD_SALT_ROUNDS);
+
+  const { error } = await supabase
+    .from("users")
+    .update({ password: hashedPassword } as never)
+    .eq("user_id", userId)
+    .eq("is_deleted", false);
+
+  if (error) {
+    throw new ApiError(
+      500,
+      "user_password_update_failed",
+      error.message,
+      error,
+    );
+  }
+
+  await ensureCredentialsProviderForUser(userId);
+}
+
+export async function resetUserPassword(
+  userId: string,
+  nextPassword: string,
+): Promise<void> {
+  await getActiveUserPasswordRow(userId);
+
+  const hashedPassword = await hash(nextPassword, PASSWORD_SALT_ROUNDS);
+
+  const { error } = await supabase
+    .from("users")
+    .update({ password: hashedPassword } as never)
+    .eq("user_id", userId)
+    .eq("is_deleted", false);
+
+  if (error) {
+    throw new ApiError(500, "user_password_reset_failed", error.message, error);
+  }
+
+  await ensureCredentialsProviderForUser(userId);
 }
