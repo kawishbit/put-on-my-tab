@@ -15,7 +15,7 @@ type NavItem = {
 };
 
 const NAV_ITEMS: NavItem[] = [
-  { href: "/dashboard", label: "Overview", requireAuth: true },
+  { href: "/dashboard", label: "Dashboard", requireAuth: true },
   { href: "/transactions", label: "Transactions", requireAuth: true },
   { href: "/transactions/mine", label: "My Ledger", requireAuth: true },
   {
@@ -25,12 +25,6 @@ const NAV_ITEMS: NavItem[] = [
     allowedPolicies: ["mod", "admin"],
   },
   { href: "/settings", label: "Settings", requireAuth: true },
-  {
-    href: "/admin/dashboard",
-    label: "Admin Dashboard",
-    requireAuth: true,
-    allowedPolicies: ["admin"],
-  },
   {
     href: "/settings/admin/users",
     label: "Users",

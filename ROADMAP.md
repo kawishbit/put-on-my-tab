@@ -239,15 +239,21 @@ Implementation note (Apr 1, 2026):
 - Added reusable server-side analytics aggregation service (`lib/services/adminDashboardService.ts`) and admin dashboard navigation links.
 
 ### 5.2 User Dashboard (`/dashboard`)
-- [ ] User balance display (prominent)
-- [ ] Monthly expenditure (personal)
-- [ ] Last 10 user transactions
-- [ ] Donut chart:
-  - [ ] User's transactions by category
-  - [ ] Visual breakdown of spending
-- [ ] Quick action buttons:
-  - [ ] Create new transaction
-  - [ ] View all user transactions
+- [x] User balance display (prominent)
+- [x] Monthly expenditure (personal)
+- [x] Last 10 user transactions
+- [x] Donut chart:
+  - [x] User's transactions by category
+  - [x] Visual breakdown of spending
+- [x] Quick action buttons:
+  - [x] Create new transaction
+  - [x] View all user transactions
+
+Implementation note (Apr 1, 2026):
+- Unified user and admin dashboard experiences into `/dashboard` so all users see personal dashboard data on the same page, while admin-only cards/sections are policy-protected and rendered only for `admin`.
+- Updated dashboard header/labeling from "Overview" to "Dashboard" and kept the signed-in identity card in the main dashboard surface.
+- Added user-focused analytics (prominent balance, personal monthly expenditure, last 10 personal transactions, and personal category donut chart) plus quick actions for creating/viewing transactions.
+- Kept `/admin/dashboard` as a compatibility route that redirects to `/dashboard` after auth checks.
 
 ---
 

@@ -18,6 +18,16 @@ interface DepositTransactionRow {
   created_at: string;
 }
 
+interface UserTransactionRow {
+  transaction_id: string;
+  name: string;
+  amount: number;
+  status: "pending" | "completed" | "cancelled";
+  category: string | null;
+  type: "deposit" | "withdraw";
+  created_at: string;
+}
+
 interface CategoryRow {
   transaction_category_id: string;
   label: string;
@@ -69,6 +79,26 @@ export interface FrequentCategoryItem {
   categoryId: string;
   label: string;
   count: number;
+}
+
+export interface UserDashboardSummary {
+  currentBalance: number;
+}
+
+export interface UserRecentTransactionItem {
+  transactionId: string;
+  name: string;
+  amount: number;
+  status: "pending" | "completed" | "cancelled";
+  categoryLabel: string;
+  createdAt: string;
+}
+
+export interface UserDashboardData {
+  summary: UserDashboardSummary;
+  monthlyExpenditure: MonthlyExpenditurePoint[];
+  recentTransactions: UserRecentTransactionItem[];
+  categoryBreakdown: CategoryBreakdownItem[];
 }
 
 export interface AdminDashboardData {
@@ -354,5 +384,145 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
     categoryBreakdown,
     topSpenders,
     frequentCategories,
+  };
+}
+
+export async function getUserDashboardData(
+  userId: string,
+): Promise<UserDashboardData> {
+  const [userResult, transactionsResult, categoriesResult] = await Promise.all([
+    supabase
+      .from("users")
+      .select("current_balance")
+      .eq("user_id", userId)
+      .eq("is_deleted", false)
+      .maybeSingle(),
+    supabase
+      .from("transactions")
+      .select("transaction_id,name,amount,status,category,type,created_at")
+      .eq("is_deleted", false)
+      .eq("paid_by", userId)
+      .eq("type", "withdraw")
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("transaction_categories")
+      .select("transaction_category_id,label")
+      .eq("is_deleted", false),
+  ]);
+
+  if (userResult.error) {
+    throw new ApiError(
+      500,
+      "dashboard_user_fetch_failed",
+      userResult.error.message,
+      userResult.error,
+    );
+  }
+
+  if (!userResult.data) {
+    throw new ApiError(404, "user_not_found", "User was not found");
+  }
+
+  if (transactionsResult.error) {
+    throw new ApiError(
+      500,
+      "dashboard_user_transactions_fetch_failed",
+      transactionsResult.error.message,
+      transactionsResult.error,
+    );
+  }
+
+  if (categoriesResult.error) {
+    throw new ApiError(
+      500,
+      "dashboard_categories_fetch_failed",
+      categoriesResult.error.message,
+      categoriesResult.error,
+    );
+  }
+
+  const transactions = (transactionsResult.data ?? []) as UserTransactionRow[];
+  const categories = (categoriesResult.data ?? []) as CategoryRow[];
+
+  const categoriesById = new Map(
+    categories.map((category) => [category.transaction_category_id, category]),
+  );
+
+  const completedTransactions = transactions.filter(
+    (transaction) => transaction.status === "completed",
+  );
+
+  const monthlyTotals = new Map<string, number>();
+
+  for (const transaction of completedTransactions) {
+    const monthKey = formatMonthKey(new Date(transaction.created_at));
+    monthlyTotals.set(
+      monthKey,
+      (monthlyTotals.get(monthKey) ?? 0) + Number(transaction.amount),
+    );
+  }
+
+  const monthlyExpenditure: MonthlyExpenditurePoint[] = Array.from(
+    monthlyTotals.entries(),
+  )
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([monthKey, amount]) => ({
+      monthKey,
+      monthLabel: getMonthLabel(monthKey),
+      amount,
+    }));
+
+  const recentTransactions: UserRecentTransactionItem[] = transactions
+    .slice(0, 10)
+    .map((transaction) => ({
+      transactionId: transaction.transaction_id,
+      name: transaction.name,
+      amount: Number(transaction.amount),
+      status: transaction.status,
+      categoryLabel: transaction.category
+        ? (categoriesById.get(transaction.category)?.label ??
+          "Unknown category")
+        : "Uncategorized",
+      createdAt: transaction.created_at,
+    }));
+
+  const categoryTotals = new Map<string, number>();
+
+  for (const transaction of completedTransactions) {
+    const key = transaction.category ?? "uncategorized";
+    categoryTotals.set(
+      key,
+      (categoryTotals.get(key) ?? 0) + Number(transaction.amount),
+    );
+  }
+
+  const totalCategoryAmount = Array.from(categoryTotals.values()).reduce(
+    (sum, value) => sum + value,
+    0,
+  );
+
+  const categoryBreakdown: CategoryBreakdownItem[] = Array.from(
+    categoryTotals.entries(),
+  )
+    .map(([categoryId, amount]) => ({
+      categoryId,
+      label:
+        categoryId === "uncategorized"
+          ? "Uncategorized"
+          : (categoriesById.get(categoryId)?.label ?? "Unknown category"),
+      amount,
+      percentage:
+        totalCategoryAmount > 0 ? (amount / totalCategoryAmount) * 100 : 0,
+    }))
+    .sort((left, right) => right.amount - left.amount)
+    .slice(0, 6);
+
+  return {
+    summary: {
+      currentBalance: Number(userResult.data.current_balance ?? 0),
+    },
+    monthlyExpenditure,
+    recentTransactions,
+    categoryBreakdown,
   };
 }
