@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { ApiError } from "@/lib/api/errors";
 import { supabase } from "@/lib/supabaseServer";
 import type {
@@ -5,11 +6,6 @@ import type {
   TransactionStatus,
   TransactionType,
 } from "@/types/database";
-
-interface SplitTransactionRpcResult {
-  group_key: string;
-  transaction_ids: string[];
-}
 
 type UserLookupRow = {
   user_id: string;
@@ -25,9 +21,11 @@ type CategoryLookupRow = {
 export interface CreateSplitTransactionInput {
   name: string;
   transactionRemark?: string | null;
+  transactionDate?: string;
   paidBy: string;
   amount: number;
   partiesInvolved: string[];
+  partySplits?: Record<string, number>;
   category?: string | null;
   status?: TransactionStatus;
 }
@@ -101,10 +99,106 @@ interface GroupIdentity {
   groupKey: string;
 }
 
+interface PartySplitRow {
+  userId: string;
+  amount: number;
+}
+
 type GroupIdentityRow = {
   transaction_id: string;
   group_key: string;
 };
+
+function buildPartySplits(
+  paidBy: string,
+  partiesInvolved: string[],
+  amount: number,
+  partySplits?: Record<string, number>,
+): PartySplitRow[] {
+  const participants = Array.from(
+    new Set([...partiesInvolved, paidBy].filter(Boolean)),
+  );
+
+  if (participants.length === 0) {
+    throw new ApiError(
+      422,
+      "invalid_transaction_parties",
+      "At least one party must be included",
+    );
+  }
+
+  if (partySplits) {
+    const splitEntries = Object.entries(partySplits);
+
+    if (splitEntries.length !== participants.length) {
+      throw new ApiError(
+        422,
+        "invalid_party_splits",
+        "partySplits must include every involved participant exactly once",
+      );
+    }
+
+    const participantSet = new Set(participants);
+    let splitTotal = 0;
+
+    for (const [userId, splitAmount] of splitEntries) {
+      if (!participantSet.has(userId)) {
+        throw new ApiError(
+          422,
+          "invalid_party_splits",
+          "partySplits contains users not present in the split",
+        );
+      }
+
+      if (!Number.isFinite(splitAmount) || splitAmount <= 0) {
+        throw new ApiError(
+          422,
+          "invalid_party_splits",
+          "Each party split amount must be a positive number",
+        );
+      }
+
+      splitTotal += splitAmount;
+    }
+
+    if (Math.round(splitTotal * 100) !== Math.round(amount * 100)) {
+      throw new ApiError(
+        422,
+        "invalid_party_splits",
+        "Sum of partySplits must equal transaction amount",
+      );
+    }
+
+    return participants.map((userId) => ({
+      userId,
+      amount: Number((partySplits[userId] ?? 0).toFixed(2)),
+    }));
+  }
+
+  const partyCount = participants.length;
+  const baseShare = Number((amount / partyCount).toFixed(2));
+  let allocated = 0;
+
+  return participants.map((userId, index) => {
+    const share =
+      index < partyCount - 1
+        ? baseShare
+        : Number((amount - allocated).toFixed(2));
+
+    allocated += share;
+    return { userId, amount: share };
+  });
+}
+
+async function recomputeUserBalances(actorUserId: string): Promise<void> {
+  const { error } = await supabase.rpc("recompute_user_balances", {
+    p_actor_user_id: actorUserId,
+  } as never);
+
+  if (error) {
+    throw new ApiError(500, "balance_recompute_failed", error.message, error);
+  }
+}
 
 async function getGroupIdentityByTransactionId(
   transactionId: string,
@@ -341,43 +435,92 @@ export async function createSplitTransaction(
   input: CreateSplitTransactionInput,
   actorUserId: string,
 ): Promise<SplitTransactionCreationResult> {
-  const { data: rpcResult, error: rpcError } = await supabase.rpc(
-    "create_split_transaction",
-    {
-      p_name: input.name,
-      p_transaction_remark: input.transactionRemark ?? null,
-      p_paid_by: input.paidBy,
-      p_amount: input.amount,
-      p_parties: input.partiesInvolved,
-      p_category: input.category ?? null,
-      p_status: input.status ?? "completed",
-      p_actor_user_id: actorUserId,
-    } as never,
+  const groupKey = randomUUID();
+  const transactionDate =
+    input.transactionDate ?? new Date().toISOString().slice(0, 10);
+  const partySplits = buildPartySplits(
+    input.paidBy,
+    input.partiesInvolved,
+    input.amount,
+    input.partySplits,
   );
 
-  if (rpcError) {
+  const { data: depositRows, error: depositError } = await supabase
+    .from("transactions")
+    .insert({
+      name: input.name,
+      transaction_remark: input.transactionRemark ?? null,
+      transaction_date: transactionDate,
+      paid_by: input.paidBy,
+      amount: input.amount,
+      type: "deposit",
+      status: input.status ?? "completed",
+      group_key: groupKey,
+      category: input.category ?? null,
+      is_deleted: false,
+      remarks: null,
+      created_by: actorUserId,
+      updated_by: actorUserId,
+    } as never)
+    .select("transaction_id")
+    .single();
+
+  if (depositError || !depositRows) {
     throw new ApiError(
       500,
       "transaction_create_failed",
-      rpcError.message,
-      rpcError,
+      depositError?.message ?? "Failed to insert deposit transaction",
+      depositError,
     );
   }
 
-  const splitResult = rpcResult?.[0] as SplitTransactionRpcResult | undefined;
+  const depositRow = depositRows as { transaction_id: string };
 
-  if (!splitResult) {
+  const withdrawPayload = partySplits.map((split) => ({
+    name: input.name,
+    transaction_remark: input.transactionRemark ?? null,
+    transaction_date: transactionDate,
+    paid_by: split.userId,
+    amount: split.amount,
+    type: "withdraw" as const,
+    status: input.status ?? "completed",
+    group_key: groupKey,
+    category: input.category ?? null,
+    is_deleted: false,
+    remarks: null,
+    created_by: actorUserId,
+    updated_by: actorUserId,
+  }));
+
+  const { data: withdrawRows, error: withdrawError } = await supabase
+    .from("transactions")
+    .insert(withdrawPayload as never)
+    .select("transaction_id");
+
+  if (withdrawError) {
     throw new ApiError(
       500,
       "transaction_create_failed",
-      "Split transaction RPC returned no rows",
+      withdrawError.message,
+      withdrawError,
     );
   }
+
+  const withdrawTransactionRows = (withdrawRows ?? []) as {
+    transaction_id: string;
+  }[];
+
+  await recomputeUserBalances(actorUserId);
+
+  const transactionIds = [
+    depositRow.transaction_id,
+    ...withdrawTransactionRows.map((row) => row.transaction_id),
+  ];
 
   const { data: transactions, error: selectError } = await supabase
     .from("transactions")
     .select("*")
-    .eq("group_key", splitResult.group_key)
+    .eq("group_key", groupKey)
     .eq("is_deleted", false)
     .order("created_at", { ascending: true });
 
@@ -391,8 +534,8 @@ export async function createSplitTransaction(
   }
 
   return {
-    groupKey: splitResult.group_key,
-    transactionIds: splitResult.transaction_ids,
+    groupKey,
+    transactionIds,
     transactions,
   };
 }
@@ -448,45 +591,104 @@ export async function updateSplitTransaction(
   input: UpdateSplitTransactionInput,
   actorUserId: string,
 ): Promise<SplitTransactionCreationResult> {
-  const { data: rpcResult, error: rpcError } = await supabase.rpc(
-    "update_split_transaction",
-    {
-      p_transaction_id: transactionId,
-      p_name: input.name,
-      p_transaction_remark: input.transactionRemark ?? null,
-      p_paid_by: input.paidBy,
-      p_amount: input.amount,
-      p_parties: input.partiesInvolved,
-      p_category: input.category ?? null,
-      p_status: input.status,
-      p_actor_user_id: actorUserId,
-    } as never,
+  const identity = await getGroupIdentityByTransactionId(transactionId);
+  const groupKey = identity.groupKey;
+
+  const { error: markDeletedError } = await supabase
+    .from("transactions")
+    .update({ is_deleted: true, updated_by: actorUserId } as never)
+    .eq("group_key", groupKey)
+    .eq("is_deleted", false);
+
+  if (markDeletedError) {
+    throw new ApiError(
+      500,
+      "transaction_update_failed",
+      markDeletedError.message,
+      markDeletedError,
+    );
+  }
+
+  const partySplits = buildPartySplits(
+    input.paidBy,
+    input.partiesInvolved,
+    input.amount,
   );
 
-  if (rpcError) {
+  const { data: depositRows, error: depositError } = await supabase
+    .from("transactions")
+    .insert({
+      name: input.name,
+      transaction_remark: input.transactionRemark ?? null,
+      paid_by: input.paidBy,
+      amount: input.amount,
+      type: "deposit",
+      status: input.status,
+      group_key: groupKey,
+      category: input.category ?? null,
+      is_deleted: false,
+      remarks: null,
+      created_by: actorUserId,
+      updated_by: actorUserId,
+    } as never)
+    .select("transaction_id")
+    .single();
+
+  if (depositError || !depositRows) {
     throw new ApiError(
       500,
       "transaction_update_failed",
-      rpcError.message,
-      rpcError,
+      depositError?.message ?? "Failed to insert deposit transaction",
+      depositError,
     );
   }
 
-  const splitResult = rpcResult?.[0] as SplitTransactionRpcResult | undefined;
+  const depositRow = depositRows as { transaction_id: string };
 
-  if (!splitResult) {
+  const withdrawPayload = partySplits.map((split) => ({
+    name: input.name,
+    transaction_remark: input.transactionRemark ?? null,
+    paid_by: split.userId,
+    amount: split.amount,
+    type: "withdraw" as const,
+    status: input.status,
+    group_key: groupKey,
+    category: input.category ?? null,
+    is_deleted: false,
+    remarks: null,
+    created_by: actorUserId,
+    updated_by: actorUserId,
+  }));
+
+  const { data: withdrawRows, error: withdrawError } = await supabase
+    .from("transactions")
+    .insert(withdrawPayload as never)
+    .select("transaction_id");
+
+  if (withdrawError) {
     throw new ApiError(
       500,
       "transaction_update_failed",
-      "Split transaction update RPC returned no rows",
+      withdrawError.message,
+      withdrawError,
     );
   }
 
-  const transactions = await getTransactionsByGroupKey(splitResult.group_key);
+  const withdrawTransactionRows = (withdrawRows ?? []) as {
+    transaction_id: string;
+  }[];
+
+  await recomputeUserBalances(actorUserId);
+
+  const transactions = await getTransactionsByGroupKey(groupKey);
+  const transactionIds = [
+    depositRow.transaction_id,
+    ...withdrawTransactionRows.map((row) => row.transaction_id),
+  ];
 
   return {
-    groupKey: splitResult.group_key,
-    transactionIds: splitResult.transaction_ids,
+    groupKey,
+    transactionIds,
     transactions,
   };
 }

@@ -1,0 +1,569 @@
+[
+  {
+    "name": "CGV theatre tickets (The Exit 8)",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-14",
+    "amount": "110000",
+    "paidBy": "Reyn",
+    "category": "Entertainment",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "CGV popcorns",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-14",
+    "amount": "127000",
+    "paidBy": "Reyn",
+    "category": "Food",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Ta Wan lunch (Rey,Kawish){Rey} Rp232.100,00 =O7+N8",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-14",
+    "amount": "232100",
+    "paidBy": "Reyn",
+    "category": "Food",
+    "partiesInvolved": ["Kawish"],
+    "party_splits": {
+      "Reyn": 101750,
+      "Kawish": 130350
+    }
+  },
+  {
+    "name": "Grab to PVJ",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-14",
+    "amount": "16000",
+    "paidBy": "Reyn",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-14",
+    "amount": "27000",
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Reyn"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-15",
+    "amount": "11000",
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Reyn", "Bayu", "Yudi"]
+  },
+  {
+    "name": "22/09/2025 Payment - Grab to BDO (Kawish,Bayu,Yudi,Rey){Kawish} =-1*ROUND(11000/4;2) =O14+N15",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "22/09/2025 Payment - Grab to GAA (Kawish,Yudi,Rey){Yudi} =-1*ROUND(11000/3;2) =O15+N16",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "24/09/2025 Payment - Grab to BDO (Kawish,Yudi,Bayu,Rey,Idris){Yudi} =-1*ROUND(16000/5;2) =O16+N17",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ],
+    "party_splits": {
+      "11111111-1111-1111-1111-111111111111": 40.5,
+      "22222222-2222-2222-2222-222222222222": 40,
+      "33333333-3333-3333-3333-333333333333": 40
+    }
+  },
+  {
+    "name": "25/09/2025 Payment - Grab to BDO (Kawish,Rey,Yudi,Bayu){Kawish} =-1*ROUND(16000/4;2) =O17+N18",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "30/09/2025 Top Up - Grab to BDO (Kawish,Rey,Yudi){Rey} Rp16.000,00 =O18+N19",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "30/09/2025 Payment - Grab to BDO (Kawish,Rey,Yudi){Rey} =-1*ROUND(16000/3;2) =O19+N20",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "30/09/2025 Top Up - Grab to GAA (Kawish,Rey,Yudi){Rey} Rp17.000,00 =O20+N21",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "30/09/2025 Payment - Grab to GAA (Kawish,Rey,Yudi){Rey} =-1*ROUND(17000/3;2) =O21+N22",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "01/10/2025 Top up - Grab to GAA (Kawish,Yudi,Rey){Rey} Rp16.000,00 =O22+N23",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "01/10/2025 Payment - Grab to GAA (Kawish,Yudi,Rey){Rey} =-1*ROUND(16000/3;2) =O23+N24",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "02/10/2025 Payment - Grab to BDO (Kawish,Yudi,Rey,Bayu){Yudi} =-1*ROUND(16000/4;2) =O24+N25",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "02/10/2025 Payment - Grab to GAA (Kawish,Yudi,Rey,Bayu){Yudi} =-1*ROUND(16000/4;2) =O25+N26",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "03/10/2025 Top up - Grab to BDO (Kawish,Bayu,Rey){Rey} Rp16.000,00 =O26+N27",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "03/10/2025 Payment - Grab to BDO (Kawish,Bayu,Rey){Rey} =-1*ROUND(16000/3;2) =O27+N28",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "03/10/2025 Top up - Grab to GAA (Kawish,Bayu,Yudi,Rey){Rey} Rp16.000,00 =O28+N29",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "03/10/2025 Payment - Grab to GAA (Kawish,Bayu,Yudi,Rey){Rey} =-1*ROUND(16000/4;2) =O29+N30",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "06/10/2025 Top up - Grab to GAA (Kawish,Bayu,Yudi,Rey){Rey} Rp16.000,00 =O30+N31",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "06/10/2025 Payment - Grab to GAA (Kawish,Bayu,Yudi,Rey){Rey} =-1*ROUND(16000/4;2) =O31+N32",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "06/10/2025 Top up - Grab to BDO (Kawish,Yudi,Rey){Rey} Rp16.000,00 =O32+N33",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "06/10/2025 Payment - Grab to BDO (Kawish,Yudi,Rey){Rey} =-1*ROUND(16000/3;2) =O33+N34",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "08/10/2025 Top up - Grab to BDO (Kawish,Bayu,Rey){Rey} Rp16.000,00 =O34+N35",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "08/10/2025 Payment - Grab to BDO (Kawish,Bayu,Rey){Rey} =-1*ROUND(16000/3;2) =O35+N36",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "15/10/2025 Top up - Grab to GAA (Kawish,Rey){Rey} Rp16.000,00 =O36+N37",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "15/10/2025 Payment - Grab to GAA (Kawish,Rey){Rey} =-1*ROUND(16000/2;2) =O37+N38",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "21/10/2025 Top up - Grab to BDO (Kawish,Rey){Rey} Rp16.000,00 =O38+N39",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "21/10/2025 Payment - Grab to BDO (Kawish,Rey){Rey} =-1*ROUND(16000/2;2) =O39+N40",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "21/10/2025 Top up - Grab to GAA (Kawish,Rey){Rey} Rp16.000,00 =O40+N41",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "21/10/2025 Payment - Grab to GAA (Kawish,Rey){Rey} =-1*ROUND(16000/2;2) =O41+N42",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "22/10/2025 Top up - Grab to BDO (Kawish,Yudi,Rey){Rey} Rp11.000,00 =O42+N43",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "22/10/2025 Payment - Grab to BDO (Kawish,Yudi,Rey){Rey} =-1*ROUND(11000/3;2) =O43+N44",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "27/10/2025 Top up - Grab to BDO (Kawish,Yudi,Rey){Rey} Rp11.000,00 =O44+N45",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "27/10/2025 Payment - Grab to BDO (Kawish,Yudi,Rey){Rey} =-1*ROUND(11000/3;2) =O45+N46",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "27/10/2025 Top up - Grab to GAA (Kawish,Rey){Rey} Rp24.000,00 =O46+N47",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "27/10/2025 Payment - Grab to GAA (Kawish,Rey){Rey} =-1*ROUND(24000/2;2) =O47+N48",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "28/10/2025 Top up - Grab to BDO (Kawish,Rey){Rey} Rp11.000,00 =O48+N49",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "28/10/2025 Payment - Grab to BDO (Kawish,Rey){Rey} =-1*ROUND(11000/2;2) =O49+N50",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "29/10/2025 Payment - Grab to BDO (Kawish,Bayu,Reynaldi){Kawish} =-1*ROUND(11000/3;2) =O50+N51",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "29/10/2025 Top up - Grab to GAA (Kawish,Rey,Bayu,Yudi){Rey} Rp11.000,00 =O51+N52",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "29/10/2025 Payment - Grab to GAA (Kawish,Rey,Bayu,Yudi){Rey} =-1*ROUND(11000/4;2) =O52+N53",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "30/10/2025 Top up - Grab to GAA (Kawish,Rey,Yudi){Rey} Rp11.000,00 =O53+N54",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "30/10/2025 Payment - Grab to GAA (Kawish,Rey,Yudi){Rey} =-1*ROUND(11000/3;2) =O54+N55",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  },
+  {
+    "name": "31/10/2025 Payment - Grab to BDO (Kawish,Rey){Kawish} =-1*ROUND(11000/2;2) =O55+N56",
+    "transactionRemark": "Team meal",
+    "transaction_date": "2026-04-04",
+    "amount": "120.50",
+    "paidBy": "11111111-1111-1111-1111-111111111111",
+    "category": "",
+    "partiesInvolved": [
+      "22222222-2222-2222-2222-222222222222",
+      "33333333-3333-3333-3333-333333333333"
+    ]
+  }
+]

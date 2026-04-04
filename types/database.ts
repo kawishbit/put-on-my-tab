@@ -119,6 +119,7 @@ export interface Transaction {
   transaction_id: string;
   name: string;
   transaction_remark: string | null;
+  transaction_date: string;
   paid_by: string;
   amount: number;
   type: TransactionType;
@@ -178,39 +179,6 @@ export interface Database {
     };
     Views: Record<never, never>;
     Functions: {
-      create_split_transaction: {
-        Args: {
-          p_name: string;
-          p_transaction_remark: string | null;
-          p_paid_by: string;
-          p_amount: number;
-          p_parties: string[];
-          p_category: string | null;
-          p_status: TransactionStatus;
-          p_actor_user_id: string | null;
-        };
-        Returns: {
-          group_key: string;
-          transaction_ids: string[];
-        }[];
-      };
-      update_split_transaction: {
-        Args: {
-          p_transaction_id: string;
-          p_name: string;
-          p_transaction_remark: string | null;
-          p_paid_by: string;
-          p_amount: number;
-          p_parties: string[];
-          p_category: string | null;
-          p_status: TransactionStatus;
-          p_actor_user_id: string | null;
-        };
-        Returns: {
-          group_key: string;
-          transaction_ids: string[];
-        }[];
-      };
       soft_delete_transaction_group: {
         Args: {
           p_transaction_id: string;
