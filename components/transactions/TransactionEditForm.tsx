@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import Select, { type MultiValue } from "react-select";
 import { toast } from "sonner";
 
 import { FormPageTemplate } from "@/components/layout/PageTemplates";
+import { Button } from "@/components/ui/button";
 import type {
   PublicUser,
   TransactionCategory,
@@ -43,6 +45,11 @@ type FormState = {
   category: string;
   status: TransactionStatus;
   partiesInvolved: string[];
+};
+
+type PartyOption = {
+  value: string;
+  label: string;
 };
 
 function getApiErrorMessage(payload: unknown, fallback: string): string {
@@ -177,6 +184,25 @@ export function TransactionEditForm({
     );
   }, [form]);
 
+  const partyOptions = useMemo<PartyOption[]>(
+    () =>
+      users.map((user) => ({
+        value: user.user_id,
+        label: `${user.name} (${user.email})`,
+      })),
+    [users],
+  );
+
+  const selectedPartyOptions = useMemo(() => {
+    if (!form) {
+      return [];
+    }
+
+    return partyOptions.filter((option) =>
+      form.partiesInvolved.includes(option.value),
+    );
+  }, [form, partyOptions]);
+
   async function onSubmit(
     event: React.FormEvent<HTMLFormElement>,
   ): Promise<void> {
@@ -257,7 +283,7 @@ export function TransactionEditForm({
         </p>
       ) : (
         <form onSubmit={onSubmit} className="app-surface mt-6 space-y-4">
-          <label className="block text-sm text-slate-700">
+          <label className="block text-sm text-slate-700 dark:text-slate-300">
             <span className="mb-1 block font-medium">Transaction name</span>
             <input
               type="text"
@@ -279,7 +305,7 @@ export function TransactionEditForm({
             />
           </label>
 
-          <label className="block text-sm text-slate-700">
+          <label className="block text-sm text-slate-700 dark:text-slate-300">
             <span className="mb-1 block font-medium">Amount</span>
             <input
               type="number"
@@ -302,7 +328,7 @@ export function TransactionEditForm({
             />
           </label>
 
-          <label className="block text-sm text-slate-700">
+          <label className="block text-sm text-slate-700 dark:text-slate-300">
             <span className="mb-1 block font-medium">Status</span>
             <select
               value={form.status}
@@ -325,7 +351,7 @@ export function TransactionEditForm({
             </select>
           </label>
 
-          <label className="block text-sm text-slate-700">
+          <label className="block text-sm text-slate-700 dark:text-slate-300">
             <span className="mb-1 block font-medium">Paid by</span>
             <select
               value={form.paidBy}
@@ -351,7 +377,7 @@ export function TransactionEditForm({
             </select>
           </label>
 
-          <label className="block text-sm text-slate-700">
+          <label className="block text-sm text-slate-700 dark:text-slate-300">
             <span className="mb-1 block font-medium">Category</span>
             <select
               value={form.category}
@@ -380,7 +406,7 @@ export function TransactionEditForm({
             </select>
           </label>
 
-          <label className="block text-sm text-slate-700">
+          <label className="block text-sm text-slate-700 dark:text-slate-300">
             <span className="mb-1 block font-medium">Transaction remark</span>
             <textarea
               value={form.transactionRemark}
@@ -401,66 +427,57 @@ export function TransactionEditForm({
             />
           </label>
 
-          <fieldset className="block text-sm text-slate-700">
+          <fieldset className="block text-sm text-slate-700 dark:text-slate-300">
             <legend className="mb-1 block font-medium">Parties involved</legend>
-            <div className="max-h-52 space-y-2 overflow-y-auto rounded-xl border border-slate-200 bg-slate-50 p-3">
-              {users.length === 0 ? (
-                <p className="text-xs text-slate-500">No users available.</p>
-              ) : (
-                users.map((user) => {
-                  const isChecked = form.partiesInvolved.includes(user.user_id);
-
-                  return (
-                    <label
-                      key={user.user_id}
-                      className="flex items-center gap-2 text-sm text-slate-700"
-                    >
-                      <input
-                        type="checkbox"
-                        value={user.user_id}
-                        checked={isChecked}
-                        onChange={(event) =>
-                          setForm((previous) => {
-                            if (!previous) {
-                              return previous;
-                            }
-
-                            const nextParties = event.target.checked
-                              ? [...previous.partiesInvolved, user.user_id]
-                              : previous.partiesInvolved.filter(
-                                  (partyId) => partyId !== user.user_id,
-                                );
-
-                            return {
-                              ...previous,
-                              partiesInvolved: nextParties,
-                            };
-                          })
-                        }
-                        disabled={isSubmitting}
-                      />
-                      <span>{user.name}</span>
-                      <span className="text-xs text-slate-500">
-                        ({user.email})
-                      </span>
-                    </label>
-                  );
-                })
-              )}
-            </div>
-            <span className="mt-1 block text-xs text-slate-500">
+            <Select<PartyOption, true>
+              isMulti
+              isSearchable
+              closeMenuOnSelect={false}
+              isDisabled={isSubmitting}
+              options={partyOptions}
+              value={selectedPartyOptions}
+              placeholder="Select users involved..."
+              noOptionsMessage={() => "No users available"}
+              unstyled
+              classNames={{
+                control: (state) =>
+                  `mt-1 min-h-10 w-full rounded-xl border px-3 py-2 transition ${state.isFocused ? "border-slate-400 ring-4 ring-slate-100 dark:border-white/30 dark:ring-white/5" : "border-slate-200 dark:border-white/15"} bg-white text-slate-900 dark:bg-slate-800/80 dark:text-slate-100`,
+                valueContainer: () => "flex flex-wrap gap-1",
+                multiValue: () =>
+                  "rounded-md bg-slate-100 px-2 py-0.5 text-xs text-slate-700 dark:bg-slate-700 dark:text-slate-200",
+                multiValueRemove: () =>
+                  "ml-1 cursor-pointer text-slate-500 hover:text-slate-800 dark:text-slate-300 dark:hover:text-slate-100",
+                input: () => "text-sm text-slate-900 dark:text-slate-100",
+                placeholder: () => "text-sm text-slate-500 dark:text-slate-400",
+                indicatorsContainer: () => "text-slate-500 dark:text-slate-400",
+                clearIndicator: () => "cursor-pointer px-1",
+                dropdownIndicator: () => "cursor-pointer px-1",
+                menu: () =>
+                  "z-20 mt-2 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl dark:border-white/10 dark:bg-slate-800",
+                menuList: () => "max-h-56 overflow-auto p-1",
+                option: (state) =>
+                  `cursor-pointer rounded-md px-3 py-2 text-sm ${state.isFocused ? "bg-slate-100 dark:bg-slate-700/70" : ""} ${state.isSelected ? "bg-slate-200 dark:bg-slate-700" : ""} text-slate-700 dark:text-slate-200`,
+              }}
+              onChange={(value: MultiValue<PartyOption>) => {
+                setForm((previous) =>
+                  previous
+                    ? {
+                        ...previous,
+                        partiesInvolved: value.map((entry) => entry.value),
+                      }
+                    : previous,
+                );
+              }}
+            />
+            <span className="mt-1 block text-xs text-slate-500 dark:text-slate-400">
               Total involved in split (including payer):{" "}
               {involvedParties.length}
             </span>
           </fieldset>
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="app-button-primary"
-          >
+          <Button type="submit" disabled={isSubmitting}>
             Save transaction
-          </button>
+          </Button>
         </form>
       )}
 

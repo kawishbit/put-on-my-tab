@@ -34,6 +34,7 @@ export async function linkProviderToUser(
   userId: string,
   providerType: ProviderType,
   providerKey: string,
+  actorUserId: string,
 ): Promise<void> {
   const { data: existingByKey, error: existingByKeyError } = await supabase
     .from("user_login_providers")
@@ -70,7 +71,11 @@ export async function linkProviderToUser(
 
     const { error: updateError } = await supabase
       .from("user_login_providers")
-      .update({ user_id: userId, is_deleted: false } as never)
+      .update({
+        user_id: userId,
+        is_deleted: false,
+        updated_by: actorUserId,
+      } as never)
       .eq("user_login_provider_id", typedExistingByKey.user_login_provider_id);
 
     if (updateError) {
@@ -91,6 +96,8 @@ export async function linkProviderToUser(
       user_id: userId,
       provider_type: providerType,
       provider_key: providerKey,
+      created_by: actorUserId,
+      updated_by: actorUserId,
       is_deleted: false,
       remarks: null,
     } as never);
@@ -108,6 +115,7 @@ export async function linkProviderToUser(
 export async function disconnectProviderForUser(
   userId: string,
   providerType: Extract<ProviderType, "google" | "github">,
+  actorUserId: string,
 ): Promise<void> {
   const connectedProviders = await listConnectedProvidersForUser(userId);
   const isConnected = connectedProviders.includes(providerType);
@@ -130,7 +138,7 @@ export async function disconnectProviderForUser(
 
   const { error } = await supabase
     .from("user_login_providers")
-    .update({ is_deleted: true } as never)
+    .update({ is_deleted: true, updated_by: actorUserId } as never)
     .eq("user_id", userId)
     .eq("provider_type", providerType)
     .eq("is_deleted", false);
@@ -147,6 +155,7 @@ export async function disconnectProviderForUser(
 
 export async function ensureCredentialsProviderForUser(
   userId: string,
+  actorUserId: string,
 ): Promise<void> {
-  await linkProviderToUser(userId, "credentials", userId);
+  await linkProviderToUser(userId, "credentials", userId, actorUserId);
 }

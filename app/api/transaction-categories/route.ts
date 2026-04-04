@@ -33,11 +33,14 @@ export async function POST(request: Request): Promise<Response> {
 
     const payload = await parseJson(request, createTransactionCategorySchema);
 
-    const category = await createTransactionCategory({
-      label: payload.label,
-      is_deleted: false,
-      remarks: payload.remarks ?? null,
-    });
+    const category = await createTransactionCategory(
+      {
+        label: payload.label,
+        is_deleted: false,
+        remarks: payload.remarks ?? null,
+      },
+      context.userId,
+    );
 
     return ok(category, 201);
   } catch (error) {

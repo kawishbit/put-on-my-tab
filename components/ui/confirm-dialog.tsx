@@ -2,6 +2,8 @@
 
 import { AlertDialog } from "@base-ui/react/alert-dialog";
 
+import { Button } from "@/components/ui/button";
+
 type ConfirmDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -28,37 +30,31 @@ export function ConfirmDialog({
   return (
     <AlertDialog.Root open={open} onOpenChange={onOpenChange}>
       <AlertDialog.Portal>
-        <AlertDialog.Backdrop className="fixed inset-0 z-50 bg-slate-900/55 backdrop-blur-sm" />
+        <AlertDialog.Backdrop className="fixed inset-0 z-50 bg-slate-900/55 backdrop-blur-sm dark:bg-black/65" />
         <AlertDialog.Viewport className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <AlertDialog.Popup className="w-full max-w-md rounded-2xl border border-white/70 bg-white/95 p-5 shadow-2xl shadow-slate-900/20">
-            <AlertDialog.Title className="font-heading text-xl font-semibold text-slate-900">
+          <AlertDialog.Popup className="w-full max-w-md rounded-2xl border border-white/70 bg-white/95 p-5 shadow-2xl shadow-slate-900/20 dark:border-white/10 dark:bg-slate-800/95 dark:shadow-black/40">
+            <AlertDialog.Title className="font-heading text-xl font-semibold text-slate-900 dark:text-slate-100">
               {title}
             </AlertDialog.Title>
-            <AlertDialog.Description className="mt-2 text-sm text-slate-600">
+            <AlertDialog.Description className="mt-2 text-sm text-slate-600 dark:text-slate-400">
               {description}
             </AlertDialog.Description>
 
             <div className="mt-5 flex justify-end gap-2">
-              <button
-                type="button"
+              <Button
                 onClick={() => onOpenChange(false)}
                 disabled={isPending}
-                className="app-button-secondary"
+                variant="secondary"
               >
                 {cancelLabel}
-              </button>
-              <button
-                type="button"
+              </Button>
+              <Button
                 onClick={() => void onConfirm()}
                 disabled={isPending}
-                className={
-                  isDestructive
-                    ? "inline-flex items-center justify-center rounded-xl bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
-                    : "app-button-primary"
-                }
+                variant={isDestructive ? "danger" : "primary"}
               >
                 {isPending ? "Processing..." : confirmLabel}
-              </button>
+              </Button>
             </div>
           </AlertDialog.Popup>
         </AlertDialog.Viewport>

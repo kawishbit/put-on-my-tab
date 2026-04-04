@@ -42,7 +42,7 @@ export async function POST(
     const userId = parseUserId(rawUserId);
 
     const payload = await parseJson(request, resetPasswordSchema);
-    await resetUserPassword(userId, payload.newPassword);
+    await resetUserPassword(userId, payload.newPassword, requestContext.userId);
 
     return ok({ success: true });
   } catch (error) {

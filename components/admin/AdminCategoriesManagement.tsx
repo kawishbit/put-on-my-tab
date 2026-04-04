@@ -4,7 +4,16 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
+import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import {
+  SimpleTableBody,
+  SimpleTableCell,
+  SimpleTableHead,
+  SimpleTableHeader,
+  SimpleTableRoot,
+  SimpleTableRow,
+} from "@/components/ui/simple-table-core";
 import type { TransactionCategory } from "@/types/database";
 
 type ApiSuccess<TData> = {
@@ -254,11 +263,11 @@ export function AdminCategoriesManagement(): React.JSX.Element {
 
       <section className="grid gap-6 lg:grid-cols-2">
         <form onSubmit={onCreateCategory} className="app-surface space-y-4">
-          <h2 className="text-lg font-semibold text-slate-900">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
             Create category
           </h2>
 
-          <label className="block text-sm text-slate-700">
+          <label className="block text-sm text-slate-700 dark:text-slate-300">
             <span className="mb-1 block font-medium">Label</span>
             <input
               type="text"
@@ -276,7 +285,7 @@ export function AdminCategoriesManagement(): React.JSX.Element {
             />
           </label>
 
-          <label className="block text-sm text-slate-700">
+          <label className="block text-sm text-slate-700 dark:text-slate-300">
             <span className="mb-1 block font-medium">Remarks</span>
             <textarea
               value={createForm.remarks}
@@ -293,23 +302,19 @@ export function AdminCategoriesManagement(): React.JSX.Element {
             />
           </label>
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="app-button-primary"
-          >
+          <Button type="submit" disabled={isSubmitting}>
             Create category
-          </button>
+          </Button>
         </form>
 
         <form onSubmit={onUpdateCategory} className="app-surface space-y-4">
-          <h2 className="text-lg font-semibold text-slate-900">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
             Edit category
           </h2>
 
           {editForm ? (
             <>
-              <label className="block text-sm text-slate-700">
+              <label className="block text-sm text-slate-700 dark:text-slate-300">
                 <span className="mb-1 block font-medium">Label</span>
                 <input
                   type="text"
@@ -331,7 +336,7 @@ export function AdminCategoriesManagement(): React.JSX.Element {
                 />
               </label>
 
-              <label className="block text-sm text-slate-700">
+              <label className="block text-sm text-slate-700 dark:text-slate-300">
                 <span className="mb-1 block font-medium">Remarks</span>
                 <textarea
                   value={editForm.remarks}
@@ -352,13 +357,9 @@ export function AdminCategoriesManagement(): React.JSX.Element {
                 />
               </label>
 
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="app-button-primary"
-              >
+              <Button type="submit" disabled={isSubmitting}>
                 Save changes
-              </button>
+              </Button>
             </>
           ) : (
             <p className="text-sm text-slate-600">
@@ -369,60 +370,64 @@ export function AdminCategoriesManagement(): React.JSX.Element {
       </section>
 
       <section className="app-surface">
-        <h2 className="text-lg font-semibold text-slate-900">All categories</h2>
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+          All categories
+        </h2>
 
         {isLoading ? (
           <p className="mt-3 text-sm text-slate-600">Loading categories...</p>
         ) : categories.length === 0 ? (
           <p className="mt-3 text-sm text-slate-600">No categories found.</p>
         ) : (
-          <div className="mt-4 overflow-x-auto">
-            <table className="min-w-full divide-y divide-slate-200 text-sm">
-              <thead>
-                <tr className="bg-slate-100/80 text-left text-slate-600">
-                  <th className="px-3 py-2 font-medium">Label</th>
-                  <th className="px-3 py-2 font-medium">Remarks</th>
-                  <th className="px-3 py-2 font-medium">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
+          <SimpleTableRoot className="mt-4 overflow-x-auto">
+            <table className="min-w-full text-sm">
+              <SimpleTableHeader>
+                <SimpleTableRow>
+                  <SimpleTableHead>Label</SimpleTableHead>
+                  <SimpleTableHead>Remarks</SimpleTableHead>
+                  <SimpleTableHead>Actions</SimpleTableHead>
+                </SimpleTableRow>
+              </SimpleTableHeader>
+              <SimpleTableBody>
                 {categories.map((category) => (
-                  <tr key={category.transaction_category_id}>
-                    <td className="px-3 py-2 text-slate-900">
+                  <SimpleTableRow key={category.transaction_category_id}>
+                    <SimpleTableCell className="text-slate-900 dark:text-slate-100">
                       {category.label}
-                    </td>
-                    <td className="px-3 py-2 text-slate-700">
+                    </SimpleTableCell>
+                    <SimpleTableCell className="text-slate-700 dark:text-slate-300">
                       {category.remarks ?? "-"}
-                    </td>
-                    <td className="px-3 py-2">
+                    </SimpleTableCell>
+                    <SimpleTableCell>
                       <div className="flex gap-2">
-                        <button
-                          type="button"
+                        <Button
                           onClick={() => startEdit(category)}
                           disabled={isSubmitting}
-                          className="app-button-secondary px-3 py-1.5 text-xs"
+                          variant="secondary"
+                          size="sm"
+                          className="text-xs"
                         >
                           Edit
-                        </button>
-                        <button
-                          type="button"
+                        </Button>
+                        <Button
                           onClick={() =>
                             setDeleteTargetCategoryId(
                               category.transaction_category_id,
                             )
                           }
                           disabled={isSubmitting}
-                          className="inline-flex items-center justify-center rounded-xl border border-red-300 bg-white px-3 py-1.5 text-xs font-medium text-red-700 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-70"
+                          variant="danger"
+                          size="sm"
+                          className="text-xs"
                         >
                           Delete
-                        </button>
+                        </Button>
                       </div>
-                    </td>
-                  </tr>
+                    </SimpleTableCell>
+                  </SimpleTableRow>
                 ))}
-              </tbody>
+              </SimpleTableBody>
             </table>
-          </div>
+          </SimpleTableRoot>
         )}
       </section>
 

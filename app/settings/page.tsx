@@ -33,16 +33,18 @@ export default async function SettingsPage(): Promise<React.JSX.Element> {
       actions={<LogoutButton />}
     >
       <section className="app-surface">
-        <h2 className="font-heading text-xl font-semibold text-slate-900">
+        <h2 className="font-heading text-xl font-semibold text-slate-900 dark:text-slate-100">
           Account
         </h2>
-        <p className="mt-1 text-sm text-slate-600">Signed in as {user.email}</p>
+        <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
+          Signed in as {user.email}
+        </p>
 
-        <div className="mt-4 rounded-xl border border-emerald-100 bg-gradient-to-r from-emerald-50 to-white px-4 py-4">
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+        <div className="mt-4 rounded-xl border border-emerald-100 bg-gradient-to-r from-emerald-50 to-white px-4 py-4 dark:border-emerald-900/40 dark:from-emerald-950/40 dark:to-slate-800/60">
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
             Current balance
           </p>
-          <p className="mt-1 font-heading text-3xl font-semibold text-slate-900">
+          <p className="mt-1 font-heading text-3xl font-semibold text-slate-900 dark:text-slate-50">
             {BALANCE_FORMATTER.format(user.current_balance)}
           </p>
         </div>
@@ -59,23 +61,23 @@ export default async function SettingsPage(): Promise<React.JSX.Element> {
       <p className="text-sm">
         <Link
           href="/"
-          className="font-medium text-slate-800 underline underline-offset-2"
+          className="font-medium text-slate-800 underline underline-offset-2 dark:text-slate-200"
         >
           Back to home
         </Link>
       </p>
       {isAdmin ? (
         <div className="app-surface space-y-2">
-          <h3 className="font-heading text-lg font-semibold text-slate-900">
+          <h3 className="font-heading text-lg font-semibold text-slate-900 dark:text-slate-100">
             Admin tools
           </h3>
-          <p className="text-sm text-slate-600">
+          <p className="text-sm text-slate-600 dark:text-slate-400">
             Manage users and categories from one place.
           </p>
           <p className="text-sm">
             <Link
               href="/settings/admin/users"
-              className="font-medium text-slate-800 underline underline-offset-2"
+              className="font-medium text-slate-800 underline underline-offset-2 dark:text-slate-200"
             >
               Go to admin user management
             </Link>
@@ -83,7 +85,7 @@ export default async function SettingsPage(): Promise<React.JSX.Element> {
           <p className="text-sm">
             <Link
               href="/settings/admin/categories"
-              className="font-medium text-slate-800 underline underline-offset-2"
+              className="font-medium text-slate-800 underline underline-offset-2 dark:text-slate-200"
             >
               Go to admin category management
             </Link>

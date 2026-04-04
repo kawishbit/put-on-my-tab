@@ -15,19 +15,29 @@ export interface TransactionCategory {
   label: string;
   created_at: string;
   updated_at: string;
+  created_by: string | null;
+  updated_by: string | null;
   is_deleted: boolean;
   remarks: string | null;
 }
 
 export type TransactionCategoryInsert = Omit<
   TransactionCategory,
-  "transaction_category_id" | "created_at" | "updated_at"
+  | "transaction_category_id"
+  | "created_at"
+  | "updated_at"
+  | "created_by"
+  | "updated_by"
 >;
 
 export type TransactionCategoryUpdate = Partial<
   Omit<
     TransactionCategory,
-    "transaction_category_id" | "created_at" | "updated_at"
+    | "transaction_category_id"
+    | "created_at"
+    | "updated_at"
+    | "created_by"
+    | "updated_by"
   >
 >;
 
@@ -45,14 +55,22 @@ export interface User {
   last_login_date: string | null;
   created_at: string;
   updated_at: string;
+  created_by: string | null;
+  updated_by: string | null;
   is_deleted: boolean;
   remarks: string | null;
   policy: UserPolicy;
 }
 
-export type UserInsert = Omit<User, "user_id" | "created_at" | "updated_at">;
+export type UserInsert = Omit<
+  User,
+  "user_id" | "created_at" | "updated_at" | "created_by" | "updated_by"
+>;
 export type UserUpdate = Partial<
-  Omit<User, "user_id" | "created_at" | "updated_at">
+  Omit<
+    User,
+    "user_id" | "created_at" | "updated_at" | "created_by" | "updated_by"
+  >
 >;
 
 /** Safe user shape — excludes the password hash */
@@ -68,19 +86,29 @@ export interface UserLoginProvider {
   provider_key: string;
   created_at: string;
   updated_at: string;
+  created_by: string | null;
+  updated_by: string | null;
   is_deleted: boolean;
   remarks: string | null;
 }
 
 export type UserLoginProviderInsert = Omit<
   UserLoginProvider,
-  "user_login_provider_id" | "created_at" | "updated_at"
+  | "user_login_provider_id"
+  | "created_at"
+  | "updated_at"
+  | "created_by"
+  | "updated_by"
 >;
 
 export type UserLoginProviderUpdate = Partial<
   Omit<
     UserLoginProvider,
-    "user_login_provider_id" | "created_at" | "updated_at"
+    | "user_login_provider_id"
+    | "created_at"
+    | "updated_at"
+    | "created_by"
+    | "updated_by"
   >
 >;
 
@@ -100,16 +128,21 @@ export interface Transaction {
   category: string | null;
   created_at: string;
   updated_at: string;
+  created_by: string | null;
+  updated_by: string | null;
   is_deleted: boolean;
   remarks: string | null;
 }
 
 export type TransactionInsert = Omit<
   Transaction,
-  "transaction_id" | "created_at" | "updated_at"
+  "transaction_id" | "created_at" | "updated_at" | "created_by" | "updated_by"
 >;
 export type TransactionUpdate = Partial<
-  Omit<Transaction, "transaction_id" | "created_at" | "updated_at">
+  Omit<
+    Transaction,
+    "transaction_id" | "created_at" | "updated_at" | "created_by" | "updated_by"
+  >
 >;
 
 // -----------------------------------------------------------------------------
@@ -154,6 +187,7 @@ export interface Database {
           p_parties: string[];
           p_category: string | null;
           p_status: TransactionStatus;
+          p_actor_user_id: string | null;
         };
         Returns: {
           group_key: string;
@@ -170,6 +204,7 @@ export interface Database {
           p_parties: string[];
           p_category: string | null;
           p_status: TransactionStatus;
+          p_actor_user_id: string | null;
         };
         Returns: {
           group_key: string;
@@ -179,6 +214,7 @@ export interface Database {
       soft_delete_transaction_group: {
         Args: {
           p_transaction_id: string;
+          p_actor_user_id: string | null;
         };
         Returns: {
           group_key: string;
@@ -189,11 +225,14 @@ export interface Database {
         Args: {
           p_transaction_id: string;
           p_status: TransactionStatus;
+          p_actor_user_id: string | null;
         };
         Returns: unknown;
       };
       recompute_user_balances: {
-        Args: Record<string, never>;
+        Args: {
+          p_actor_user_id: string | null;
+        };
         Returns: unknown;
       };
     };

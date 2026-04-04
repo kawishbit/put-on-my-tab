@@ -4,7 +4,9 @@ import "./globals.css";
 import { AuthSessionProvider } from "@/components/auth/AuthSessionProvider";
 import { LegacyServiceWorkerCleanup } from "@/components/auth/LegacyServiceWorkerCleanup";
 import { AppShell } from "@/components/layout/AppShell";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { cn } from "@/lib/utils";
 
 const manrope = Manrope({ subsets: ["latin"], variable: "--font-sans" });
@@ -37,6 +39,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={cn(
         "h-full",
         "antialiased",
@@ -47,12 +50,15 @@ export default function RootLayout({
         manrope.variable,
       )}
     >
-      <body className="min-h-full min-h-screen app-bg text-slate-900">
-        <LegacyServiceWorkerCleanup />
-        <AuthSessionProvider>
-          <AppShell>{children}</AppShell>
-          <Toaster />
-        </AuthSessionProvider>
+      <body className="min-h-full min-h-screen app-bg">
+        <ThemeProvider>
+          <LegacyServiceWorkerCleanup />
+          <AuthSessionProvider>
+            <AppShell>{children}</AppShell>
+            <Toaster />
+          </AuthSessionProvider>
+          <ThemeToggle />
+        </ThemeProvider>
       </body>
     </html>
   );

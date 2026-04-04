@@ -260,16 +260,22 @@ Implementation note (Apr 1, 2026):
 ## Phase 6: Data Export Features 📥
 
 ### 6.1 Export Transactions to CSV
-- [ ] Create export endpoint
-- [ ] Implement CSV generation
-- [ ] Add download button on transactions page
-- [ ] Filter exported data based on user policy
+- [x] Create export endpoint
+- [x] Implement CSV generation
+- [x] Add download button on transactions page
+- [x] Filter exported data based on user policy
 
 ### 6.2 Export Users to CSV
-- [ ] Create export endpoint
-- [ ] Implement CSV generation with user data
-- [ ] Add download button on users page
-- [ ] Admin-only access
+- [x] Create export endpoint
+- [x] Implement CSV generation with user data
+- [x] Add download button on users page
+- [x] Admin-only access
+
+Implementation note (Apr 4, 2026):
+- Added CSV export endpoints for transactions (`GET /api/transactions/export`) and users (`GET /api/users/export`) with downloadable attachment headers.
+- Implemented shared CSV serialization helpers for proper escaping and UTF-8 CSV downloads.
+- Added "Download CSV" actions to transactions management and admin users management pages.
+- Enforced export visibility rules in API handlers: transaction exports are filtered by session policy/scope; user exports are restricted to admin only.
 
 ---
 

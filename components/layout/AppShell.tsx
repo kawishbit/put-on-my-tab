@@ -15,6 +15,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useState } from "react";
 
 import { LogoutButton } from "@/components/auth/LogoutButton";
+import { Button } from "@/components/ui/button";
 
 type NavItem = {
   href: string;
@@ -183,7 +184,7 @@ export function AppShell({
               aria-label="Home"
               title="Home"
             >
-              <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-slate-700 to-slate-900 text-sm font-bold text-white shadow-lg shadow-slate-500/30">
+              <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-slate-600 to-slate-900 text-sm font-bold text-white shadow-lg shadow-slate-500/30 dark:from-slate-500 dark:to-slate-700 dark:shadow-slate-900/50">
                 PT
               </span>
             </Link>
@@ -212,23 +213,26 @@ export function AppShell({
           </div>
 
           <div className="flex items-center gap-3 text-right">
-            <button
-              type="button"
+            <Button
               onClick={() => setIsMobileMenuOpen((previous) => !previous)}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 md:hidden"
+              variant="secondary"
+              size="icon"
+              className="h-9 w-9 rounded-lg md:hidden"
               aria-label="Toggle menu"
             >
               <span className="text-lg leading-none">≡</span>
-            </button>
+            </Button>
             {status === "loading" ? (
-              <p className="text-xs text-slate-500">Checking session...</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Checking session...
+              </p>
             ) : session?.user?.email ? (
               <>
                 <div className="hidden md:block">
-                  <p className="text-xs font-medium text-slate-800">
+                  <p className="text-xs font-medium text-slate-800 dark:text-slate-200">
                     {session.user.email}
                   </p>
-                  <p className="text-xs uppercase tracking-wide text-slate-500">
+                  <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
                     {session.user.policy}
                   </p>
                 </div>
@@ -254,23 +258,26 @@ export function AppShell({
           role="dialog"
           aria-modal="true"
         >
-          <button
-            type="button"
+          <Button
             className="absolute inset-0 bg-slate-900/40"
             aria-label="Close menu"
             onClick={() => setIsMobileMenuOpen(false)}
+            variant="ghost"
           />
-          <div className="absolute right-0 top-0 h-full w-72 border-l border-slate-200 bg-white p-4 shadow-2xl">
+          <div className="absolute right-0 top-0 h-full w-72 border-l border-slate-200 bg-white p-4 shadow-2xl dark:border-white/10 dark:bg-slate-900">
             <div className="mb-4 flex items-center justify-between">
-              <p className="text-sm font-semibold text-slate-900">Menu</p>
-              <button
-                type="button"
-                className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-700"
+              <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                Menu
+              </p>
+              <Button
+                className="h-8 w-8 rounded-lg"
                 aria-label="Close menu"
                 onClick={() => setIsMobileMenuOpen(false)}
+                variant="secondary"
+                size="icon"
               >
                 ×
-              </button>
+              </Button>
             </div>
 
             <nav className="space-y-1">
@@ -294,21 +301,24 @@ export function AppShell({
               })}
             </nav>
 
-            <div className="mt-6 border-t border-slate-200 pt-4">
+            <div className="mt-6 border-t border-slate-200 pt-4 dark:border-white/10">
               {session?.user?.email ? (
                 <div className="space-y-3">
                   <div>
-                    <p className="text-sm font-medium text-slate-900">
+                    <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
                       {session.user.email}
                     </p>
-                    <p className="text-xs uppercase tracking-wide text-slate-500">
+                    <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
                       {session.user.policy}
                     </p>
                   </div>
                   <LogoutButton />
                 </div>
               ) : (
-                <Link href="/login" className="app-button-primary w-full">
+                <Link
+                  href="/login"
+                  className="app-button-primary block w-full text-center"
+                >
                   Sign in
                 </Link>
               )}
@@ -320,7 +330,7 @@ export function AppShell({
       <div className="mx-auto w-full max-w-[1400px] px-4 pb-8 pt-24 md:px-6">
         <main className="min-w-0 flex-1">
           <div className="space-y-6">{children}</div>
-          <footer className="mt-10 rounded-2xl border border-white/60 bg-white/75 px-4 py-4 text-sm text-slate-600 shadow-lg shadow-slate-200/40 backdrop-blur">
+          <footer className="mt-10 rounded-2xl border border-white/60 bg-white/75 px-4 py-4 text-sm text-slate-600 shadow-lg shadow-slate-200/40 backdrop-blur dark:border-white/8 dark:bg-slate-800/40 dark:text-slate-400 dark:shadow-none">
             <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
               <p>Put On My Tab</p>
               <p>Shared expense tracking for households and small groups.</p>

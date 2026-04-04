@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { Button } from "@/components/ui/button";
+
 type FormState = {
   isSubmitting: boolean;
   error: string | null;
@@ -73,10 +75,10 @@ export function PasswordManagementCard(): React.JSX.Element {
 
   return (
     <section className="app-surface">
-      <h2 className="font-heading text-xl font-semibold text-slate-900">
+      <h2 className="font-heading text-xl font-semibold text-slate-900 dark:text-slate-100">
         Password
       </h2>
-      <p className="mt-1 text-sm text-slate-600">
+      <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
         Use a strong password with at least 12 characters, uppercase/lowercase
         letters, numbers, and symbols.
       </p>
@@ -85,7 +87,7 @@ export function PasswordManagementCard(): React.JSX.Element {
         <div>
           <label
             htmlFor="currentPassword"
-            className="text-sm font-medium text-slate-700"
+            className="text-sm font-medium text-slate-700 dark:text-slate-300"
           >
             Current password
           </label>
@@ -102,7 +104,7 @@ export function PasswordManagementCard(): React.JSX.Element {
         <div>
           <label
             htmlFor="newPassword"
-            className="text-sm font-medium text-slate-700"
+            className="text-sm font-medium text-slate-700 dark:text-slate-300"
           >
             New password
           </label>
@@ -121,7 +123,7 @@ export function PasswordManagementCard(): React.JSX.Element {
         <div>
           <label
             htmlFor="confirmNewPassword"
-            className="text-sm font-medium text-slate-700"
+            className="text-sm font-medium text-slate-700 dark:text-slate-300"
           >
             Confirm new password
           </label>
@@ -144,13 +146,9 @@ export function PasswordManagementCard(): React.JSX.Element {
           <p className="app-alert-success">{changeState.success}</p>
         ) : null}
 
-        <button
-          type="submit"
-          disabled={changeState.isSubmitting}
-          className="app-button-primary"
-        >
+        <Button type="submit" disabled={changeState.isSubmitting}>
           {changeState.isSubmitting ? "Updating..." : "Change password"}
-        </button>
+        </Button>
       </form>
     </section>
   );

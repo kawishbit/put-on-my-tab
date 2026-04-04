@@ -47,10 +47,14 @@ export async function PATCH(
 
     const payload = await parseJson(request, updateTransactionCategorySchema);
 
-    const updatedCategory = await updateTransactionCategory(categoryId, {
-      label: payload.label,
-      remarks: payload.remarks,
-    });
+    const updatedCategory = await updateTransactionCategory(
+      categoryId,
+      {
+        label: payload.label,
+        remarks: payload.remarks,
+      },
+      requestContext.userId,
+    );
 
     return ok(updatedCategory);
   } catch (error) {
@@ -69,7 +73,7 @@ export async function DELETE(
     const { categoryId: rawCategoryId } = await context.params;
     const categoryId = parseCategoryId(rawCategoryId);
 
-    await deleteTransactionCategory(categoryId);
+    await deleteTransactionCategory(categoryId, requestContext.userId);
 
     return noContent();
   } catch (error) {

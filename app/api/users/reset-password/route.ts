@@ -22,7 +22,11 @@ export async function POST(request: Request): Promise<Response> {
 
     const payload = await parseJson(request, resetPasswordSchema);
 
-    await resetUserPassword(payload.userId, payload.newPassword);
+    await resetUserPassword(
+      payload.userId,
+      payload.newPassword,
+      context.userId,
+    );
 
     return ok({ success: true });
   } catch (error) {

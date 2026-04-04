@@ -41,7 +41,11 @@ export async function DELETE(request: Request): Promise<Response> {
 
     const payload = await parseJson(request, disconnectProviderSchema);
 
-    await disconnectProviderForUser(context.userId, payload.providerType);
+    await disconnectProviderForUser(
+      context.userId,
+      payload.providerType,
+      context.userId,
+    );
 
     return ok({ success: true });
   } catch (error) {

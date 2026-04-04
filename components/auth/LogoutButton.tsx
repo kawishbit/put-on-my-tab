@@ -2,14 +2,16 @@
 
 import { signOut } from "next-auth/react";
 
+import { Button } from "@/components/ui/button";
+
 export function LogoutButton(): React.JSX.Element {
   return (
-    <button
-      type="button"
+    <Button
       onClick={() => void signOut({ callbackUrl: "/login" })}
-      className="app-button-secondary px-3 py-1.5"
+      variant="secondary"
+      size="sm"
     >
       Logout
-    </button>
+    </Button>
   );
 }

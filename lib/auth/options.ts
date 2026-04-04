@@ -94,10 +94,16 @@ export const authOptions: NextAuthOptions = {
 
         await supabase
           .from("users")
-          .update({ last_login_date: new Date().toISOString() } as never)
+          .update({
+            last_login_date: new Date().toISOString(),
+            updated_by: typedUser.user_id,
+          } as never)
           .eq("user_id", typedUser.user_id);
 
-        await ensureCredentialsProviderForUser(typedUser.user_id);
+        await ensureCredentialsProviderForUser(
+          typedUser.user_id,
+          typedUser.user_id,
+        );
 
         return {
           id: typedUser.user_id,
@@ -155,11 +161,15 @@ export const authOptions: NextAuthOptions = {
         typedAppUser.user_id,
         parsedProvider.data,
         providerKey,
+        typedAppUser.user_id,
       );
 
       await supabase
         .from("users")
-        .update({ last_login_date: new Date().toISOString() } as never)
+        .update({
+          last_login_date: new Date().toISOString(),
+          updated_by: typedAppUser.user_id,
+        } as never)
         .eq("user_id", typedAppUser.user_id);
 
       const mutableUser = user as NextAuthUser;

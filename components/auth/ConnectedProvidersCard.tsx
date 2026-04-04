@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
 
+import { Button } from "@/components/ui/button";
+
 type ProviderConnectionState = {
   credentials: boolean;
   google: boolean;
@@ -88,10 +90,10 @@ export function ConnectedProvidersCard(): React.JSX.Element {
 
   return (
     <section className="app-surface">
-      <h2 className="font-heading text-xl font-semibold text-slate-900">
+      <h2 className="font-heading text-xl font-semibold text-slate-900 dark:text-slate-100">
         Connected Accounts
       </h2>
-      <p className="mt-1 text-sm text-slate-600">
+      <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
         Connect Google and GitHub so you can sign in without typing your
         password.
       </p>
@@ -99,7 +101,9 @@ export function ConnectedProvidersCard(): React.JSX.Element {
       {error ? <p className="mt-4 app-alert-error">{error}</p> : null}
 
       {isLoading ? (
-        <p className="mt-4 text-sm text-slate-600">Loading providers...</p>
+        <p className="mt-4 text-sm text-slate-600 dark:text-slate-400">
+          Loading providers...
+        </p>
       ) : (
         <div className="mt-5 space-y-3">
           <ProviderRow
@@ -159,25 +163,29 @@ function ProviderRow({
   disabled,
 }: ProviderRowProps): React.JSX.Element {
   return (
-    <div className="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50 px-4 py-3">
+    <div className="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 dark:border-white/10 dark:bg-slate-800/60">
       <div>
-        <p className="text-sm font-medium text-slate-900">{label}</p>
-        <p className="text-xs text-slate-600">
+        <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
+          {label}
+        </p>
+        <p className="text-xs text-slate-600 dark:text-slate-400">
           {connected ? "Connected" : "Not connected"}
         </p>
       </div>
 
       {actionLabel && onAction ? (
-        <button
-          type="button"
+        <Button
           onClick={onAction}
           disabled={disabled}
-          className="app-button-secondary px-3 py-1.5 text-sm"
+          variant="secondary"
+          size="sm"
         >
           {actionLabel}
-        </button>
+        </Button>
       ) : (
-        <span className="text-xs text-slate-500">Required</span>
+        <span className="text-xs text-slate-500 dark:text-slate-400">
+          Required
+        </span>
       )}
     </div>
   );

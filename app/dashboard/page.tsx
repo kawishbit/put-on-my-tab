@@ -3,6 +3,14 @@ import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 
 import { DashboardPageTemplate } from "@/components/layout/PageTemplates";
+import {
+  SimpleTableBody,
+  SimpleTableCell,
+  SimpleTableHead,
+  SimpleTableHeader,
+  SimpleTableRoot,
+  SimpleTableRow,
+} from "@/components/ui/simple-table-core";
 import { authOptions } from "@/lib/auth/options";
 import {
   getAdminDashboardData,
@@ -59,7 +67,7 @@ function DonutChart({
         cy={center}
         r={radius}
         fill="transparent"
-        stroke="#e2e8f0"
+        stroke="var(--color-border)"
         strokeWidth={strokeWidth}
       />
       {data.map((item, index) => {
@@ -84,12 +92,12 @@ function DonutChart({
           />
         );
       })}
-      <circle cx={center} cy={center} r={44} fill="white" />
+      <circle cx={center} cy={center} r={44} className="fill-background" />
       <text
         x={center}
         y={center}
         textAnchor="middle"
-        className="fill-slate-900 text-[13px] font-semibold"
+        className="fill-slate-900 text-[13px] font-semibold dark:fill-slate-100"
       >
         Category Mix
       </text>
@@ -125,23 +133,23 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
     >
       <main className="app-surface">
         <div>
-          <section className="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-5">
+          <section className="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-50 to-white p-5 dark:border-white/10 dark:from-slate-800/60 dark:to-slate-900/40">
             <div className="space-y-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">
                 Signed In
               </p>
-              <p className="text-sm text-slate-700">
+              <p className="text-sm text-slate-700 dark:text-slate-300">
                 <span className="font-medium">{session.user.email}</span>
               </p>
-              <p className="text-sm text-slate-600">
+              <p className="text-sm text-slate-600 dark:text-slate-400">
                 Access policy:{" "}
                 <span className="font-semibold">{session.user.policy}</span>
               </p>
-              <div className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2">
-                <p className="text-xs uppercase tracking-wide text-slate-500">
+              <div className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 dark:border-white/10 dark:bg-slate-800/70">
+                <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
                   Current balance
                 </p>
-                <p className="font-heading text-2xl font-semibold text-slate-900">
+                <p className="font-heading text-2xl font-semibold text-slate-900 dark:text-slate-50">
                   {formatCurrencyAmount(userDashboard.summary.currentBalance)}
                 </p>
               </div>
@@ -169,7 +177,7 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
       <section className="app-surface">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h2 className="font-heading text-xl font-semibold text-slate-900">
+            <h2 className="font-heading text-xl font-semibold text-slate-900 dark:text-slate-100">
               Your Activity
             </h2>
             <p className="app-subtitle">
@@ -184,28 +192,28 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
         </div>
 
         <div className="mt-5 grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-          <section className="rounded-2xl border border-slate-200 bg-white/95 p-4">
-            <h3 className="font-heading text-lg font-semibold text-slate-900">
+          <section className="rounded-2xl border border-slate-200 bg-white/95 p-4 dark:border-white/10 dark:bg-slate-800/50">
+            <h3 className="font-heading text-lg font-semibold text-slate-900 dark:text-slate-100">
               Monthly Expenditure
             </h3>
-            <p className="mt-1 text-sm text-slate-600">
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
               Completed personal spending by month.
             </p>
             <div className="mt-4 space-y-3">
               {userDashboard.monthlyExpenditure.length === 0 ? (
-                <p className="rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-600">
+                <p className="rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-600 dark:border-white/15 dark:bg-slate-800/60 dark:text-slate-400">
                   No completed personal transactions yet.
                 </p>
               ) : (
                 userDashboard.monthlyExpenditure.map((point) => (
                   <article key={point.monthKey}>
-                    <div className="mb-1 flex items-center justify-between text-sm text-slate-700">
+                    <div className="mb-1 flex items-center justify-between text-sm text-slate-700 dark:text-slate-300">
                       <p className="font-medium">{point.monthLabel}</p>
                       <p>{formatCurrencyAmount(point.amount)}</p>
                     </div>
-                    <div className="h-2 rounded-full bg-slate-100">
+                    <div className="h-2 rounded-full bg-slate-100 dark:bg-slate-700/60">
                       <div
-                        className="h-2 rounded-full bg-slate-700"
+                        className="h-2 rounded-full bg-slate-700 dark:bg-slate-400"
                         style={{
                           width: `${Math.min((point.amount / userMonthlyMax) * 100, 100)}%`,
                         }}
@@ -217,15 +225,15 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
             </div>
           </section>
 
-          <section className="rounded-2xl border border-slate-200 bg-white/95 p-4">
-            <h3 className="font-heading text-lg font-semibold text-slate-900">
+          <section className="rounded-2xl border border-slate-200 bg-white/95 p-4 dark:border-white/10 dark:bg-slate-800/50">
+            <h3 className="font-heading text-lg font-semibold text-slate-900 dark:text-slate-100">
               Your Category Breakdown
             </h3>
-            <p className="mt-1 text-sm text-slate-600">
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
               Completed transactions grouped by category.
             </p>
             {userDashboard.categoryBreakdown.length === 0 ? (
-              <p className="mt-4 rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-600">
+              <p className="mt-4 rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-600 dark:border-white/15 dark:bg-slate-800/60 dark:text-slate-400">
                 No category data to visualize yet.
               </p>
             ) : (
@@ -238,7 +246,7 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
                   {userDashboard.categoryBreakdown.map((item, index) => (
                     <div
                       key={item.categoryId}
-                      className="flex items-center justify-between gap-2 rounded-lg border border-slate-200 px-3 py-2"
+                      className="flex items-center justify-between gap-2 rounded-lg border border-slate-200 px-3 py-2 dark:border-white/10"
                     >
                       <div className="flex items-center gap-2">
                         <span
@@ -248,9 +256,11 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
                               CATEGORY_COLORS[index % CATEGORY_COLORS.length],
                           }}
                         />
-                        <p className="text-sm text-slate-800">{item.label}</p>
+                        <p className="text-sm text-slate-800 dark:text-slate-200">
+                          {item.label}
+                        </p>
                       </div>
-                      <p className="text-sm font-medium text-slate-900">
+                      <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
                         {PERCENT_FORMATTER.format(item.percentage)}%
                       </p>
                     </div>
@@ -262,70 +272,87 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
         </div>
 
         <section className="mt-6">
-          <h3 className="font-heading text-lg font-semibold text-slate-900">
+          <h3 className="font-heading text-lg font-semibold text-slate-900 dark:text-slate-100">
             Last 10 Personal Transactions
           </h3>
-          <div className="app-table-shell mt-3">
-            <table className="min-w-full divide-y divide-slate-200 text-sm">
-              <thead className="bg-slate-50 text-left text-xs uppercase tracking-[0.08em] text-slate-600">
-                <tr>
-                  <th className="px-4 py-3">Name</th>
-                  <th className="px-4 py-3">Amount</th>
-                  <th className="px-4 py-3">Status</th>
-                  <th className="px-4 py-3">Date</th>
-                  <th className="px-4 py-3">Category</th>
-                  <th className="px-4 py-3">Quick Link</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 bg-white">
+          <SimpleTableRoot className="mt-3">
+            <table className="min-w-full text-sm">
+              <SimpleTableHeader>
+                <SimpleTableRow>
+                  <SimpleTableHead className="px-4 py-3">Name</SimpleTableHead>
+                  <SimpleTableHead className="px-4 py-3">
+                    Amount
+                  </SimpleTableHead>
+                  <SimpleTableHead className="px-4 py-3">
+                    Status
+                  </SimpleTableHead>
+                  <SimpleTableHead className="px-4 py-3">Date</SimpleTableHead>
+                  <SimpleTableHead className="px-4 py-3">
+                    Category
+                  </SimpleTableHead>
+                  <SimpleTableHead className="px-4 py-3">
+                    Quick Link
+                  </SimpleTableHead>
+                </SimpleTableRow>
+              </SimpleTableHeader>
+              <SimpleTableBody>
                 {userDashboard.recentTransactions.length === 0 ? (
-                  <tr>
-                    <td className="px-4 py-4 text-slate-500" colSpan={6}>
+                  <SimpleTableRow>
+                    <SimpleTableCell
+                      className="px-4 py-4 text-slate-500 dark:text-slate-400"
+                      colSpan={6}
+                    >
                       No transactions available.
-                    </td>
-                  </tr>
+                    </SimpleTableCell>
+                  </SimpleTableRow>
                 ) : (
                   userDashboard.recentTransactions.map((transaction) => (
-                    <tr key={transaction.transactionId}>
-                      <td className="px-4 py-3 font-medium text-slate-900">
+                    <SimpleTableRow key={transaction.transactionId}>
+                      <SimpleTableCell className="px-4 py-3 font-medium text-slate-900 dark:text-slate-100">
                         {transaction.name}
-                      </td>
-                      <td className="px-4 py-3 text-slate-700">
+                      </SimpleTableCell>
+                      <SimpleTableCell className="px-4 py-3 text-slate-700 dark:text-slate-300">
                         {formatCurrencyAmount(transaction.amount)}
-                      </td>
-                      <td className="px-4 py-3">
+                      </SimpleTableCell>
+                      <SimpleTableCell className="px-4 py-3">
                         <span
                           className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${
                             transaction.status === "completed"
-                              ? "bg-emerald-100 text-emerald-700"
+                              ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400"
                               : transaction.status === "pending"
-                                ? "bg-amber-100 text-amber-700"
-                                : "bg-slate-200 text-slate-700"
+                                ? "bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400"
+                                : "bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-300"
                           }`}
                         >
                           {transaction.status}
                         </span>
-                      </td>
-                      <td className="px-4 py-3 text-slate-600">
+                      </SimpleTableCell>
+                      <SimpleTableCell className="px-4 py-3 text-slate-600 dark:text-slate-400">
                         {formatDate(transaction.createdAt)}
-                      </td>
-                      <td className="px-4 py-3 text-slate-700">
+                      </SimpleTableCell>
+                      <SimpleTableCell className="px-4 py-3 text-slate-700 dark:text-slate-300">
                         {transaction.categoryLabel}
-                      </td>
-                      <td className="px-4 py-3">
-                        <Link
-                          href={`/transactions/${transaction.transactionId}/edit`}
-                          className="text-sm font-medium text-slate-700 underline underline-offset-2"
-                        >
-                          Open
-                        </Link>
-                      </td>
-                    </tr>
+                      </SimpleTableCell>
+                      <SimpleTableCell className="px-4 py-3">
+                        {isAdmin ? (
+                          <Link
+                            href={`/transactions/${transaction.transactionId}/edit`}
+                            className="text-sm font-medium text-slate-700 underline underline-offset-2 dark:text-slate-300"
+                          >
+                            Open
+                          </Link>
+                        ) : (
+                          <span className="text-sm text-slate-500 dark:text-slate-400">
+                            View only
+                          </span>
+                        )}
+                      </SimpleTableCell>
+                    </SimpleTableRow>
                   ))
                 )}
-              </tbody>
+              </SimpleTableBody>
             </table>
-          </div>
+          </SimpleTableRoot>
         </section>
       </section>
 
@@ -333,7 +360,7 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
         <section className="app-surface">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <h2 className="font-heading text-xl font-semibold text-slate-900">
+              <h2 className="font-heading text-xl font-semibold text-slate-900 dark:text-slate-100">
                 Admin Dashboard Cards
               </h2>
               <p className="app-subtitle">
@@ -354,69 +381,71 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
           </div>
 
           <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            <article className="rounded-2xl border border-slate-200/70 bg-white/90 p-4 shadow-sm">
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+            <article className="rounded-2xl border border-slate-200/70 bg-white/90 p-4 shadow-sm dark:border-white/10 dark:bg-slate-800/50 dark:shadow-none">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
                 Total transactions
               </p>
-              <p className="mt-2 font-heading text-3xl font-semibold text-slate-900">
+              <p className="mt-2 font-heading text-3xl font-semibold text-slate-900 dark:text-slate-50">
                 {adminDashboard.summary.totalTransactions}
               </p>
             </article>
-            <article className="rounded-2xl border border-slate-200/70 bg-white/90 p-4 shadow-sm">
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+            <article className="rounded-2xl border border-slate-200/70 bg-white/90 p-4 shadow-sm dark:border-white/10 dark:bg-slate-800/50 dark:shadow-none">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
                 Total system balance
               </p>
-              <p className="mt-2 font-heading text-3xl font-semibold text-slate-900">
+              <p className="mt-2 font-heading text-3xl font-semibold text-slate-900 dark:text-slate-50">
                 {formatCurrencyAmount(
                   adminDashboard.summary.totalSystemBalance,
                 )}
               </p>
             </article>
-            <article className="rounded-2xl border border-slate-200/70 bg-white/90 p-4 shadow-sm">
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+            <article className="rounded-2xl border border-slate-200/70 bg-white/90 p-4 shadow-sm dark:border-white/10 dark:bg-slate-800/50 dark:shadow-none">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
                 Active users
               </p>
-              <p className="mt-2 font-heading text-3xl font-semibold text-slate-900">
+              <p className="mt-2 font-heading text-3xl font-semibold text-slate-900 dark:text-slate-50">
                 {adminDashboard.summary.activeUsers}
               </p>
             </article>
-            <article className="rounded-2xl border border-slate-200/70 bg-white/90 p-4 shadow-sm">
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+            <article className="rounded-2xl border border-slate-200/70 bg-white/90 p-4 shadow-sm dark:border-white/10 dark:bg-slate-800/50 dark:shadow-none">
+              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
                 Pending transactions
               </p>
-              <p className="mt-2 font-heading text-3xl font-semibold text-amber-700">
+              <p className="mt-2 font-heading text-3xl font-semibold text-amber-700 dark:text-amber-400">
                 {adminDashboard.summary.pendingTransactions}
               </p>
             </article>
           </div>
 
           <div className="mt-6 grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
-            <section className="rounded-2xl border border-slate-200 bg-white/95 p-4">
-              <h3 className="font-heading text-lg font-semibold text-slate-900">
+            <section className="rounded-2xl border border-slate-200 bg-white/95 p-4 dark:border-white/10 dark:bg-slate-800/50">
+              <h3 className="font-heading text-lg font-semibold text-slate-900 dark:text-slate-100">
                 Balance Overview
               </h3>
-              <p className="mt-1 text-sm text-slate-600">
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
                 Live balances for all active users.
               </p>
               <div className="mt-4 space-y-3">
                 {adminDashboard.balances.map((item) => (
                   <article
                     key={item.userId}
-                    className="rounded-xl border border-slate-200 bg-white/95 p-3"
+                    className="rounded-xl border border-slate-200 bg-white/95 p-3 dark:border-white/10 dark:bg-slate-700/30"
                   >
                     <div className="flex items-center justify-between gap-3">
-                      <p className="font-medium text-slate-900">{item.name}</p>
+                      <p className="font-medium text-slate-900 dark:text-slate-100">
+                        {item.name}
+                      </p>
                       <p
                         className={`font-semibold ${
                           item.balance >= 0
-                            ? "text-emerald-700"
-                            : "text-rose-700"
+                            ? "text-emerald-700 dark:text-emerald-400"
+                            : "text-rose-700 dark:text-rose-400"
                         }`}
                       >
                         {formatCurrencyAmount(item.balance)}
                       </p>
                     </div>
-                    <div className="mt-2 h-2 rounded-full bg-slate-100">
+                    <div className="mt-2 h-2 rounded-full bg-slate-100 dark:bg-slate-700/60">
                       <div
                         className={`h-2 rounded-full ${
                           item.balance >= 0 ? "bg-emerald-500" : "bg-rose-500"
@@ -431,22 +460,22 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
               </div>
             </section>
 
-            <section className="rounded-2xl border border-slate-200 bg-white/95 p-4">
+            <section className="rounded-2xl border border-slate-200 bg-white/95 p-4 dark:border-white/10 dark:bg-slate-800/50">
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <h3 className="font-heading text-lg font-semibold text-slate-900">
+                  <h3 className="font-heading text-lg font-semibold text-slate-900 dark:text-slate-100">
                     Monthly Expenditure
                   </h3>
-                  <p className="mt-1 text-sm text-slate-600">
+                  <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
                     Completed spending by month.
                   </p>
                 </div>
-                <div className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-right">
-                  <p className="text-xs uppercase tracking-[0.12em] text-slate-500">
+                <div className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-right dark:border-white/10 dark:bg-slate-800/70">
+                  <p className="text-xs uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
                     {adminDashboard.monthlyComparison.currentMonthLabel} vs{" "}
                     {adminDashboard.monthlyComparison.previousMonthLabel}
                   </p>
-                  <p className="text-sm font-semibold text-slate-900">
+                  <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                     {adminDashboard.monthlyComparison.percentChange === null
                       ? "n/a"
                       : `${adminDashboard.monthlyComparison.percentChange > 0 ? "+" : ""}${PERCENT_FORMATTER.format(adminDashboard.monthlyComparison.percentChange)}%`}
@@ -455,19 +484,19 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
               </div>
               <div className="mt-4 space-y-3">
                 {adminDashboard.monthlyExpenditure.length === 0 ? (
-                  <p className="rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-600">
+                  <p className="rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-600 dark:border-white/15 dark:bg-slate-800/60 dark:text-slate-400">
                     No completed transactions yet.
                   </p>
                 ) : (
                   adminDashboard.monthlyExpenditure.map((point) => (
                     <article key={point.monthKey}>
-                      <div className="mb-1 flex items-center justify-between text-sm text-slate-700">
+                      <div className="mb-1 flex items-center justify-between text-sm text-slate-700 dark:text-slate-300">
                         <p className="font-medium">{point.monthLabel}</p>
                         <p>{formatCurrencyAmount(point.amount)}</p>
                       </div>
-                      <div className="h-2 rounded-full bg-slate-100">
+                      <div className="h-2 rounded-full bg-slate-100 dark:bg-slate-700/60">
                         <div
-                          className="h-2 rounded-full bg-slate-700"
+                          className="h-2 rounded-full bg-slate-700 dark:bg-slate-400"
                           style={{
                             width: `${Math.min(
                               (point.amount /
@@ -491,86 +520,109 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
           </div>
 
           <div className="mt-6 grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-            <section className="rounded-2xl border border-slate-200 bg-white/95 p-4">
-              <h3 className="font-heading text-lg font-semibold text-slate-900">
+            <section className="rounded-2xl border border-slate-200 bg-white/95 p-4 dark:border-white/10 dark:bg-slate-800/50">
+              <h3 className="font-heading text-lg font-semibold text-slate-900 dark:text-slate-100">
                 Last 10 Transactions
               </h3>
-              <div className="app-table-shell mt-3">
-                <table className="min-w-full divide-y divide-slate-200 text-sm">
-                  <thead className="bg-slate-50 text-left text-xs uppercase tracking-[0.08em] text-slate-600">
-                    <tr>
-                      <th className="px-4 py-3">Name</th>
-                      <th className="px-4 py-3">Paid By</th>
-                      <th className="px-4 py-3">Amount</th>
-                      <th className="px-4 py-3">Status</th>
-                      <th className="px-4 py-3">Date</th>
-                      <th className="px-4 py-3">Category</th>
-                      <th className="px-4 py-3">Quick Link</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-100 bg-white">
+              <SimpleTableRoot className="mt-3">
+                <table className="min-w-full text-sm">
+                  <SimpleTableHeader>
+                    <SimpleTableRow>
+                      <SimpleTableHead className="px-4 py-3">
+                        Name
+                      </SimpleTableHead>
+                      <SimpleTableHead className="px-4 py-3">
+                        Paid By
+                      </SimpleTableHead>
+                      <SimpleTableHead className="px-4 py-3">
+                        Amount
+                      </SimpleTableHead>
+                      <SimpleTableHead className="px-4 py-3">
+                        Status
+                      </SimpleTableHead>
+                      <SimpleTableHead className="px-4 py-3">
+                        Date
+                      </SimpleTableHead>
+                      <SimpleTableHead className="px-4 py-3">
+                        Category
+                      </SimpleTableHead>
+                      <SimpleTableHead className="px-4 py-3">
+                        Quick Link
+                      </SimpleTableHead>
+                    </SimpleTableRow>
+                  </SimpleTableHeader>
+                  <SimpleTableBody>
                     {adminDashboard.recentTransactions.length === 0 ? (
-                      <tr>
-                        <td className="px-4 py-4 text-slate-500" colSpan={7}>
+                      <SimpleTableRow>
+                        <SimpleTableCell
+                          className="px-4 py-4 text-slate-500 dark:text-slate-400"
+                          colSpan={7}
+                        >
                           No transactions available.
-                        </td>
-                      </tr>
+                        </SimpleTableCell>
+                      </SimpleTableRow>
                     ) : (
                       adminDashboard.recentTransactions.map((transaction) => (
-                        <tr key={transaction.transactionId}>
-                          <td className="px-4 py-3 font-medium text-slate-900">
+                        <SimpleTableRow key={transaction.transactionId}>
+                          <SimpleTableCell className="px-4 py-3 font-medium text-slate-900 dark:text-slate-100">
                             {transaction.name}
-                          </td>
-                          <td className="px-4 py-3 text-slate-700">
+                          </SimpleTableCell>
+                          <SimpleTableCell className="px-4 py-3 text-slate-700 dark:text-slate-300">
                             {transaction.paidByUserName}
-                          </td>
-                          <td className="px-4 py-3 text-slate-700">
+                          </SimpleTableCell>
+                          <SimpleTableCell className="px-4 py-3 text-slate-700 dark:text-slate-300">
                             {formatCurrencyAmount(transaction.amount)}
-                          </td>
-                          <td className="px-4 py-3">
+                          </SimpleTableCell>
+                          <SimpleTableCell className="px-4 py-3">
                             <span
                               className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${
                                 transaction.status === "completed"
-                                  ? "bg-emerald-100 text-emerald-700"
+                                  ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400"
                                   : transaction.status === "pending"
-                                    ? "bg-amber-100 text-amber-700"
-                                    : "bg-slate-200 text-slate-700"
+                                    ? "bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400"
+                                    : "bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-300"
                               }`}
                             >
                               {transaction.status}
                             </span>
-                          </td>
-                          <td className="px-4 py-3 text-slate-600">
+                          </SimpleTableCell>
+                          <SimpleTableCell className="px-4 py-3 text-slate-600 dark:text-slate-400">
                             {formatDate(transaction.createdAt)}
-                          </td>
-                          <td className="px-4 py-3 text-slate-700">
+                          </SimpleTableCell>
+                          <SimpleTableCell className="px-4 py-3 text-slate-700 dark:text-slate-300">
                             {transaction.categoryLabel}
-                          </td>
-                          <td className="px-4 py-3">
-                            <Link
-                              href={`/transactions/${transaction.transactionId}/edit`}
-                              className="text-sm font-medium text-slate-700 underline underline-offset-2"
-                            >
-                              Open
-                            </Link>
-                          </td>
-                        </tr>
+                          </SimpleTableCell>
+                          <SimpleTableCell className="px-4 py-3">
+                            {isAdmin ? (
+                              <Link
+                                href={`/transactions/${transaction.transactionId}/edit`}
+                                className="text-sm font-medium text-slate-700 underline underline-offset-2 dark:text-slate-300"
+                              >
+                                Open
+                              </Link>
+                            ) : (
+                              <span className="text-sm text-slate-500 dark:text-slate-400">
+                                View only
+                              </span>
+                            )}
+                          </SimpleTableCell>
+                        </SimpleTableRow>
                       ))
                     )}
-                  </tbody>
+                  </SimpleTableBody>
                 </table>
-              </div>
+              </SimpleTableRoot>
             </section>
 
-            <section className="rounded-2xl border border-slate-200 bg-white/95 p-4">
-              <h3 className="font-heading text-lg font-semibold text-slate-900">
+            <section className="rounded-2xl border border-slate-200 bg-white/95 p-4 dark:border-white/10 dark:bg-slate-800/50">
+              <h3 className="font-heading text-lg font-semibold text-slate-900 dark:text-slate-100">
                 Category Breakdown
               </h3>
-              <p className="mt-1 text-sm text-slate-600">
+              <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
                 Completed spending share by category.
               </p>
               {adminDashboard.categoryBreakdown.length === 0 ? (
-                <p className="mt-4 rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-600">
+                <p className="mt-4 rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 py-3 text-sm text-slate-600 dark:border-white/15 dark:bg-slate-800/60 dark:text-slate-400">
                   Not enough data to render chart yet.
                 </p>
               ) : (
@@ -583,7 +635,7 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
                     {adminDashboard.categoryBreakdown.map((item, index) => (
                       <div
                         key={item.categoryId}
-                        className="flex items-center justify-between gap-3 rounded-lg border border-slate-200 px-3 py-2"
+                        className="flex items-center justify-between gap-3 rounded-lg border border-slate-200 px-3 py-2 dark:border-white/10"
                       >
                         <div className="flex items-center gap-2">
                           <span
@@ -593,15 +645,15 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
                                 CATEGORY_COLORS[index % CATEGORY_COLORS.length],
                             }}
                           />
-                          <span className="text-sm text-slate-800">
+                          <span className="text-sm text-slate-800 dark:text-slate-200">
                             {item.label}
                           </span>
                         </div>
                         <div className="text-right text-sm">
-                          <p className="font-medium text-slate-900">
+                          <p className="font-medium text-slate-900 dark:text-slate-100">
                             {formatCurrencyAmount(item.amount)}
                           </p>
-                          <p className="text-xs text-slate-500">
+                          <p className="text-xs text-slate-500 dark:text-slate-400">
                             {PERCENT_FORMATTER.format(item.percentage)}%
                           </p>
                         </div>
@@ -613,21 +665,21 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
             </section>
           </div>
 
-          <section className="mt-6 rounded-2xl border border-slate-200 bg-white/95 p-4">
-            <h3 className="font-heading text-lg font-semibold text-slate-900">
+          <section className="mt-6 rounded-2xl border border-slate-200 bg-white/95 p-4 dark:border-white/10 dark:bg-slate-800/50">
+            <h3 className="font-heading text-lg font-semibold text-slate-900 dark:text-slate-100">
               More Metrics
             </h3>
-            <p className="mt-1 text-sm text-slate-600">
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
               Top spenders, frequent categories, and pending visibility.
             </p>
             <div className="mt-4 grid gap-4 lg:grid-cols-3">
-              <article className="rounded-xl border border-slate-200 bg-white p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+              <article className="rounded-xl border border-slate-200 bg-white p-4 dark:border-white/10 dark:bg-slate-700/30">
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
                   Top spenders
                 </p>
                 <div className="mt-3 space-y-2">
                   {adminDashboard.topSpenders.length === 0 ? (
-                    <p className="text-sm text-slate-500">
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
                       No spending records.
                     </p>
                   ) : (
@@ -636,8 +688,10 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
                         key={item.userId}
                         className="flex items-center justify-between"
                       >
-                        <p className="text-sm text-slate-800">{item.name}</p>
-                        <p className="text-sm font-semibold text-slate-900">
+                        <p className="text-sm text-slate-800 dark:text-slate-200">
+                          {item.name}
+                        </p>
+                        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                           {formatCurrencyAmount(item.spent)}
                         </p>
                       </div>
@@ -646,13 +700,13 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
                 </div>
               </article>
 
-              <article className="rounded-xl border border-slate-200 bg-white p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+              <article className="rounded-xl border border-slate-200 bg-white p-4 dark:border-white/10 dark:bg-slate-700/30">
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
                   Frequent categories
                 </p>
                 <div className="mt-3 space-y-2">
                   {adminDashboard.frequentCategories.length === 0 ? (
-                    <p className="text-sm text-slate-500">
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
                       No category activity.
                     </p>
                   ) : (
@@ -661,8 +715,10 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
                         key={item.categoryId}
                         className="flex items-center justify-between"
                       >
-                        <p className="text-sm text-slate-800">{item.label}</p>
-                        <p className="text-sm font-semibold text-slate-900">
+                        <p className="text-sm text-slate-800 dark:text-slate-200">
+                          {item.label}
+                        </p>
+                        <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                           {item.count}
                         </p>
                       </div>
@@ -671,14 +727,14 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
                 </div>
               </article>
 
-              <article className="rounded-xl border border-slate-200 bg-white p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+              <article className="rounded-xl border border-slate-200 bg-white p-4 dark:border-white/10 dark:bg-slate-700/30">
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
                   Pending watchlist
                 </p>
-                <p className="mt-3 font-heading text-4xl font-semibold text-amber-700">
+                <p className="mt-3 font-heading text-4xl font-semibold text-amber-700 dark:text-amber-400">
                   {adminDashboard.summary.pendingTransactions}
                 </p>
-                <p className="mt-2 text-sm text-slate-600">
+                <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
                   Pending grouped transactions that may require status updates.
                 </p>
                 <Link

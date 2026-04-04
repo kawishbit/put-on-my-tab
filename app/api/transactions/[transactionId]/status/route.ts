@@ -34,7 +34,7 @@ export async function PATCH(
 ): Promise<Response> {
   try {
     const requestContext = await getRequestContext(request);
-    requirePolicy(requestContext, ["mod", "admin"]);
+    requirePolicy(requestContext, ["admin"]);
 
     const { transactionId: rawTransactionId } = await context.params;
     const transactionId = parseTransactionId(rawTransactionId);
@@ -44,6 +44,7 @@ export async function PATCH(
     const updated = await updateTransactionStatus(
       transactionId,
       payload.status,
+      requestContext.userId,
     );
 
     return ok(updated);

@@ -24,10 +24,15 @@ export async function listTransactionCategories(): Promise<
 
 export async function createTransactionCategory(
   input: TransactionCategoryInsert,
+  actorUserId: string,
 ): Promise<TransactionCategory> {
   const { data, error } = await supabase
     .from("transaction_categories")
-    .insert(input as never)
+    .insert({
+      ...input,
+      created_by: actorUserId,
+      updated_by: actorUserId,
+    } as never)
     .select("*")
     .single();
 
@@ -41,10 +46,11 @@ export async function createTransactionCategory(
 export async function updateTransactionCategory(
   transactionCategoryId: string,
   input: TransactionCategoryUpdate,
+  actorUserId: string,
 ): Promise<TransactionCategory> {
   const { data, error } = await supabase
     .from("transaction_categories")
-    .update(input as never)
+    .update({ ...input, updated_by: actorUserId } as never)
     .eq("transaction_category_id", transactionCategoryId)
     .eq("is_deleted", false)
     .select("*")
@@ -59,10 +65,11 @@ export async function updateTransactionCategory(
 
 export async function deleteTransactionCategory(
   transactionCategoryId: string,
+  actorUserId: string,
 ): Promise<void> {
   const { error } = await supabase
     .from("transaction_categories")
-    .update({ is_deleted: true } as never)
+    .update({ is_deleted: true, updated_by: actorUserId } as never)
     .eq("transaction_category_id", transactionCategoryId)
     .eq("is_deleted", false);
 

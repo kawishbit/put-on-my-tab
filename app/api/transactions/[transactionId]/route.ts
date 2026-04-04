@@ -44,7 +44,7 @@ export async function GET(
 ): Promise<Response> {
   try {
     const requestContext = await getRequestContext(request);
-    requirePolicy(requestContext, ["mod", "admin"]);
+    requirePolicy(requestContext, ["admin"]);
 
     const { transactionId: rawTransactionId } = await context.params;
     const transactionId = parseTransactionId(rawTransactionId);
@@ -63,22 +63,26 @@ export async function PATCH(
 ): Promise<Response> {
   try {
     const requestContext = await getRequestContext(request);
-    requirePolicy(requestContext, ["mod", "admin"]);
+    requirePolicy(requestContext, ["admin"]);
 
     const { transactionId: rawTransactionId } = await context.params;
     const transactionId = parseTransactionId(rawTransactionId);
 
     const payload = await parseJson(request, updateSplitTransactionSchema);
 
-    const updated = await updateSplitTransaction(transactionId, {
-      name: payload.name,
-      transactionRemark: payload.transactionRemark,
-      paidBy: payload.paidBy,
-      amount: payload.amount,
-      category: payload.category,
-      status: payload.status,
-      partiesInvolved: payload.partiesInvolved,
-    });
+    const updated = await updateSplitTransaction(
+      transactionId,
+      {
+        name: payload.name,
+        transactionRemark: payload.transactionRemark,
+        paidBy: payload.paidBy,
+        amount: payload.amount,
+        category: payload.category,
+        status: payload.status,
+        partiesInvolved: payload.partiesInvolved,
+      },
+      requestContext.userId,
+    );
 
     return ok(updated);
   } catch (error) {
@@ -97,7 +101,7 @@ export async function DELETE(
     const { transactionId: rawTransactionId } = await context.params;
     const transactionId = parseTransactionId(rawTransactionId);
 
-    await deleteTransaction(transactionId);
+    await deleteTransaction(transactionId, requestContext.userId);
 
     return noContent();
   } catch (error) {

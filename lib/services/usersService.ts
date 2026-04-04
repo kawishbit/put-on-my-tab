@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabaseServer";
 import type { PublicUser, UserInsert, UserUpdate } from "@/types/database";
 
 const USER_PUBLIC_COLUMNS =
-  "user_id,name,email,avatar,current_balance,last_login_date,created_at,updated_at,is_deleted,remarks,policy";
+  "user_id,name,email,avatar,current_balance,last_login_date,created_at,updated_at,created_by,updated_by,is_deleted,remarks,policy";
 const PASSWORD_SALT_ROUNDS = 12;
 
 type ActiveUserPolicyRow = {
@@ -68,7 +68,10 @@ export async function getUserById(userId: string): Promise<PublicUser> {
   return data as PublicUser;
 }
 
-export async function createUser(input: UserInsert): Promise<PublicUser> {
+export async function createUser(
+  input: UserInsert,
+  actorUserId: string,
+): Promise<PublicUser> {
   const hashedPassword = await hash(input.password, PASSWORD_SALT_ROUNDS);
 
   const { data, error } = await supabase
@@ -76,6 +79,8 @@ export async function createUser(input: UserInsert): Promise<PublicUser> {
     .insert({
       ...input,
       password: hashedPassword,
+      created_by: actorUserId,
+      updated_by: actorUserId,
     } as never)
     .select(USER_PUBLIC_COLUMNS)
     .single();
@@ -90,6 +95,7 @@ export async function createUser(input: UserInsert): Promise<PublicUser> {
 export async function updateUser(
   userId: string,
   input: UserUpdate,
+  actorUserId: string,
 ): Promise<PublicUser> {
   let updatePayload: UserUpdate = input;
 
@@ -102,7 +108,7 @@ export async function updateUser(
 
   const { data, error } = await supabase
     .from("users")
-    .update(updatePayload as never)
+    .update({ ...updatePayload, updated_by: actorUserId } as never)
     .eq("user_id", userId)
     .eq("is_deleted", false)
     .select(USER_PUBLIC_COLUMNS)
@@ -115,7 +121,10 @@ export async function updateUser(
   return data as PublicUser;
 }
 
-export async function deleteUser(userId: string): Promise<void> {
+export async function deleteUser(
+  userId: string,
+  actorUserId: string,
+): Promise<void> {
   const user = await getActiveUserPolicyRow(userId);
 
   if (user.policy === "admin") {
@@ -128,7 +137,7 @@ export async function deleteUser(userId: string): Promise<void> {
 
   const { error } = await supabase
     .from("users")
-    .update({ is_deleted: true } as never)
+    .update({ is_deleted: true, updated_by: actorUserId } as never)
     .eq("user_id", userId)
     .eq("is_deleted", false);
 
@@ -202,7 +211,7 @@ export async function changeOwnPassword(
 
   const { error } = await supabase
     .from("users")
-    .update({ password: hashedPassword } as never)
+    .update({ password: hashedPassword, updated_by: userId } as never)
     .eq("user_id", userId)
     .eq("is_deleted", false);
 
@@ -215,12 +224,13 @@ export async function changeOwnPassword(
     );
   }
 
-  await ensureCredentialsProviderForUser(userId);
+  await ensureCredentialsProviderForUser(userId, userId);
 }
 
 export async function resetUserPassword(
   userId: string,
   nextPassword: string,
+  actorUserId: string,
 ): Promise<void> {
   await getActiveUserPasswordRow(userId);
 
@@ -228,7 +238,7 @@ export async function resetUserPassword(
 
   const { error } = await supabase
     .from("users")
-    .update({ password: hashedPassword } as never)
+    .update({ password: hashedPassword, updated_by: actorUserId } as never)
     .eq("user_id", userId)
     .eq("is_deleted", false);
 
@@ -236,5 +246,5 @@ export async function resetUserPassword(
     throw new ApiError(500, "user_password_reset_failed", error.message, error);
   }
 
-  await ensureCredentialsProviderForUser(userId);
+  await ensureCredentialsProviderForUser(userId, actorUserId);
 }

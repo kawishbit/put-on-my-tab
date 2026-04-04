@@ -5,7 +5,17 @@ import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import { TablePageTemplate } from "@/components/layout/PageTemplates";
+import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import {
+  SimpleTableBody,
+  SimpleTableCell,
+  SimpleTableEmpty,
+  SimpleTableHead,
+  SimpleTableHeader,
+  SimpleTableRoot,
+  SimpleTableRow,
+} from "@/components/ui/simple-table-core";
 import { formatCurrencyAmount } from "@/lib/utils/currency";
 import type {
   PublicUser,
@@ -41,6 +51,12 @@ type TransactionListItem = {
   remarks: string | null;
   paid_by_user_name: string | null;
   paid_by_user_email: string | null;
+  created_by: string | null;
+  updated_by: string | null;
+  created_by_user_name: string | null;
+  created_by_user_email: string | null;
+  updated_by_user_name: string | null;
+  updated_by_user_email: string | null;
   category_label: string | null;
 };
 
@@ -84,6 +100,18 @@ function formatDateTime(value: string): string {
   return new Date(value).toLocaleString();
 }
 
+function getDownloadFileName(
+  contentDisposition: string | null,
+  fallbackName: string,
+): string {
+  if (!contentDisposition) {
+    return fallbackName;
+  }
+
+  const match = contentDisposition.match(/filename="?([^";]+)"?/i);
+  return match?.[1] ?? fallbackName;
+}
+
 const INITIAL_FILTERS: FiltersState = {
   status: "",
   type: "",
@@ -110,13 +138,14 @@ export function TransactionsManagement({
   const [total, setTotal] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [isMutating, setIsMutating] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<{
     id: string;
     name: string;
   } | null>(null);
 
-  const canEdit = policy === "mod" || policy === "admin";
+  const canEdit = policy === "admin";
   const canDelete = policy === "admin";
 
   const scope: TransactionScope = policy === "user" ? "mine" : initialScope;
@@ -282,6 +311,72 @@ export function TransactionsManagement({
     await loadTransactions();
   }
 
+  async function onExportCsv(): Promise<void> {
+    setIsExporting(true);
+
+    const searchParams = new URLSearchParams();
+    searchParams.set("scope", scope);
+    searchParams.set("sortBy", filters.sortBy);
+    searchParams.set("sortOrder", filters.sortOrder);
+
+    if (filters.status) {
+      searchParams.set("status", filters.status);
+    }
+
+    if (filters.type) {
+      searchParams.set("type", filters.type);
+    }
+
+    if (filters.category) {
+      searchParams.set("category", filters.category);
+    }
+
+    if (filters.search.trim().length > 0) {
+      searchParams.set("search", filters.search.trim());
+    }
+
+    if (filters.paidBy && scope === "all") {
+      searchParams.set("paidBy", filters.paidBy);
+    }
+
+    const response = await fetch(
+      `/api/transactions/export?${searchParams.toString()}`,
+      {
+        method: "GET",
+      },
+    );
+
+    if (!response.ok) {
+      const contentType = response.headers.get("content-type") ?? "";
+
+      if (contentType.includes("application/json")) {
+        const payload = (await response.json()) as ApiErrorResponse;
+        toast.error(getApiErrorMessage(payload, "Failed to export CSV."));
+      } else {
+        toast.error("Failed to export CSV.");
+      }
+
+      setIsExporting(false);
+      return;
+    }
+
+    const blob = await response.blob();
+    const downloadUrl = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    const today = new Date().toISOString().slice(0, 10);
+
+    link.href = downloadUrl;
+    link.download = getDownloadFileName(
+      response.headers.get("content-disposition"),
+      `transactions-${today}.csv`,
+    );
+    link.click();
+
+    URL.revokeObjectURL(downloadUrl);
+    setIsExporting(false);
+    toast.success("Transactions CSV downloaded.");
+  }
+
   const pageCount = Math.max(Math.ceil(total / filters.pageSize), 1);
 
   return (
@@ -292,14 +387,14 @@ export function TransactionsManagement({
         <div className="flex flex-wrap gap-3 text-sm">
           <Link
             href="/"
-            className="font-medium text-slate-800 underline underline-offset-2"
+            className="font-medium text-slate-800 underline underline-offset-2 dark:text-slate-200"
           >
             Back to home
           </Link>
           {policy !== "user" ? (
             <Link
               href="/transactions/create"
-              className="font-medium text-slate-800 underline underline-offset-2"
+              className="font-medium text-slate-800 underline underline-offset-2 dark:text-slate-200"
             >
               Create transaction
             </Link>
@@ -307,7 +402,7 @@ export function TransactionsManagement({
           {scope === "all" ? (
             <Link
               href="/my-transactions"
-              className="font-medium text-slate-800 underline underline-offset-2"
+              className="font-medium text-slate-800 underline underline-offset-2 dark:text-slate-200"
             >
               View my transactions
             </Link>
@@ -315,12 +410,20 @@ export function TransactionsManagement({
             policy !== "user" && (
               <Link
                 href="/transactions"
-                className="font-medium text-slate-800 underline underline-offset-2"
+                className="font-medium text-slate-800 underline underline-offset-2 dark:text-slate-200"
               >
                 View all transactions
               </Link>
             )
           )}
+          <Button
+            onClick={() => void onExportCsv()}
+            variant="secondary"
+            size="sm"
+            disabled={isExporting}
+          >
+            {isExporting ? "Exporting..." : "Download CSV"}
+          </Button>
         </div>
       }
     >
@@ -328,7 +431,7 @@ export function TransactionsManagement({
 
       <section className="app-surface">
         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-          <label className="text-sm text-slate-700">
+          <label className="text-sm text-slate-700 dark:text-slate-300">
             <span className="mb-1 block font-medium">Search</span>
             <input
               value={filters.search}
@@ -344,7 +447,7 @@ export function TransactionsManagement({
             />
           </label>
 
-          <label className="text-sm text-slate-700">
+          <label className="text-sm text-slate-700 dark:text-slate-300">
             <span className="mb-1 block font-medium">Status</span>
             <select
               value={filters.status}
@@ -364,7 +467,7 @@ export function TransactionsManagement({
             </select>
           </label>
 
-          <label className="text-sm text-slate-700">
+          <label className="text-sm text-slate-700 dark:text-slate-300">
             <span className="mb-1 block font-medium">Type</span>
             <select
               value={filters.type}
@@ -383,7 +486,7 @@ export function TransactionsManagement({
             </select>
           </label>
 
-          <label className="text-sm text-slate-700">
+          <label className="text-sm text-slate-700 dark:text-slate-300">
             <span className="mb-1 block font-medium">Category</span>
             <select
               value={filters.category}
@@ -409,7 +512,7 @@ export function TransactionsManagement({
           </label>
 
           {scope === "all" && policy !== "user" ? (
-            <label className="text-sm text-slate-700">
+            <label className="text-sm text-slate-700 dark:text-slate-300">
               <span className="mb-1 block font-medium">Paid by</span>
               <select
                 value={filters.paidBy}
@@ -432,7 +535,7 @@ export function TransactionsManagement({
             </label>
           ) : null}
 
-          <label className="text-sm text-slate-700">
+          <label className="text-sm text-slate-700 dark:text-slate-300">
             <span className="mb-1 block font-medium">Sort by</span>
             <select
               value={filters.sortBy}
@@ -453,7 +556,7 @@ export function TransactionsManagement({
             </select>
           </label>
 
-          <label className="text-sm text-slate-700">
+          <label className="text-sm text-slate-700 dark:text-slate-300">
             <span className="mb-1 block font-medium">Sort order</span>
             <select
               value={filters.sortOrder}
@@ -471,7 +574,7 @@ export function TransactionsManagement({
             </select>
           </label>
 
-          <label className="text-sm text-slate-700">
+          <label className="text-sm text-slate-700 dark:text-slate-300">
             <span className="mb-1 block font-medium">Page size</span>
             <select
               value={filters.pageSize}
@@ -492,74 +595,75 @@ export function TransactionsManagement({
         </div>
       </section>
 
-      <section className="app-table-shell">
-        <table className="w-full min-w-[980px] border-collapse text-sm">
-          <thead>
-            <tr className="bg-slate-100/80 text-left text-slate-700">
-              <th className="px-3 py-2">Name</th>
-              <th className="px-3 py-2">Paid By</th>
-              <th className="px-3 py-2">Amount</th>
-              <th className="px-3 py-2">Type</th>
-              <th className="px-3 py-2">Status</th>
-              <th className="px-3 py-2">Date</th>
-              <th className="px-3 py-2">Category</th>
-              <th className="px-3 py-2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
+      <SimpleTableRoot className="overflow-x-auto">
+        <table className="min-w-[980px] w-full">
+          <SimpleTableHeader>
+            <SimpleTableRow>
+              <SimpleTableHead>Name</SimpleTableHead>
+              <SimpleTableHead>Paid By</SimpleTableHead>
+              <SimpleTableHead>Created By</SimpleTableHead>
+              <SimpleTableHead>Updated By</SimpleTableHead>
+              <SimpleTableHead>Amount</SimpleTableHead>
+              <SimpleTableHead>Type</SimpleTableHead>
+              <SimpleTableHead>Status</SimpleTableHead>
+              <SimpleTableHead>Date</SimpleTableHead>
+              <SimpleTableHead>Category</SimpleTableHead>
+              <SimpleTableHead>Actions</SimpleTableHead>
+            </SimpleTableRow>
+          </SimpleTableHeader>
+          <SimpleTableBody>
             {isLoading ? (
-              <tr>
-                <td
-                  colSpan={8}
-                  className="px-3 py-4 text-center text-slate-500"
-                >
-                  Loading transactions...
-                </td>
-              </tr>
+              <SimpleTableEmpty
+                message="Loading transactions..."
+                colSpan={10}
+              />
             ) : transactions.length === 0 ? (
-              <tr>
-                <td
-                  colSpan={8}
-                  className="px-3 py-4 text-center text-slate-500"
-                >
-                  No transactions found.
-                </td>
-              </tr>
+              <SimpleTableEmpty message="No transactions found." colSpan={10} />
             ) : (
               transactions.map((transaction) => (
-                <tr
+                <SimpleTableRow
                   key={transaction.transaction_id}
-                  className="border-t border-slate-200 align-top"
+                  className="border-t border-slate-200 dark:border-white/10"
                 >
-                  <td className="px-3 py-2">
-                    <p className="font-medium text-slate-900">
+                  <SimpleTableCell>
+                    <p className="font-medium text-slate-900 dark:text-slate-100">
                       {transaction.name}
                     </p>
                     {transaction.transaction_remark ? (
-                      <p className="mt-0.5 text-xs text-slate-600">
+                      <p className="mt-0.5 text-xs text-slate-600 dark:text-slate-400">
                         {transaction.transaction_remark}
                       </p>
                     ) : null}
-                  </td>
-                  <td className="px-3 py-2 text-slate-700">
+                  </SimpleTableCell>
+                  <SimpleTableCell className="text-slate-700 dark:text-slate-300">
                     {transaction.paid_by_user_name ?? transaction.paid_by}
-                  </td>
-                  <td className="px-3 py-2 text-slate-700">
+                  </SimpleTableCell>
+                  <SimpleTableCell className="text-slate-700 dark:text-slate-300">
+                    {transaction.created_by_user_name ??
+                      transaction.created_by ??
+                      "-"}
+                  </SimpleTableCell>
+                  <SimpleTableCell className="text-slate-700 dark:text-slate-300">
+                    {transaction.updated_by_user_name ??
+                      transaction.updated_by ??
+                      "-"}
+                  </SimpleTableCell>
+                  <SimpleTableCell className="text-slate-700 dark:text-slate-300">
                     {formatCurrencyAmount(transaction.amount)}
-                  </td>
-                  <td className="px-3 py-2 text-slate-700">
+                  </SimpleTableCell>
+                  <SimpleTableCell className="text-slate-700 dark:text-slate-300">
                     {transaction.type}
-                  </td>
-                  <td className="px-3 py-2 text-slate-700">
+                  </SimpleTableCell>
+                  <SimpleTableCell className="text-slate-700 dark:text-slate-300">
                     {transaction.status}
-                  </td>
-                  <td className="px-3 py-2 text-slate-700">
+                  </SimpleTableCell>
+                  <SimpleTableCell className="text-slate-700 dark:text-slate-300">
                     {formatDateTime(transaction.created_at)}
-                  </td>
-                  <td className="px-3 py-2 text-slate-700">
+                  </SimpleTableCell>
+                  <SimpleTableCell className="text-slate-700 dark:text-slate-300">
                     {transaction.category_label ?? "Uncategorized"}
-                  </td>
-                  <td className="px-3 py-2">
+                  </SimpleTableCell>
+                  <SimpleTableCell>
                     <div className="flex flex-wrap gap-2">
                       {canEdit ? (
                         <Link
@@ -572,8 +676,7 @@ export function TransactionsManagement({
 
                       {canEdit && transaction.status === "pending" ? (
                         <>
-                          <button
-                            type="button"
+                          <Button
                             disabled={isMutating}
                             onClick={() =>
                               void onUpdateStatus(
@@ -581,12 +684,13 @@ export function TransactionsManagement({
                                 "completed",
                               )
                             }
-                            className="inline-flex items-center justify-center rounded-xl border border-emerald-300 px-2 py-1 text-xs font-medium text-emerald-700 transition hover:bg-emerald-50 disabled:opacity-60"
+                            variant="success"
+                            size="sm"
+                            className="text-xs"
                           >
                             Mark completed
-                          </button>
-                          <button
-                            type="button"
+                          </Button>
+                          <Button
                             disabled={isMutating}
                             onClick={() =>
                               void onUpdateStatus(
@@ -594,16 +698,17 @@ export function TransactionsManagement({
                                 "cancelled",
                               )
                             }
-                            className="inline-flex items-center justify-center rounded-xl border border-amber-300 px-2 py-1 text-xs font-medium text-amber-700 transition hover:bg-amber-50 disabled:opacity-60"
+                            variant="warning"
+                            size="sm"
+                            className="text-xs"
                           >
                             Cancel
-                          </button>
+                          </Button>
                         </>
                       ) : null}
 
                       {canDelete ? (
-                        <button
-                          type="button"
+                        <Button
                           disabled={isMutating}
                           onClick={() =>
                             setDeleteTarget({
@@ -611,45 +716,47 @@ export function TransactionsManagement({
                               name: transaction.name,
                             })
                           }
-                          className="inline-flex items-center justify-center rounded-xl border border-red-300 px-2 py-1 text-xs font-medium text-red-700 transition hover:bg-red-50 disabled:opacity-60"
+                          variant="danger"
+                          size="sm"
+                          className="text-xs"
                         >
                           Delete
-                        </button>
+                        </Button>
                       ) : null}
                     </div>
-                  </td>
-                </tr>
+                  </SimpleTableCell>
+                </SimpleTableRow>
               ))
             )}
-          </tbody>
+          </SimpleTableBody>
         </table>
-      </section>
+      </SimpleTableRoot>
 
-      <section className="app-surface flex items-center justify-between px-4 py-3 text-sm text-slate-700">
+      <section className="app-surface flex items-center justify-between px-4 py-3 text-sm text-slate-700 dark:text-slate-300">
         <span>
           Total: {total} transaction records | Page {currentPage} of {pageCount}
         </span>
         <div className="flex gap-2">
-          <button
-            type="button"
+          <Button
             disabled={currentPage <= 1 || isLoading}
             onClick={() =>
               setCurrentPage((previous) => Math.max(previous - 1, 1))
             }
-            className="app-button-secondary px-3 py-1.5"
+            variant="secondary"
+            size="sm"
           >
             Previous
-          </button>
-          <button
-            type="button"
+          </Button>
+          <Button
             disabled={currentPage >= pageCount || isLoading}
             onClick={() =>
               setCurrentPage((previous) => Math.min(previous + 1, pageCount))
             }
-            className="app-button-secondary px-3 py-1.5"
+            variant="secondary"
+            size="sm"
           >
             Next
-          </button>
+          </Button>
         </div>
       </section>
 

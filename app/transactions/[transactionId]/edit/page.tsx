@@ -19,8 +19,8 @@ export default async function EditTransactionPage(
     redirect("/login?callbackUrl=%2Ftransactions");
   }
 
-  if (session.user.policy === "user") {
-    redirect("/my-transactions");
+  if (session.user.policy !== "admin") {
+    redirect("/dashboard");
   }
 
   const { transactionId } = await props.params;

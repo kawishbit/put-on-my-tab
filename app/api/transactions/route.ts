@@ -113,6 +113,7 @@ export async function POST(request: Request): Promise<Response> {
 
     const created = await createSplitTransaction(
       payload as CreateSplitTransactionInput,
+      context.userId,
     );
     return ok(created, 201);
   } catch (error) {

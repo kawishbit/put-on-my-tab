@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { getProviders, signIn } from "next-auth/react";
 import { type FormEvent, useEffect, useState } from "react";
 
+import { Button } from "@/components/ui/button";
+
 type OauthAvailability = {
   google: boolean;
   github: boolean;
@@ -78,20 +80,20 @@ export default function LoginPage(): React.JSX.Element {
 
   return (
     <div className="w-full max-w-lg">
-      <section className="relative overflow-hidden rounded-3xl border border-white/70 bg-white/90 p-8 shadow-2xl shadow-slate-300/40 backdrop-blur">
-        <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-emerald-200/40 blur-2xl" />
+      <section className="relative overflow-hidden rounded-3xl border border-white/70 bg-white/90 p-8 shadow-2xl shadow-slate-300/40 backdrop-blur dark:border-white/8 dark:bg-slate-800/80 dark:shadow-black/30">
+        <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-emerald-200/40 blur-2xl dark:bg-emerald-500/10" />
 
-        <h1 className="font-heading text-3xl font-semibold text-slate-900">
+        <h1 className="font-heading text-3xl font-semibold text-slate-900 dark:text-slate-50">
           Welcome back
         </h1>
-        <p className="mt-2 text-sm text-slate-600">
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
           Sign in with your email and password provided by an admin.
         </p>
 
         <form onSubmit={onSubmit} className="mt-6 space-y-4">
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-slate-700"
+            className="block text-sm font-medium text-slate-700 dark:text-slate-300"
           >
             Email
           </label>
@@ -108,7 +110,7 @@ export default function LoginPage(): React.JSX.Element {
 
           <label
             htmlFor="password"
-            className="block text-sm font-medium text-slate-700"
+            className="block text-sm font-medium text-slate-700 dark:text-slate-300"
           >
             Password
           </label>
@@ -125,50 +127,46 @@ export default function LoginPage(): React.JSX.Element {
 
           {error ? <p className="app-alert-error">{error}</p> : null}
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="app-button-primary w-full"
-          >
+          <Button type="submit" disabled={isSubmitting} className="w-full">
             {isSubmitting ? "Signing in..." : "Sign in"}
-          </button>
+          </Button>
         </form>
 
         {oauthAvailability.google || oauthAvailability.github ? (
           <div className="mt-5 space-y-2">
-            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+            <p className="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
               Or continue with
             </p>
 
             {oauthAvailability.google ? (
-              <button
-                type="button"
+              <Button
                 onClick={() => void signIn("google", { callbackUrl })}
-                className="app-button-secondary w-full"
+                variant="secondary"
+                className="w-full"
               >
                 Sign in with Google
-              </button>
+              </Button>
             ) : null}
 
             {oauthAvailability.github ? (
-              <button
-                type="button"
+              <Button
                 onClick={() => void signIn("github", { callbackUrl })}
-                className="app-button-secondary w-full"
+                variant="secondary"
+                className="w-full"
               >
                 Sign in with GitHub
-              </button>
+              </Button>
             ) : null}
           </div>
         ) : null}
 
-        <p className="mt-5 text-sm text-slate-600">
+        <p className="mt-5 text-sm text-slate-600 dark:text-slate-400">
           Need access? Contact your admin to create your account.
         </p>
-        <p className="mt-2 text-sm text-slate-600">
+        <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
           <Link
             href="/"
-            className="font-medium text-slate-800 underline underline-offset-2"
+            className="font-medium text-slate-800 underline underline-offset-2 dark:text-slate-200"
           >
             Back to home
           </Link>

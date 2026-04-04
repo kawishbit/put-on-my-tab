@@ -62,14 +62,18 @@ export async function PATCH(
 
     const payload = await parseJson(request, updateUserSchema);
 
-    const updatedUser = await updateUser(userId, {
-      name: payload.name,
-      email: payload.email,
-      password: payload.password,
-      avatar: payload.avatar,
-      remarks: payload.remarks,
-      policy: payload.policy,
-    });
+    const updatedUser = await updateUser(
+      userId,
+      {
+        name: payload.name,
+        email: payload.email,
+        password: payload.password,
+        avatar: payload.avatar,
+        remarks: payload.remarks,
+        policy: payload.policy,
+      },
+      requestContext.userId,
+    );
 
     return ok(updatedUser);
   } catch (error) {
@@ -88,7 +92,7 @@ export async function DELETE(
     const { userId: rawUserId } = await context.params;
     const userId = parseUserId(rawUserId);
 
-    await deleteUser(userId);
+    await deleteUser(userId, requestContext.userId);
 
     return noContent();
   } catch (error) {

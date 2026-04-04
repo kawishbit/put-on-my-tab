@@ -37,17 +37,20 @@ export async function POST(request: Request): Promise<Response> {
     requirePolicy(context, ["admin"]);
 
     const payload = await parseJson(request, createUserSchema);
-    const user = await createUser({
-      name: payload.name,
-      email: payload.email,
-      password: payload.password,
-      avatar: payload.avatar ?? null,
-      current_balance: 0,
-      last_login_date: null,
-      is_deleted: false,
-      remarks: payload.remarks ?? null,
-      policy: payload.policy,
-    });
+    const user = await createUser(
+      {
+        name: payload.name,
+        email: payload.email,
+        password: payload.password,
+        avatar: payload.avatar ?? null,
+        current_balance: 0,
+        last_login_date: null,
+        is_deleted: false,
+        remarks: payload.remarks ?? null,
+        policy: payload.policy,
+      },
+      context.userId,
+    );
 
     return ok(user, 201);
   } catch (error) {

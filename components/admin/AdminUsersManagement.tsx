@@ -4,7 +4,16 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
 
+import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
+import {
+  SimpleTableBody,
+  SimpleTableCell,
+  SimpleTableHead,
+  SimpleTableHeader,
+  SimpleTableRoot,
+  SimpleTableRow,
+} from "@/components/ui/simple-table-core";
 import type { PublicUser, UserPolicy } from "@/types/database";
 
 type ApiSuccess<TData> = {
@@ -66,10 +75,23 @@ function toNullableString(value: string): string | null {
   return trimmed.length > 0 ? trimmed : null;
 }
 
+function getDownloadFileName(
+  contentDisposition: string | null,
+  fallbackName: string,
+): string {
+  if (!contentDisposition) {
+    return fallbackName;
+  }
+
+  const match = contentDisposition.match(/filename="?([^";]+)"?/i);
+  return match?.[1] ?? fallbackName;
+}
+
 export function AdminUsersManagement(): React.JSX.Element {
   const [users, setUsers] = useState<PublicUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const [createForm, setCreateForm] =
     useState<CreateFormState>(INITIAL_CREATE_FORM);
   const [editForm, setEditForm] = useState<EditFormState | null>(null);
@@ -300,6 +322,44 @@ export function AdminUsersManagement(): React.JSX.Element {
     toast.success("Password reset successfully.");
   }
 
+  async function onExportCsv(): Promise<void> {
+    setIsExporting(true);
+
+    const response = await fetch("/api/users/export", {
+      method: "GET",
+    });
+
+    if (!response.ok) {
+      const contentType = response.headers.get("content-type") ?? "";
+
+      if (contentType.includes("application/json")) {
+        const payload = (await response.json()) as ApiErrorResponse;
+        toast.error(getApiErrorMessage(payload, "Failed to export users CSV."));
+      } else {
+        toast.error("Failed to export users CSV.");
+      }
+
+      setIsExporting(false);
+      return;
+    }
+
+    const blob = await response.blob();
+    const downloadUrl = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    const today = new Date().toISOString().slice(0, 10);
+
+    link.href = downloadUrl;
+    link.download = getDownloadFileName(
+      response.headers.get("content-disposition"),
+      `users-${today}.csv`,
+    );
+    link.click();
+
+    URL.revokeObjectURL(downloadUrl);
+    setIsExporting(false);
+    toast.success("Users CSV downloaded.");
+  }
+
   return (
     <div className="mx-auto w-full max-w-6xl space-y-6">
       <header className="space-y-2">
@@ -324,7 +384,9 @@ export function AdminUsersManagement(): React.JSX.Element {
       </header>
 
       <section className="app-surface">
-        <h2 className="text-lg font-semibold text-slate-900">Create User</h2>
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+          Create User
+        </h2>
 
         <form
           onSubmit={onCreateUser}
@@ -333,7 +395,7 @@ export function AdminUsersManagement(): React.JSX.Element {
           <div>
             <label
               htmlFor="create-name"
-              className="text-sm font-medium text-slate-700"
+              className="text-sm font-medium text-slate-700 dark:text-slate-300"
             >
               Name
             </label>
@@ -354,7 +416,7 @@ export function AdminUsersManagement(): React.JSX.Element {
           <div>
             <label
               htmlFor="create-email"
-              className="text-sm font-medium text-slate-700"
+              className="text-sm font-medium text-slate-700 dark:text-slate-300"
             >
               Email
             </label>
@@ -376,7 +438,7 @@ export function AdminUsersManagement(): React.JSX.Element {
           <div>
             <label
               htmlFor="create-password"
-              className="text-sm font-medium text-slate-700"
+              className="text-sm font-medium text-slate-700 dark:text-slate-300"
             >
               Temporary Password
             </label>
@@ -400,7 +462,7 @@ export function AdminUsersManagement(): React.JSX.Element {
           <div>
             <label
               htmlFor="create-policy"
-              className="text-sm font-medium text-slate-700"
+              className="text-sm font-medium text-slate-700 dark:text-slate-300"
             >
               Policy
             </label>
@@ -424,7 +486,7 @@ export function AdminUsersManagement(): React.JSX.Element {
           <div>
             <label
               htmlFor="create-avatar"
-              className="text-sm font-medium text-slate-700"
+              className="text-sm font-medium text-slate-700 dark:text-slate-300"
             >
               Avatar URL (optional)
             </label>
@@ -444,7 +506,7 @@ export function AdminUsersManagement(): React.JSX.Element {
           <div>
             <label
               htmlFor="create-remarks"
-              className="text-sm font-medium text-slate-700"
+              className="text-sm font-medium text-slate-700 dark:text-slate-300"
             >
               Remarks (optional)
             </label>
@@ -462,27 +524,35 @@ export function AdminUsersManagement(): React.JSX.Element {
           </div>
 
           <div className="md:col-span-2">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="app-button-primary"
-            >
+            <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? "Saving..." : "Create user"}
-            </button>
+            </Button>
           </div>
         </form>
       </section>
 
       <section className="app-surface">
         <div className="flex items-center justify-between gap-3">
-          <h2 className="text-lg font-semibold text-slate-900">All Users</h2>
-          <button
-            type="button"
-            onClick={() => void loadUsers()}
-            className="app-button-secondary px-3 py-1.5"
-          >
-            Refresh
-          </button>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+            All Users
+          </h2>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              onClick={() => void onExportCsv()}
+              variant="secondary"
+              size="sm"
+              disabled={isExporting}
+            >
+              {isExporting ? "Exporting..." : "Download CSV"}
+            </Button>
+            <Button
+              onClick={() => void loadUsers()}
+              variant="secondary"
+              size="sm"
+            >
+              Refresh
+            </Button>
+          </div>
         </div>
 
         {isLoading ? (
@@ -490,79 +560,90 @@ export function AdminUsersManagement(): React.JSX.Element {
         ) : users.length === 0 ? (
           <p className="mt-4 text-sm text-slate-600">No users found.</p>
         ) : (
-          <div className="mt-4 overflow-x-auto">
-            <table className="min-w-full border-collapse text-sm">
-              <thead>
-                <tr className="border-b border-slate-200 bg-slate-100/80 text-left text-slate-600">
-                  <th className="px-2 py-2 font-medium">Name</th>
-                  <th className="px-2 py-2 font-medium">Email</th>
-                  <th className="px-2 py-2 font-medium">Policy</th>
-                  <th className="px-2 py-2 font-medium">Balance</th>
-                  <th className="px-2 py-2 font-medium">Created</th>
-                  <th className="px-2 py-2 font-medium">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
+          <SimpleTableRoot className="mt-4 overflow-x-auto">
+            <table className="min-w-full text-sm">
+              <SimpleTableHeader>
+                <SimpleTableRow className="border-b border-slate-200 dark:border-white/10">
+                  <SimpleTableHead className="px-2">Name</SimpleTableHead>
+                  <SimpleTableHead className="px-2">Email</SimpleTableHead>
+                  <SimpleTableHead className="px-2">Policy</SimpleTableHead>
+                  <SimpleTableHead className="px-2">Balance</SimpleTableHead>
+                  <SimpleTableHead className="px-2">Created</SimpleTableHead>
+                  <SimpleTableHead className="px-2">Actions</SimpleTableHead>
+                </SimpleTableRow>
+              </SimpleTableHeader>
+              <SimpleTableBody>
                 {users.map((user) => (
-                  <tr
+                  <SimpleTableRow
                     key={user.user_id}
-                    className="border-b border-slate-100 align-top"
+                    className="border-b border-slate-100 dark:border-white/8"
                   >
-                    <td className="px-2 py-2 text-slate-900">{user.name}</td>
-                    <td className="px-2 py-2 text-slate-700">{user.email}</td>
-                    <td className="px-2 py-2 text-slate-700">{user.policy}</td>
-                    <td className="px-2 py-2 text-slate-700">
+                    <SimpleTableCell className="px-2 text-slate-900 dark:text-slate-100">
+                      {user.name}
+                    </SimpleTableCell>
+                    <SimpleTableCell className="px-2 text-slate-700 dark:text-slate-300">
+                      {user.email}
+                    </SimpleTableCell>
+                    <SimpleTableCell className="px-2 text-slate-700 dark:text-slate-300">
+                      {user.policy}
+                    </SimpleTableCell>
+                    <SimpleTableCell className="px-2 text-slate-700 dark:text-slate-300">
                       {user.current_balance}
-                    </td>
-                    <td className="px-2 py-2 text-slate-700">
+                    </SimpleTableCell>
+                    <SimpleTableCell className="px-2 text-slate-700 dark:text-slate-300">
                       {new Date(user.created_at).toLocaleDateString()}
-                    </td>
-                    <td className="px-2 py-2">
+                    </SimpleTableCell>
+                    <SimpleTableCell className="px-2">
                       <div className="flex flex-wrap gap-2">
-                        <button
-                          type="button"
+                        <Button
                           onClick={() => startEdit(user)}
-                          className="app-button-secondary px-3 py-1.5 text-xs"
+                          variant="secondary"
+                          size="sm"
+                          className="text-xs"
                         >
                           Edit
-                        </button>
-                        <button
-                          type="button"
+                        </Button>
+                        <Button
                           onClick={() => {
                             setError(null);
                             setResetTargetUserId(user.user_id);
                             setResetPassword("");
                           }}
-                          className="app-button-secondary px-3 py-1.5 text-xs"
+                          variant="info"
+                          size="sm"
+                          className="text-xs"
                         >
                           Reset password
-                        </button>
+                        </Button>
                         {user.policy !== "admin" ? (
-                          <button
-                            type="button"
+                          <Button
                             onClick={() => setDeleteTargetUserId(user.user_id)}
-                            className="inline-flex items-center justify-center rounded-xl border border-red-300 bg-white px-3 py-1.5 text-xs font-medium text-red-700 transition hover:bg-red-50"
+                            variant="danger"
+                            size="sm"
+                            className="text-xs"
                           >
                             Delete
-                          </button>
+                          </Button>
                         ) : (
-                          <span className="px-3 py-1.5 text-xs font-medium text-slate-500">
+                          <span className="px-3 py-1.5 text-xs font-medium text-slate-500 dark:text-slate-400">
                             Protected admin
                           </span>
                         )}
                       </div>
-                    </td>
-                  </tr>
+                    </SimpleTableCell>
+                  </SimpleTableRow>
                 ))}
-              </tbody>
+              </SimpleTableBody>
             </table>
-          </div>
+          </SimpleTableRoot>
         )}
       </section>
 
       {editForm ? (
         <section className="app-surface">
-          <h2 className="text-lg font-semibold text-slate-900">Edit User</h2>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
+            Edit User
+          </h2>
           <p className="mt-1 text-sm text-slate-600">
             Editing {userById.get(editForm.userId)?.email}
           </p>
@@ -574,7 +655,7 @@ export function AdminUsersManagement(): React.JSX.Element {
             <div>
               <label
                 htmlFor="edit-name"
-                className="text-sm font-medium text-slate-700"
+                className="text-sm font-medium text-slate-700 dark:text-slate-300"
               >
                 Name
               </label>
@@ -596,7 +677,7 @@ export function AdminUsersManagement(): React.JSX.Element {
             <div>
               <label
                 htmlFor="edit-email"
-                className="text-sm font-medium text-slate-700"
+                className="text-sm font-medium text-slate-700 dark:text-slate-300"
               >
                 Email
               </label>
@@ -619,7 +700,7 @@ export function AdminUsersManagement(): React.JSX.Element {
             <div>
               <label
                 htmlFor="edit-policy"
-                className="text-sm font-medium text-slate-700"
+                className="text-sm font-medium text-slate-700 dark:text-slate-300"
               >
                 Policy
               </label>
@@ -647,7 +728,7 @@ export function AdminUsersManagement(): React.JSX.Element {
             <div>
               <label
                 htmlFor="edit-avatar"
-                className="text-sm font-medium text-slate-700"
+                className="text-sm font-medium text-slate-700 dark:text-slate-300"
               >
                 Avatar URL (optional)
               </label>
@@ -668,7 +749,7 @@ export function AdminUsersManagement(): React.JSX.Element {
             <div>
               <label
                 htmlFor="edit-remarks"
-                className="text-sm font-medium text-slate-700"
+                className="text-sm font-medium text-slate-700 dark:text-slate-300"
               >
                 Remarks (optional)
               </label>
@@ -689,7 +770,7 @@ export function AdminUsersManagement(): React.JSX.Element {
             <div>
               <label
                 htmlFor="edit-new-password"
-                className="text-sm font-medium text-slate-700"
+                className="text-sm font-medium text-slate-700 dark:text-slate-300"
               >
                 New password (optional)
               </label>
@@ -714,20 +795,12 @@ export function AdminUsersManagement(): React.JSX.Element {
             </div>
 
             <div className="md:col-span-2 flex flex-wrap gap-2">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="app-button-primary"
-              >
+              <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting ? "Saving..." : "Save changes"}
-              </button>
-              <button
-                type="button"
-                onClick={() => setEditForm(null)}
-                className="app-button-secondary"
-              >
+              </Button>
+              <Button onClick={() => setEditForm(null)} variant="secondary">
                 Cancel
-              </button>
+              </Button>
             </div>
           </form>
         </section>
@@ -735,7 +808,7 @@ export function AdminUsersManagement(): React.JSX.Element {
 
       {resetTargetUserId ? (
         <section className="app-surface">
-          <h2 className="text-lg font-semibold text-slate-900">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-100">
             Reset User Password
           </h2>
           <p className="mt-1 text-sm text-slate-600">
@@ -749,7 +822,7 @@ export function AdminUsersManagement(): React.JSX.Element {
             <div>
               <label
                 htmlFor="reset-password"
-                className="text-sm font-medium text-slate-700"
+                className="text-sm font-medium text-slate-700 dark:text-slate-300"
               >
                 New password
               </label>
@@ -766,23 +839,18 @@ export function AdminUsersManagement(): React.JSX.Element {
             </div>
 
             <div className="flex flex-wrap gap-2">
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="app-button-primary"
-              >
+              <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting ? "Updating..." : "Reset password"}
-              </button>
-              <button
-                type="button"
+              </Button>
+              <Button
                 onClick={() => {
                   setResetTargetUserId(null);
                   setResetPassword("");
                 }}
-                className="app-button-secondary"
+                variant="secondary"
               >
                 Cancel
-              </button>
+              </Button>
             </div>
           </form>
         </section>

@@ -41,6 +41,10 @@ export interface SplitTransactionCreationResult {
 export interface TransactionListItem extends Transaction {
   paid_by_user_name: string | null;
   paid_by_user_email: string | null;
+  created_by_user_name: string | null;
+  created_by_user_email: string | null;
+  updated_by_user_name: string | null;
+  updated_by_user_email: string | null;
   category_label: string | null;
 }
 
@@ -61,6 +65,11 @@ export interface ListTransactionsInput {
   pageSize?: number;
   sortBy?: "created_at" | "amount" | "name" | "status" | "type";
   sortOrder?: "asc" | "desc";
+}
+
+export interface ListTransactionsExportResult {
+  items: TransactionListItem[];
+  total: number;
 }
 
 export interface UpdateSplitTransactionInput {
@@ -143,7 +152,13 @@ async function getTransactionsByGroupKey(
 async function mapTransactionRows(
   rows: Transaction[],
 ): Promise<TransactionListItem[]> {
-  const paidByIds = Array.from(new Set(rows.map((row) => row.paid_by)));
+  const relatedUserIds = Array.from(
+    new Set(
+      rows
+        .flatMap((row) => [row.paid_by, row.created_by, row.updated_by])
+        .filter((value): value is string => Boolean(value)),
+    ),
+  );
   const categoryIds = Array.from(
     new Set(
       rows
@@ -153,11 +168,11 @@ async function mapTransactionRows(
   );
 
   const [usersResult, categoriesResult] = await Promise.all([
-    paidByIds.length > 0
+    relatedUserIds.length > 0
       ? supabase
           .from("users")
           .select("user_id,name,email")
-          .in("user_id", paidByIds)
+          .in("user_id", relatedUserIds)
       : Promise.resolve({ data: [] as UserLookupRow[], error: null }),
     categoryIds.length > 0
       ? supabase
@@ -197,12 +212,18 @@ async function mapTransactionRows(
 
   return rows.map((row) => {
     const paidByUser = usersById.get(row.paid_by);
+    const createdByUser = row.created_by ? usersById.get(row.created_by) : null;
+    const updatedByUser = row.updated_by ? usersById.get(row.updated_by) : null;
     const category = row.category ? categoriesById.get(row.category) : null;
 
     return {
       ...row,
       paid_by_user_name: paidByUser?.name ?? null,
       paid_by_user_email: paidByUser?.email ?? null,
+      created_by_user_name: createdByUser?.name ?? null,
+      created_by_user_email: createdByUser?.email ?? null,
+      updated_by_user_name: updatedByUser?.name ?? null,
+      updated_by_user_email: updatedByUser?.email ?? null,
       category_label: category?.label ?? null,
     };
   });
@@ -270,8 +291,55 @@ export async function listTransactions(filters?: {
   };
 }
 
+export async function listTransactionsForExport(
+  filters?: ListTransactionsInput,
+): Promise<ListTransactionsExportResult> {
+  const sortBy = filters?.sortBy ?? "created_at";
+  const sortOrder = filters?.sortOrder ?? "desc";
+
+  let query = supabase
+    .from("transactions")
+    .select("*", { count: "exact" })
+    .eq("is_deleted", false)
+    .order(sortBy, { ascending: sortOrder === "asc" });
+
+  if (filters?.paidBy) {
+    query = query.eq("paid_by", filters.paidBy);
+  }
+
+  if (filters?.status) {
+    query = query.eq("status", filters.status);
+  }
+
+  if (filters?.type) {
+    query = query.eq("type", filters.type);
+  }
+
+  if (filters?.category) {
+    query = query.eq("category", filters.category);
+  }
+
+  if (filters?.search) {
+    query = query.ilike("name", `%${filters.search.trim()}%`);
+  }
+
+  const { data, count, error } = await query;
+
+  if (error) {
+    throw new ApiError(500, "transactions_fetch_failed", error.message, error);
+  }
+
+  const items = await mapTransactionRows(data ?? []);
+
+  return {
+    items,
+    total: count ?? 0,
+  };
+}
+
 export async function createSplitTransaction(
   input: CreateSplitTransactionInput,
+  actorUserId: string,
 ): Promise<SplitTransactionCreationResult> {
   const { data: rpcResult, error: rpcError } = await supabase.rpc(
     "create_split_transaction",
@@ -283,6 +351,7 @@ export async function createSplitTransaction(
       p_parties: input.partiesInvolved,
       p_category: input.category ?? null,
       p_status: input.status ?? "completed",
+      p_actor_user_id: actorUserId,
     } as never,
   );
 
@@ -377,6 +446,7 @@ export async function getSplitTransactionEditDetails(
 export async function updateSplitTransaction(
   transactionId: string,
   input: UpdateSplitTransactionInput,
+  actorUserId: string,
 ): Promise<SplitTransactionCreationResult> {
   const { data: rpcResult, error: rpcError } = await supabase.rpc(
     "update_split_transaction",
@@ -389,6 +459,7 @@ export async function updateSplitTransaction(
       p_parties: input.partiesInvolved,
       p_category: input.category ?? null,
       p_status: input.status,
+      p_actor_user_id: actorUserId,
     } as never,
   );
 
@@ -420,9 +491,13 @@ export async function updateSplitTransaction(
   };
 }
 
-export async function deleteTransaction(transactionId: string): Promise<void> {
+export async function deleteTransaction(
+  transactionId: string,
+  actorUserId: string,
+): Promise<void> {
   const { error } = await supabase.rpc("soft_delete_transaction_group", {
     p_transaction_id: transactionId,
+    p_actor_user_id: actorUserId,
   } as never);
 
   if (error) {
@@ -433,10 +508,12 @@ export async function deleteTransaction(transactionId: string): Promise<void> {
 export async function updateTransactionStatus(
   transactionId: string,
   status: TransactionStatus,
+  actorUserId: string,
 ): Promise<SplitTransactionEditDetails> {
   const { error } = await supabase.rpc("update_transaction_group_status", {
     p_transaction_id: transactionId,
     p_status: status,
+    p_actor_user_id: actorUserId,
   } as never);
 
   if (error) {

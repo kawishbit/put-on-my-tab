@@ -423,6 +423,8 @@ export async function getUserDashboardData(
     throw new ApiError(404, "user_not_found", "User was not found");
   }
 
+  const userBalance = userResult.data as { current_balance: number };
+
   if (transactionsResult.error) {
     throw new ApiError(
       500,
@@ -519,7 +521,7 @@ export async function getUserDashboardData(
 
   return {
     summary: {
-      currentBalance: Number(userResult.data.current_balance ?? 0),
+      currentBalance: Number(userBalance.current_balance ?? 0),
     },
     monthlyExpenditure,
     recentTransactions,
