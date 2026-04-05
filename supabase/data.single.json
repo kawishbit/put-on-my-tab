@@ -1,0 +1,353 @@
+[
+  {
+    "name": "Bayu CIMB Transfer Rp7.150.000,00",
+    "transactionDate": "2025-11-01",
+    "amount": 7150000,
+    "paidBy": "Bayu",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Rent 3 months Cashback",
+    "transactionDate": "2025-11-30",
+    "amount": 3000000,
+    "paidBy": "Bayu",
+    "type": "withdraw",
+    "status": "completed",
+    "category": "Rent"
+  },
+  {
+    "name": "Bayu CIMB Transfer Rp12.700.000,00",
+    "transactionDate": "2025-12-05",
+    "amount": 12700000,
+    "paidBy": "Bayu",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Yudi CIMB Transfer",
+    "transactionDate": "2025-09-17",
+    "amount": 300000,
+    "paidBy": "Yudi",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Yudi CIMB Transfer Rp3.000.000,00",
+    "transactionDate": "2025-10-28",
+    "amount": 3000000,
+    "paidBy": "Yudi",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Yudi CIMB Transfer Rp2.500.000,00",
+    "transactionDate": "2025-11-16",
+    "amount": 2500000,
+    "paidBy": "Yudi",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Yudi CIMB Transfer Rp7.000.000,00",
+    "transactionDate": "2025-12-05",
+    "amount": 7000000,
+    "paidBy": "Yudi",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2023-11-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2023-12-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2024-01-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2024-02-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2024-03-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2024-04-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2024-05-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2024-06-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2024-07-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2024-08-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2024-09-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2024-10-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2024-11-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2024-12-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2025-01-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2025-02-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2025-03-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2025-04-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2025-05-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2025-06-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2025-07-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2025-08-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2025-09-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2025-10-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2025-11-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2025-12-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2026-01-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2026-02-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2026-03-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Dilshad GoPay Jago 40000",
+    "transactionDate": "2026-04-05",
+    "amount": 40000,
+    "paidBy": "Dilshad",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Yahya Jago 374070",
+    "transactionDate": "2025-05-08",
+    "amount": 374070,
+    "paidBy": "Yahya",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  },
+  {
+    "name": "Ibnu Server PC Deposit",
+    "transactionDate": "2026-03-22",
+    "amount": 657000,
+    "paidBy": "Ibnu",
+    "type": "deposit",
+    "status": "completed",
+    "category": "Miscellaneous"
+  }
+]

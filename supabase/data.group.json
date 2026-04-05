@@ -1,0 +1,2089 @@
+[
+  {
+    "name": "CGV theatre tickets (The Exit 8)",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-14",
+    "amount": 110000,
+    "paidBy": "Reyn",
+    "category": "Entertainment",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "CGV popcorns",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-14",
+    "amount": 127000,
+    "paidBy": "Reyn",
+    "category": "Food",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Ta Wan lunch (Rey,Kawish){Rey} Rp232.100,00 =O7+N8",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-14",
+    "amount": 232100,
+    "paidBy": "Reyn",
+    "category": "Food",
+    "partiesInvolved": ["Kawish"],
+    "party_splits": {
+      "Reyn": 101750,
+      "Kawish": 130350
+    }
+  },
+  {
+    "name": "1 Le Minerale Gallon",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-20",
+    "amount": 25000,
+    "paidBy": "Bayu",
+    "category": "Food",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "2 Aqua Gallons",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-24",
+    "amount": 42000,
+    "paidBy": "Kawish",
+    "category": "Food",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "GrabFood - Salero Bana Malabar",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-04",
+    "amount": 38000,
+    "paidBy": "Kawish",
+    "category": "Food",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "2 Aqua Gallons",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-06",
+    "amount": 42000,
+    "paidBy": "Kawish",
+    "category": "Food",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "GrabFood - Unknown",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-10",
+    "amount": 46410,
+    "paidBy": "Kawish",
+    "category": "Food",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "2 Aqua Gallons",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-16",
+    "amount": 42000,
+    "paidBy": "Kawish",
+    "category": "Food",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "GrabFood - Juru Sambal",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-20",
+    "amount": 37940,
+    "paidBy": "Bayu",
+    "category": "Food",
+    "partiesInvolved": ["Kawish"],
+    "party_splits": {
+      "Bayu": 20487,
+      "Kawish": 17453
+    }
+  },
+  {
+    "name": "GrabFood - Juru Sambal",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-22",
+    "amount": 37940,
+    "paidBy": "Kawish",
+    "category": "Food",
+    "partiesInvolved": ["Bayu"],
+    "party_splits": {
+      "Bayu": 20487,
+      "Kawish": 17453
+    }
+  },
+  {
+    "name": "GrabFood - Juru Sambal",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-23",
+    "amount": 37940,
+    "paidBy": "Kawish",
+    "category": "Food",
+    "partiesInvolved": ["Bayu"],
+    "party_splits": {
+      "Bayu": 20487,
+      "Kawish": 17453
+    }
+  },
+  {
+    "name": "2 Aqua Gallons",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-11",
+    "amount": 42000,
+    "paidBy": "Yudi",
+    "category": "Food",
+    "partiesInvolved": ["Bayu", "Kawish"]
+  },
+  {
+    "name": "2 Aqua Gallons",
+    "transactionRemark": "",
+    "transaction_date": "2025-12-08",
+    "amount": 42000,
+    "paidBy": "Yudi",
+    "category": "Food",
+    "partiesInvolved": ["Bayu", "Kawish"]
+  },
+  {
+    "name": "2 Aqua Gallons",
+    "transactionRemark": "",
+    "transaction_date": "2026-01-01",
+    "amount": 42000,
+    "paidBy": "Yudi",
+    "category": "Food",
+    "partiesInvolved": ["Bayu", "Kawish"]
+  },
+  {
+    "name": "2 Aqua Gallons",
+    "transactionRemark": "",
+    "transaction_date": "2025-12-20",
+    "amount": 42000,
+    "paidBy": "Yudi",
+    "category": "Food",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "2 Aqua Gallons",
+    "transactionRemark": "",
+    "transaction_date": "2026-01-08",
+    "amount": 42000,
+    "paidBy": "Yudi",
+    "category": "Food",
+    "partiesInvolved": ["Bayu", "Kawish"]
+  },
+  {
+    "name": "Banana",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-20",
+    "amount": 45100,
+    "paidBy": "Kawish",
+    "category": "Food",
+    "partiesInvolved": ["Yudi"]
+  },
+  {
+    "name": "Pecal",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-25",
+    "amount": 36000,
+    "paidBy": "Yudi",
+    "category": "Food",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Pecal",
+    "transactionRemark": "",
+    "transaction_date": "2025-12-02",
+    "amount": 36000,
+    "paidBy": "Kawish",
+    "category": "Food",
+    "partiesInvolved": ["Yudi"]
+  },
+  {
+    "name": "Pecal",
+    "transactionRemark": "",
+    "transaction_date": "2025-12-13",
+    "amount": 36000,
+    "paidBy": "Yudi",
+    "category": "Food",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "2 Aqua Gallons",
+    "transactionRemark": "",
+    "transaction_date": "2026-02-08",
+    "amount": 42000,
+    "paidBy": "Kawish",
+    "category": "Food",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "2 Aqua Gallons",
+    "transactionRemark": "",
+    "transaction_date": "2026-01-21",
+    "amount": 42000,
+    "paidBy": "Kawish",
+    "category": "Food",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "2 Aqua Gallons",
+    "transactionRemark": "",
+    "transaction_date": "2026-02-23",
+    "amount": 50600,
+    "paidBy": "Yudi",
+    "category": "Food",
+    "partiesInvolved": ["Bayu", "Kawish"]
+  },
+  {
+    "name": "2 Aqua Gallons",
+    "transactionRemark": "",
+    "transaction_date": "2026-02-15",
+    "amount": 50600,
+    "paidBy": "Kawish",
+    "category": "Food",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "2 Aqua Gallons",
+    "transactionRemark": "",
+    "transaction_date": "2026-03-04",
+    "amount": 50600,
+    "paidBy": "Kawish",
+    "category": "Food",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "2 Aqua Gallons",
+    "transactionRemark": "",
+    "transaction_date": "2026-03-13",
+    "amount": 50600,
+    "paidBy": "Bayu",
+    "category": "Food",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "KFC Dinner",
+    "transactionRemark": "",
+    "transaction_date": "2026-03-13",
+    "amount": 80000,
+    "paidBy": "Kawish",
+    "category": "Food",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Pocari Sweat",
+    "transactionRemark": "",
+    "transaction_date": "2026-03-13",
+    "amount": 20000,
+    "paidBy": "Yudi",
+    "category": "Food",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Si Mantan",
+    "transactionRemark": "",
+    "transaction_date": "2026-02-14",
+    "amount": 363400,
+    "paidBy": "Kawish",
+    "category": "Food",
+    "partiesInvolved": ["Yudi", "Bayu"],
+    "party_splits": {
+      "Kawish": 126500,
+      "Bayu": 144900,
+      "Yudi": 92000
+    }
+  },
+  {
+    "name": "Rent for November 2025",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-01",
+    "amount": 9500000,
+    "paidBy": "Kawish",
+    "category": "Rent",
+    "partiesInvolved": ["Bayu", "Yudi"],
+    "party_splits": {
+      "Kawish": 3800000,
+      "Bayu": 3325000,
+      "Yudi": 2375000
+    }
+  },
+  {
+    "name": "Rent Fee September 2025",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-25",
+    "amount": 150000,
+    "paidBy": "Bayu",
+    "category": "Rent",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "Rent for October 2025",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-30",
+    "amount": 9500000,
+    "paidBy": "Kawish",
+    "category": "Rent",
+    "partiesInvolved": ["Bayu", "Yudi"],
+    "party_splits": {
+      "Kawish": 3800000,
+      "Bayu": 3325000,
+      "Yudi": 2375000
+    }
+  },
+  {
+    "name": "Rent for December 2025 - February 2026",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-30",
+    "amount": 28500000,
+    "paidBy": "Kawish",
+    "category": "Rent",
+    "partiesInvolved": ["Bayu", "Yudi"],
+    "party_splits": {
+      "Kawish": 11400000,
+      "Bayu": 9975000,
+      "Yudi": 7125000
+    }
+  },
+  {
+    "name": "Rent for March 2026 - May 2026",
+    "transactionRemark": "",
+    "transaction_date": "2026-03-01",
+    "amount": 28500000,
+    "paidBy": "Kawish",
+    "category": "Rent",
+    "partiesInvolved": ["Bayu", "Yudi"],
+    "party_splits": {
+      "Kawish": 11400000,
+      "Bayu": 9975000,
+      "Yudi": 7125000
+    }
+  },
+  {
+    "name": "YOGYA rice cooker",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-14",
+    "amount": 309900,
+    "paidBy": "Kawish",
+    "category": "Shopping",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "YOGYA nice face tissue",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-14",
+    "amount": 36900,
+    "paidBy": "Kawish",
+    "category": "Shopping",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Rice Container",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-14",
+    "amount": 93690,
+    "paidBy": "Kawish",
+    "category": "Shopping",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Electric Kettle",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-14",
+    "amount": 60000,
+    "paidBy": "Bayu",
+    "category": "Shopping",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "Broom",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-28",
+    "amount": 46500,
+    "paidBy": "Kawish",
+    "category": "Shopping",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Colander",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-28",
+    "amount": 32500,
+    "paidBy": "Kawish",
+    "category": "Shopping",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Fork & Spoon",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-28",
+    "amount": 29000,
+    "paidBy": "Kawish",
+    "category": "Shopping",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Foldable Broom",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-28",
+    "amount": 74500,
+    "paidBy": "Kawish",
+    "category": "Shopping",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "YOGYA salt container",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-04",
+    "amount": 15000,
+    "paidBy": "Kawish",
+    "category": "Shopping",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "MR DIY Kettle",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-04",
+    "amount": 42000,
+    "paidBy": "Kawish",
+    "category": "Shopping",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Trash Bag",
+    "transactionRemark": "",
+    "transaction_date": "2026-01-02",
+    "amount": 21800,
+    "paidBy": "Kawish",
+    "category": "Shopping",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Spoon",
+    "transactionRemark": "",
+    "transaction_date": "2026-02-18",
+    "amount": 18000,
+    "paidBy": "Yudi",
+    "category": "Shopping",
+    "partiesInvolved": ["Bayu", "Kawish"]
+  },
+  {
+    "name": "Detergen",
+    "transactionRemark": "",
+    "transaction_date": "2026-02-18",
+    "amount": 15000,
+    "paidBy": "Kawish",
+    "category": "Shopping",
+    "partiesInvolved": ["Yudi"]
+  },
+  {
+    "name": "Vixal",
+    "transactionRemark": "",
+    "transaction_date": "2026-02-18",
+    "amount": 19000,
+    "paidBy": "Kawish",
+    "category": "Shopping",
+    "partiesInvolved": ["Yudi"]
+  },
+  {
+    "name": "Tissue",
+    "transactionRemark": "",
+    "transaction_date": "2026-03-13",
+    "amount": 25900,
+    "paidBy": "Kawish",
+    "category": "Shopping",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Plastic Bag",
+    "transactionRemark": "",
+    "transaction_date": "2026-03-13",
+    "amount": 21800,
+    "paidBy": "Kawish",
+    "category": "Shopping",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "YT Premium Subscription 109890",
+    "transactionRemark": "",
+    "transaction_date": "2023-11-18",
+    "amount": 109890,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 36630,
+      "Dilshad": 36630,
+      "Yahya": 18315,
+      "Ibnu": 18315
+    }
+  },
+  {
+    "name": "YT Premium Subscription 109890",
+    "transactionRemark": "",
+    "transaction_date": "2023-12-18",
+    "amount": 109890,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 36630,
+      "Dilshad": 36630,
+      "Yahya": 18315,
+      "Ibnu": 18315
+    }
+  },
+  {
+    "name": "YT Premium Subscription 109890",
+    "transactionRemark": "",
+    "transaction_date": "2024-01-18",
+    "amount": 109890,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 36630,
+      "Dilshad": 36630,
+      "Yahya": 18315,
+      "Ibnu": 18315
+    }
+  },
+  {
+    "name": "YT Premium Subscription 109890",
+    "transactionRemark": "",
+    "transaction_date": "2024-02-18",
+    "amount": 109890,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 36630,
+      "Dilshad": 36630,
+      "Yahya": 18315,
+      "Ibnu": 18315
+    }
+  },
+  {
+    "name": "YT Premium Subscription 109890",
+    "transactionRemark": "",
+    "transaction_date": "2024-03-18",
+    "amount": 109890,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 36630,
+      "Dilshad": 36630,
+      "Yahya": 18315,
+      "Ibnu": 18315
+    }
+  },
+  {
+    "name": "YT Premium Subscription 109890",
+    "transactionRemark": "",
+    "transaction_date": "2024-04-18",
+    "amount": 109890,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 36630,
+      "Dilshad": 36630,
+      "Yahya": 18315,
+      "Ibnu": 18315
+    }
+  },
+  {
+    "name": "YT Premium Subscription 109890",
+    "transactionRemark": "",
+    "transaction_date": "2024-05-18",
+    "amount": 109890,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 36630,
+      "Dilshad": 36630,
+      "Yahya": 18315,
+      "Ibnu": 18315
+    }
+  },
+  {
+    "name": "YT Premium Subscription 109890",
+    "transactionRemark": "",
+    "transaction_date": "2024-06-18",
+    "amount": 109890,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 36630,
+      "Dilshad": 36630,
+      "Yahya": 18315,
+      "Ibnu": 18315
+    }
+  },
+  {
+    "name": "YT Premium Subscription 109890",
+    "transactionRemark": "",
+    "transaction_date": "2024-07-18",
+    "amount": 109890,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 36630,
+      "Dilshad": 36630,
+      "Yahya": 18315,
+      "Ibnu": 18315
+    }
+  },
+  {
+    "name": "YT Premium Subscription 109890",
+    "transactionRemark": "",
+    "transaction_date": "2024-08-18",
+    "amount": 109890,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 36630,
+      "Dilshad": 36630,
+      "Yahya": 18315,
+      "Ibnu": 18315
+    }
+  },
+  {
+    "name": "YT Premium Subscription 109890",
+    "transactionRemark": "",
+    "transaction_date": "2024-09-18",
+    "amount": 109890,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 36630,
+      "Dilshad": 36630,
+      "Yahya": 18315,
+      "Ibnu": 18315
+    }
+  },
+  {
+    "name": "YT Premium Subscription 109890",
+    "transactionRemark": "",
+    "transaction_date": "2024-10-18",
+    "amount": 109890,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 36630,
+      "Dilshad": 36630,
+      "Yahya": 18315,
+      "Ibnu": 18315
+    }
+  },
+  {
+    "name": "YT Premium Subscription 154290",
+    "transactionRemark": "",
+    "transaction_date": "2024-11-18",
+    "amount": 154290,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 51430,
+      "Dilshad": 51430,
+      "Yahya": 25715,
+      "Ibnu": 25715
+    }
+  },
+  {
+    "name": "YT Premium Subscription 154290",
+    "transactionRemark": "",
+    "transaction_date": "2024-12-18",
+    "amount": 154290,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 51430,
+      "Dilshad": 51430,
+      "Yahya": 25715,
+      "Ibnu": 25715
+    }
+  },
+  {
+    "name": "YT Premium Subscription 154290",
+    "transactionRemark": "",
+    "transaction_date": "2025-01-18",
+    "amount": 154290,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 51430,
+      "Dilshad": 51430,
+      "Yahya": 25715,
+      "Ibnu": 25715
+    }
+  },
+  {
+    "name": "YT Premium Subscription 154290",
+    "transactionRemark": "",
+    "transaction_date": "2025-02-18",
+    "amount": 154290,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 51430,
+      "Dilshad": 51430,
+      "Yahya": 25715,
+      "Ibnu": 25715
+    }
+  },
+  {
+    "name": "YT Premium Subscription 154290",
+    "transactionRemark": "",
+    "transaction_date": "2025-03-18",
+    "amount": 154290,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 51430,
+      "Dilshad": 51430,
+      "Yahya": 25715,
+      "Ibnu": 25715
+    }
+  },
+  {
+    "name": "YT Premium Subscription 154290",
+    "transactionRemark": "",
+    "transaction_date": "2025-04-18",
+    "amount": 154290,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 51430,
+      "Dilshad": 51430,
+      "Yahya": 25715,
+      "Ibnu": 25715
+    }
+  },
+  {
+    "name": "YT Premium Subscription 154290",
+    "transactionRemark": "",
+    "transaction_date": "2025-05-18",
+    "amount": 154290,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 51430,
+      "Dilshad": 51430,
+      "Yahya": 25715,
+      "Ibnu": 25715
+    }
+  },
+  {
+    "name": "YT Premium Subscription 154290",
+    "transactionRemark": "",
+    "transaction_date": "2025-06-18",
+    "amount": 154290,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 51430,
+      "Dilshad": 51430,
+      "Yahya": 25715,
+      "Ibnu": 25715
+    }
+  },
+  {
+    "name": "YT Premium Subscription 154290",
+    "transactionRemark": "",
+    "transaction_date": "2025-07-18",
+    "amount": 154290,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 51430,
+      "Dilshad": 51430,
+      "Yahya": 25715,
+      "Ibnu": 25715
+    }
+  },
+  {
+    "name": "YT Premium Subscription 154290",
+    "transactionRemark": "",
+    "transaction_date": "2025-08-18",
+    "amount": 154290,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 51430,
+      "Dilshad": 51430,
+      "Yahya": 25715,
+      "Ibnu": 25715
+    }
+  },
+  {
+    "name": "YT Premium Subscription 154290",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-18",
+    "amount": 154290,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 51430,
+      "Dilshad": 51430,
+      "Yahya": 25715,
+      "Ibnu": 25715
+    }
+  },
+  {
+    "name": "YT Premium Subscription 154290",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-18",
+    "amount": 154290,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 51430,
+      "Dilshad": 51430,
+      "Yahya": 25715,
+      "Ibnu": 25715
+    }
+  },
+  {
+    "name": "YT Premium Subscription 154290",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-18",
+    "amount": 154290,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 51430,
+      "Dilshad": 51430,
+      "Yahya": 25715,
+      "Ibnu": 25715
+    }
+  },
+  {
+    "name": "YT Premium Subscription 154290",
+    "transactionRemark": "",
+    "transaction_date": "2025-12-18",
+    "amount": 154290,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 51430,
+      "Dilshad": 51430,
+      "Yahya": 25715,
+      "Ibnu": 25715
+    }
+  },
+  {
+    "name": "YT Premium Subscription 154290",
+    "transactionRemark": "",
+    "transaction_date": "2026-01-18",
+    "amount": 154290,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 51430,
+      "Dilshad": 51430,
+      "Yahya": 25715,
+      "Ibnu": 25715
+    }
+  },
+  {
+    "name": "YT Premium Subscription 154290",
+    "transactionRemark": "",
+    "transaction_date": "2026-02-18",
+    "amount": 154290,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 51430,
+      "Dilshad": 51430,
+      "Yahya": 25715,
+      "Ibnu": 25715
+    }
+  },
+  {
+    "name": "YT Premium Subscription 154290",
+    "transactionRemark": "",
+    "transaction_date": "2026-03-18",
+    "amount": 154290,
+    "paidBy": "Kawish",
+    "category": "Subscription",
+    "partiesInvolved": ["Ibnu", "Dilshad", "Yahya"],
+    "party_splits": {
+      "Kawish": 51430,
+      "Dilshad": 51430,
+      "Yahya": 25715,
+      "Ibnu": 25715
+    }
+  },
+  {
+    "name": "Grab to PVJ",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-14",
+    "amount": 16000,
+    "paidBy": "Reyn",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-14",
+    "amount": 27000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Reyn"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-15",
+    "amount": 11000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Reyn", "Bayu", "Yudi"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-22",
+    "amount": 11000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Reyn", "Bayu", "Yudi"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-22",
+    "amount": 11000,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Reyn", "Kawish"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-24",
+    "amount": 16000,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Reyn", "Bayu", "Kawish"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-25",
+    "amount": 16000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Reyn", "Bayu", "Yudi"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-30",
+    "amount": 16000,
+    "paidBy": "Reyn",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-30",
+    "amount": 17000,
+    "paidBy": "Reyn",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-01",
+    "amount": 16000,
+    "paidBy": "Reyn",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-02",
+    "amount": 16000,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Reyn", "Bayu", "Kawish"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-02",
+    "amount": 16000,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Reyn", "Bayu", "Kawish"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-03",
+    "amount": 16000,
+    "paidBy": "Reyn",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish", "Bayu"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-03",
+    "amount": 16000,
+    "paidBy": "Reyn",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish", "Bayu", "Yudi"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-06",
+    "amount": 16000,
+    "paidBy": "Reyn",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish", "Bayu", "Yudi"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-06",
+    "amount": 16000,
+    "paidBy": "Reyn",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-08",
+    "amount": 16000,
+    "paidBy": "Reyn",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish", "Bayu"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-15",
+    "amount": 16000,
+    "paidBy": "Reyn",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-21",
+    "amount": 16000,
+    "paidBy": "Reyn",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-21",
+    "amount": 16000,
+    "paidBy": "Reyn",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-22",
+    "amount": 11000,
+    "paidBy": "Reyn",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-27",
+    "amount": 11000,
+    "paidBy": "Reyn",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-27",
+    "amount": 24000,
+    "paidBy": "Reyn",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-28",
+    "amount": 11000,
+    "paidBy": "Reyn",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-29",
+    "amount": 11000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Reyn", "Bayu"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-29",
+    "amount": 11000,
+    "paidBy": "Reyn",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish", "Bayu", "Yudi"]
+  },
+  {
+    "name": "Grab to GAA ",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-30",
+    "amount": 11000,
+    "paidBy": "Reyn",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-31",
+    "amount": 11000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Reyn"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-23",
+    "amount": 11000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-07",
+    "amount": 11000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-09",
+    "amount": 16000,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-09",
+    "amount": 34000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-23",
+    "amount": 40000,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-30",
+    "amount": 11000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-03",
+    "amount": 11000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-10",
+    "amount": 11000,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-10",
+    "amount": 31000,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu", "Kawish"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-11",
+    "amount": 11000,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-11",
+    "amount": 31000,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu", "Kawish"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-12",
+    "amount": 11000,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-12",
+    "amount": 18000,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu", "Kawish"]
+  },
+  {
+    "name": "GrabFood - Mashed Potato",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-12",
+    "amount": 16000,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-13",
+    "amount": 11000,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-13",
+    "amount": 11000,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-14",
+    "amount": 17000,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-17",
+    "amount": 11000,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-17",
+    "amount": 11000,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-18",
+    "amount": 11000,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-19",
+    "amount": 11000,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-19",
+    "amount": 37000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-20",
+    "amount": 11000,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-20",
+    "amount": 11000,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu", "Kawish"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-21",
+    "amount": 16000,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-21",
+    "amount": 16000,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu", "Kawish"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-24",
+    "amount": 11000,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu", "Kawish"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-24",
+    "amount": 11000,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu", "Kawish"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-25",
+    "amount": 11000,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu", "Kawish"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-25",
+    "amount": 11000,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-26",
+    "amount": 11000,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-27",
+    "amount": 14000,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu", "Kawish"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-27",
+    "amount": 11000,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-12-01",
+    "amount": 23000,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu", "Kawish"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-12-04",
+    "amount": 11000,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-12-04",
+    "amount": 39500,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu", "Kawish"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-12-05",
+    "amount": 11000,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-12-05",
+    "amount": 43500,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-12-09",
+    "amount": 18000,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-12-09",
+    "amount": 24000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-12-10",
+    "amount": 18000,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-12",
+    "amount": 18000,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2026-01-06",
+    "amount": 19000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2026-01-08",
+    "amount": 19000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2026-01-09",
+    "amount": 19000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-01-13",
+    "amount": 19000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-01-13",
+    "amount": 11000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-01-14",
+    "amount": 11000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-01",
+    "amount": 16000,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-07",
+    "amount": 16000,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu", "Kawish"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-08",
+    "amount": 16000,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-13",
+    "amount": 16000,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-16",
+    "amount": 16000,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-05",
+    "amount": 11000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Yudi"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2025-12-12",
+    "amount": 18000,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2025-12-29",
+    "amount": 19500,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2026-01-09",
+    "amount": 19000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2026-01-13",
+    "amount": 19000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2026-01-13",
+    "amount": 11000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2026-01-14",
+    "amount": 11000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2026-01-14",
+    "amount": 19000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2026-01-15",
+    "amount": 19000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2026-01-21",
+    "amount": 11000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2026-01-19",
+    "amount": 19000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2026-01-27",
+    "amount": 11000,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2026-01-28",
+    "amount": 11000,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2026-01-29",
+    "amount": 6000,
+    "paidBy": "Yudi",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2026-02-12",
+    "amount": 11000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2026-02-12",
+    "amount": 23500,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2026-02-13",
+    "amount": 17500,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2026-02-18",
+    "amount": 13000,
+    "paidBy": "Bayu",
+    "category": "Transport",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2026-03-04",
+    "amount": 12000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2026-03-04",
+    "amount": 12000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2026-03-05",
+    "amount": 12500,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2026-02-26",
+    "amount": 12000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2026-03-05",
+    "amount": 18000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2026-03-06",
+    "amount": 15500,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2026-03-13",
+    "amount": 23000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2026-03-13",
+    "amount": 15000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2026-03-12",
+    "amount": 22000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2026-03-11",
+    "amount": 12000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2026-03-11",
+    "amount": 19000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to BDO",
+    "transactionRemark": "",
+    "transaction_date": "2026-03-18",
+    "amount": 24000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2026-03-30",
+    "amount": 25000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Bayu"]
+  },
+  {
+    "name": "Grab to GAA",
+    "transactionRemark": "",
+    "transaction_date": "2026-04-01",
+    "amount": 19000,
+    "paidBy": "Kawish",
+    "category": "Transport",
+    "partiesInvolved": ["Yudi"]
+  },
+  {
+    "name": "Water Bill",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-17",
+    "amount": 274000,
+    "paidBy": "Bayu",
+    "category": "Utilities",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "Water Bill",
+    "transactionRemark": "",
+    "transaction_date": "2026-02-20",
+    "amount": 361000,
+    "paidBy": "Kawish",
+    "category": "Utilities",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Electricity Bill for Nov 2025",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-28",
+    "amount": 800000,
+    "paidBy": "Kawish",
+    "category": "Utilities",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Electricity Bill for Jan 2026",
+    "transactionRemark": "",
+    "transaction_date": "2026-01-03",
+    "amount": 800000,
+    "paidBy": "Kawish",
+    "category": "Utilities",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Electricity Bill for Feb 2026",
+    "transactionRemark": "",
+    "transaction_date": "2026-02-12",
+    "amount": 800000,
+    "paidBy": "Kawish",
+    "category": "Utilities",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Electricity Bill for Mar 2026",
+    "transactionRemark": "",
+    "transaction_date": "2026-03-14",
+    "amount": 800000,
+    "paidBy": "Kawish",
+    "category": "Utilities",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Electricity Bill for Oct 2025",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-30",
+    "amount": 600000,
+    "paidBy": "Kawish",
+    "category": "Utilities",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Electricity Bill for Sep 2025",
+    "transactionRemark": "",
+    "transaction_date": "2025-09-22",
+    "amount": 200000,
+    "paidBy": "Bayu",
+    "category": "Utilities",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "Electricity Bill for Oct 2025",
+    "transactionRemark": "",
+    "transaction_date": "2025-10-01",
+    "amount": 600000,
+    "paidBy": "Kawish",
+    "category": "Utilities",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Tip Cleaning Service",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-11",
+    "amount": 50000,
+    "paidBy": "Yudi",
+    "category": "Utilities",
+    "partiesInvolved": ["Bayu", "Kawish"]
+  },
+  {
+    "name": "Cleaning Service",
+    "transactionRemark": "",
+    "transaction_date": "2025-11-30",
+    "amount": 100000,
+    "paidBy": "Bayu",
+    "category": "Utilities",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "Cleaning Service",
+    "transactionRemark": "",
+    "transaction_date": "2025-12-20",
+    "amount": 150000,
+    "paidBy": "Bayu",
+    "category": "Utilities",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "Cleaning Service",
+    "transactionRemark": "",
+    "transaction_date": "2026-01-01",
+    "amount": 150000,
+    "paidBy": "Bayu",
+    "category": "Utilities",
+    "partiesInvolved": ["Kawish", "Yudi"]
+  },
+  {
+    "name": "Cleaning Service",
+    "transactionRemark": "",
+    "transaction_date": "2026-01-20",
+    "amount": 150000,
+    "paidBy": "Kawish",
+    "category": "Utilities",
+    "partiesInvolved": ["Bayu", "Yudi"]
+  },
+  {
+    "name": "Cleaning Service",
+    "transactionRemark": "",
+    "transaction_date": "2026-03-08",
+    "amount": 150000,
+    "paidBy": "Bayu",
+    "category": "Utilities",
+    "partiesInvolved": ["Yudi", "Kawish"]
+  }
+]

@@ -29,7 +29,14 @@ const NAV_ITEMS: NavItem[] = [
   { href: "/dashboard", label: "Home", icon: House, requireAuth: true },
   {
     href: "/transactions/create",
-    label: "Add Trx",
+    label: "Add Transaction",
+    icon: CirclePlus,
+    requireAuth: true,
+    allowedPolicies: ["mod", "admin"],
+  },
+  {
+    href: "/transactions/create-group",
+    label: "Add Group Transaction",
     icon: CirclePlus,
     requireAuth: true,
     allowedPolicies: ["mod", "admin"],

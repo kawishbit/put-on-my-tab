@@ -430,6 +430,8 @@ export function TransactionEditForm({
           <fieldset className="block text-sm text-slate-700 dark:text-slate-300">
             <legend className="mb-1 block font-medium">Parties involved</legend>
             <Select<PartyOption, true>
+              instanceId="transaction-edit-parties"
+              inputId="transaction-edit-parties-input"
               isMulti
               isSearchable
               closeMenuOnSelect={false}

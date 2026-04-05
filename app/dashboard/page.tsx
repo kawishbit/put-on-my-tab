@@ -161,12 +161,20 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
                   My Transactions
                 </Link>
                 {canCreate ? (
-                  <Link
-                    href="/transactions/create"
-                    className="app-button-primary"
-                  >
-                    Add Transaction
-                  </Link>
+                  <>
+                    <Link
+                      href="/transactions/create"
+                      className="app-button-primary"
+                    >
+                      Add Transaction
+                    </Link>
+                    <Link
+                      href="/transactions/create-group"
+                      className="app-button-secondary"
+                    >
+                      Add Group Transaction
+                    </Link>
+                  </>
                 ) : null}
               </div>
             </div>

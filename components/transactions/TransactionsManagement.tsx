@@ -396,7 +396,15 @@ export function TransactionsManagement({
               href="/transactions/create"
               className="font-medium text-slate-800 underline underline-offset-2 dark:text-slate-200"
             >
-              Create transaction
+              Add transaction
+            </Link>
+          ) : null}
+          {policy !== "user" ? (
+            <Link
+              href="/transactions/create-group"
+              className="font-medium text-slate-800 underline underline-offset-2 dark:text-slate-200"
+            >
+              Add group transaction
             </Link>
           ) : null}
           {scope === "all" ? (

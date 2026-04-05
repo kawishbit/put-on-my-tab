@@ -2,13 +2,17 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import Select, { type MultiValue } from "react-select";
 import { toast } from "sonner";
 
 import FileUploadDropzone3 from "@/components/file-upload-dropzone-3";
 import { FormPageTemplate } from "@/components/layout/PageTemplates";
 import { Button } from "@/components/ui/button";
-import type { PublicUser, TransactionCategory } from "@/types/database";
+import type {
+  PublicUser,
+  TransactionCategory,
+  TransactionStatus,
+  TransactionType,
+} from "@/types/database";
 
 type ApiSuccess<TData> = {
   data: TData;
@@ -26,15 +30,9 @@ type FormState = {
   transactionDate: string;
   amount: string;
   paidBy: string;
+  type: TransactionType;
+  status: TransactionStatus;
   category: string;
-  partiesInvolved: string[];
-  useCustomSplit: boolean;
-  partySplitAmounts: Record<string, string>;
-};
-
-type PartyOption = {
-  value: string;
-  label: string;
 };
 
 type BulkImportResult = {
@@ -48,10 +46,9 @@ const INITIAL_FORM_STATE: Omit<FormState, "paidBy"> = {
   transactionRemark: "",
   transactionDate: new Date().toISOString().slice(0, 10),
   amount: "",
+  type: "deposit",
+  status: "completed",
   category: "",
-  partiesInvolved: [],
-  useCustomSplit: false,
-  partySplitAmounts: {},
 };
 
 function getApiErrorMessage(payload: unknown, fallback: string): string {
@@ -75,7 +72,7 @@ function toNullableString(value: string): string | null {
   return trimmed.length > 0 ? trimmed : null;
 }
 
-export function TransactionCreateForm({
+export function TransactionSingleCreateForm({
   initialPaidByUserId,
 }: {
   initialPaidByUserId: string;
@@ -176,153 +173,6 @@ export function TransactionCreateForm({
     };
   }, [initialPaidByUserId]);
 
-  const filteredPartiesInvolved = Array.from(
-    new Set(form.partiesInvolved.filter((partyId) => partyId !== form.paidBy)),
-  );
-
-  const involvedParties = Array.from(
-    new Set([...filteredPartiesInvolved, form.paidBy].filter(Boolean)),
-  );
-
-  const partyOptions: PartyOption[] = users
-    .filter((user) => user.user_id !== form.paidBy)
-    .map((user) => ({
-      value: user.user_id,
-      label: `${user.name} (${user.email})`,
-    }));
-
-  const selectedPartyOptions = partyOptions.filter((option) =>
-    filteredPartiesInvolved.includes(option.value),
-  );
-
-  const usersById = new Map(users.map((user) => [user.user_id, user]));
-
-  useEffect(() => {
-    const participants = Array.from(
-      new Set([form.paidBy, ...filteredPartiesInvolved].filter(Boolean)),
-    );
-
-    setForm((previous) => {
-      const nextPartySplitAmounts: Record<string, string> = {};
-
-      for (const participantId of participants) {
-        nextPartySplitAmounts[participantId] =
-          previous.partySplitAmounts[participantId] ?? "";
-      }
-
-      const unchanged =
-        Object.keys(previous.partySplitAmounts).length ===
-          Object.keys(nextPartySplitAmounts).length &&
-        Object.entries(nextPartySplitAmounts).every(
-          ([key, value]) => previous.partySplitAmounts[key] === value,
-        );
-
-      if (unchanged) {
-        return previous;
-      }
-
-      return {
-        ...previous,
-        partySplitAmounts: nextPartySplitAmounts,
-      };
-    });
-  }, [form.paidBy, filteredPartiesInvolved]);
-
-  async function onSubmit(
-    event: React.SubmitEvent<HTMLFormElement>,
-  ): Promise<void> {
-    event.preventDefault();
-    setError(null);
-    setIsSubmitting(true);
-
-    const amount = Number(form.amount);
-
-    if (!Number.isFinite(amount) || amount <= 0) {
-      setIsSubmitting(false);
-      toast.error("Amount must be a positive number.");
-      return;
-    }
-
-    if (!form.paidBy) {
-      setIsSubmitting(false);
-      toast.error("Please select who paid for this transaction.");
-      return;
-    }
-
-    if (filteredPartiesInvolved.length === 0) {
-      setIsSubmitting(false);
-      toast.error("Select at least one party involved.");
-      return;
-    }
-
-    let partySplits: Record<string, number> | undefined;
-
-    if (form.useCustomSplit) {
-      partySplits = {};
-      let splitTotal = 0;
-
-      for (const participantId of involvedParties) {
-        const rawSplitAmount = form.partySplitAmounts[participantId] ?? "";
-        const splitAmount = Number(rawSplitAmount);
-
-        if (!Number.isFinite(splitAmount) || splitAmount <= 0) {
-          const participantLabel =
-            usersById.get(participantId)?.name ?? participantId;
-          setIsSubmitting(false);
-          toast.error(`Enter a positive split amount for ${participantLabel}.`);
-          return;
-        }
-
-        partySplits[participantId] = splitAmount;
-        splitTotal += splitAmount;
-      }
-
-      if (Math.round(splitTotal * 100) !== Math.round(amount * 100)) {
-        setIsSubmitting(false);
-        toast.error("Custom split total must exactly match the amount.");
-        return;
-      }
-    }
-
-    const response = await fetch("/api/transactions/group", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: form.name,
-        transactionRemark: toNullableString(form.transactionRemark),
-        transactionDate: form.transactionDate,
-        paidBy: form.paidBy,
-        amount,
-        category: form.category.length > 0 ? form.category : null,
-        partiesInvolved: filteredPartiesInvolved,
-        partySplits,
-      }),
-    });
-
-    const payload = (await response.json()) as
-      | ApiSuccess<{ groupKey: string; transactionIds: string[] }>
-      | ApiErrorResponse;
-
-    if (!response.ok || !("data" in payload)) {
-      setIsSubmitting(false);
-      toast.error(
-        getApiErrorMessage(payload, "Failed to create group transaction."),
-      );
-      return;
-    }
-
-    setForm({
-      ...INITIAL_FORM_STATE,
-      paidBy: form.paidBy,
-    });
-    setIsSubmitting(false);
-    toast.success(
-      `Group transaction created successfully. Group key: ${payload.data.groupKey}`,
-    );
-  }
-
   async function handleBulkImport(): Promise<void> {
     if (!selectedImportFile) {
       toast.error("Please choose a JSON file first.");
@@ -337,7 +187,7 @@ export function TransactionCreateForm({
       formData.set("file", selectedImportFile);
       formData.set("defaultPaidBy", form.paidBy);
 
-      const response = await fetch("/api/transactions/group/import", {
+      const response = await fetch("/api/transactions/import", {
         method: "POST",
         body: formData,
       });
@@ -379,10 +229,70 @@ export function TransactionCreateForm({
     }
   }
 
+  async function onSubmit(
+    event: React.FormEvent<HTMLFormElement>,
+  ): Promise<void> {
+    event.preventDefault();
+    setError(null);
+    setIsSubmitting(true);
+
+    const amount = Number(form.amount);
+
+    if (!Number.isFinite(amount) || amount <= 0) {
+      setIsSubmitting(false);
+      toast.error("Amount must be a positive number.");
+      return;
+    }
+
+    if (!form.paidBy) {
+      setIsSubmitting(false);
+      toast.error("Please select who paid for this transaction.");
+      return;
+    }
+
+    const response = await fetch("/api/transactions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: form.name,
+        transactionRemark: toNullableString(form.transactionRemark),
+        transactionDate: form.transactionDate,
+        paidBy: form.paidBy,
+        amount,
+        type: form.type,
+        status: form.status,
+        category: form.category.length > 0 ? form.category : null,
+      }),
+    });
+
+    const payload = (await response.json()) as
+      | ApiSuccess<{ transactionId: string }>
+      | ApiErrorResponse;
+
+    if (!response.ok || !("data" in payload)) {
+      setIsSubmitting(false);
+      toast.error(getApiErrorMessage(payload, "Failed to create transaction."));
+      return;
+    }
+
+    setForm({
+      ...INITIAL_FORM_STATE,
+      paidBy: form.paidBy,
+      type: form.type,
+      status: form.status,
+    });
+    setIsSubmitting(false);
+    toast.success(
+      `Transaction created successfully. ID: ${payload.data.transactionId}`,
+    );
+  }
+
   return (
     <FormPageTemplate
-      title="Add Group Transaction"
-      subtitle="Create a split/group transaction and optionally assign a category."
+      title="Add Transaction"
+      subtitle="Create a single transaction record without split parties."
     >
       {error ? <p className="mt-4 app-alert-error">{error}</p> : null}
 
@@ -393,7 +303,7 @@ export function TransactionCreateForm({
         <p className="text-xs text-slate-600 dark:text-slate-300">
           Upload a JSON file containing one object or an array of objects that
           follow this form shape: name, transactionRemark, transaction_date,
-          amount, paidBy, category, partiesInvolved, and optional party_splits.
+          amount, paidBy, type, status, and category.
         </p>
         <FileUploadDropzone3
           value={selectedImportFile ? [selectedImportFile] : []}
@@ -435,7 +345,7 @@ export function TransactionCreateForm({
             className="app-field"
             required
             maxLength={200}
-            disabled={isSubmitting}
+            disabled={isSubmitting || isImporting}
           />
         </label>
 
@@ -471,8 +381,45 @@ export function TransactionCreateForm({
             }
             className="app-field"
             required
-            disabled={isSubmitting}
+            disabled={isSubmitting || isImporting}
           />
+        </label>
+
+        <label className="block text-sm text-slate-700 dark:text-slate-300">
+          <span className="mb-1 block font-medium">Type</span>
+          <select
+            value={form.type}
+            onChange={(event) =>
+              setForm((previous) => ({
+                ...previous,
+                type: event.target.value as TransactionType,
+              }))
+            }
+            className="app-field"
+            disabled={isSubmitting || isImporting}
+          >
+            <option value="deposit">Deposit</option>
+            <option value="withdraw">Withdraw</option>
+          </select>
+        </label>
+
+        <label className="block text-sm text-slate-700 dark:text-slate-300">
+          <span className="mb-1 block font-medium">Status</span>
+          <select
+            value={form.status}
+            onChange={(event) =>
+              setForm((previous) => ({
+                ...previous,
+                status: event.target.value as TransactionStatus,
+              }))
+            }
+            className="app-field"
+            disabled={isSubmitting || isImporting}
+          >
+            <option value="pending">Pending</option>
+            <option value="completed">Completed</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
         </label>
 
         <label className="block text-sm text-slate-700 dark:text-slate-300">
@@ -483,13 +430,10 @@ export function TransactionCreateForm({
               setForm((previous) => ({
                 ...previous,
                 paidBy: event.target.value,
-                partiesInvolved: previous.partiesInvolved.filter(
-                  (partyId) => partyId !== event.target.value,
-                ),
               }))
             }
             className="app-field"
-            disabled={isSubmitting || isLoadingUsers}
+            disabled={isSubmitting || isImporting || isLoadingUsers}
             required
           >
             {users.length === 0 ? (
@@ -514,7 +458,7 @@ export function TransactionCreateForm({
               }))
             }
             className="app-field"
-            disabled={isSubmitting || isLoadingCategories}
+            disabled={isSubmitting || isImporting || isLoadingCategories}
           >
             <option value="">No category</option>
             {categories.map((category) => (
@@ -541,116 +485,12 @@ export function TransactionCreateForm({
             className="app-field"
             rows={3}
             maxLength={1500}
-            disabled={isSubmitting}
+            disabled={isSubmitting || isImporting}
           />
         </label>
-
-        <fieldset className="block text-sm text-slate-700 dark:text-slate-300">
-          <legend className="mb-1 block font-medium">Parties involved</legend>
-          <Select<PartyOption, true>
-            instanceId="transaction-create-parties"
-            inputId="transaction-create-parties-input"
-            isMulti
-            isSearchable
-            closeMenuOnSelect={false}
-            isDisabled={isSubmitting || isLoadingUsers}
-            options={partyOptions}
-            value={selectedPartyOptions}
-            placeholder="Select users involved..."
-            noOptionsMessage={() => "No users available"}
-            unstyled
-            classNames={{
-              control: (state) =>
-                `mt-1 min-h-10 w-full rounded-xl border px-3 py-2 transition ${state.isFocused ? "border-slate-400 ring-4 ring-slate-100 dark:border-white/30 dark:ring-white/5" : "border-slate-200 dark:border-white/15"} bg-white text-slate-900 dark:bg-slate-800/80 dark:text-slate-100`,
-              valueContainer: () => "flex flex-wrap gap-1",
-              multiValue: () =>
-                "rounded-md bg-slate-100 px-2 py-0.5 text-xs text-slate-700 dark:bg-slate-700 dark:text-slate-200",
-              multiValueRemove: () =>
-                "ml-1 cursor-pointer text-slate-500 hover:text-slate-800 dark:text-slate-300 dark:hover:text-slate-100",
-              input: () => "text-sm text-slate-900 dark:text-slate-100",
-              placeholder: () => "text-sm text-slate-500 dark:text-slate-400",
-              indicatorsContainer: () => "text-slate-500 dark:text-slate-400",
-              clearIndicator: () => "cursor-pointer px-1",
-              dropdownIndicator: () => "cursor-pointer px-1",
-              menu: () =>
-                "z-20 mt-2 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl dark:border-white/10 dark:bg-slate-800",
-              menuList: () => "max-h-56 overflow-auto p-1",
-              option: (state) =>
-                `cursor-pointer rounded-md px-3 py-2 text-sm ${state.isFocused ? "bg-slate-100 dark:bg-slate-700/70" : ""} ${state.isSelected ? "bg-slate-200 dark:bg-slate-700" : ""} text-slate-700 dark:text-slate-200`,
-            }}
-            onChange={(value: MultiValue<PartyOption>) => {
-              setForm((previous) => ({
-                ...previous,
-                partiesInvolved: value.map((entry) => entry.value),
-              }));
-            }}
-          />
-          <span className="mt-1 block text-xs text-slate-500 dark:text-slate-400">
-            Total involved in split (including payer): {involvedParties.length}
-          </span>
-        </fieldset>
-
-        <label className="block text-sm text-slate-700 dark:text-slate-300">
-          <span className="mb-1 block font-medium">Split mode</span>
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={form.useCustomSplit}
-              onChange={(event) =>
-                setForm((previous) => ({
-                  ...previous,
-                  useCustomSplit: event.target.checked,
-                }))
-              }
-              disabled={isSubmitting || isImporting}
-            />
-            <span>Use custom amount per party</span>
-          </div>
-        </label>
-
-        {form.useCustomSplit ? (
-          <fieldset className="block text-sm text-slate-700 dark:text-slate-300">
-            <legend className="mb-1 block font-medium">
-              Custom split amounts
-            </legend>
-            <div className="space-y-2">
-              {involvedParties.map((participantId) => {
-                const participant = usersById.get(participantId);
-                const participantLabel = participant
-                  ? `${participant.name} (${participant.email})`
-                  : participantId;
-
-                return (
-                  <label key={participantId} className="block">
-                    <span className="mb-1 block text-xs">
-                      {participantLabel}
-                    </span>
-                    <input
-                      type="number"
-                      min="0.01"
-                      step="0.01"
-                      value={form.partySplitAmounts[participantId] ?? ""}
-                      onChange={(event) =>
-                        setForm((previous) => ({
-                          ...previous,
-                          partySplitAmounts: {
-                            ...previous.partySplitAmounts,
-                            [participantId]: event.target.value,
-                          },
-                        }))
-                      }
-                      className="app-field"
-                      disabled={isSubmitting || isImporting}
-                    />
-                  </label>
-                );
-              })}
-            </div>
-          </fieldset>
-        ) : null}
 
         <Button type="submit" disabled={isSubmitting || isImporting}>
-          Create group transaction
+          Add transaction
         </Button>
       </form>
 

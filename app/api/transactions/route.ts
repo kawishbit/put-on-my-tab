@@ -5,8 +5,7 @@ import { toErrorResponse } from "@/lib/api/errors";
 import { ok } from "@/lib/api/http";
 import { parseJson, uuidSchema } from "@/lib/api/validation";
 import {
-  type CreateSplitTransactionInput,
-  createSplitTransaction,
+  createTransaction,
   listTransactions,
 } from "@/lib/services/transactionsService";
 import type { TransactionType } from "@/types/database";
@@ -16,7 +15,7 @@ const transactionTypeSchema = z.enum(["deposit", "withdraw"]);
 const sortBySchema = z.enum(["created_at", "amount", "name", "status", "type"]);
 const sortOrderSchema = z.enum(["asc", "desc"]);
 
-const createSplitTransactionSchema = z.object({
+const createTransactionSchema = z.object({
   name: z.string().trim().min(1).max(200),
   transactionRemark: z.string().trim().max(1500).nullable().optional(),
   transactionDate: z
@@ -25,8 +24,7 @@ const createSplitTransactionSchema = z.object({
     .optional(),
   paidBy: uuidSchema,
   amount: z.number().positive(),
-  partiesInvolved: z.array(uuidSchema).default([]),
-  partySplits: z.record(z.string(), z.number().positive()).optional(),
+  type: transactionTypeSchema,
   category: uuidSchema.nullable().optional(),
   status: transactionStatusSchema.optional(),
 });
@@ -114,12 +112,9 @@ export async function POST(request: Request): Promise<Response> {
     const context = await getRequestContext(request);
     requirePolicy(context, ["mod", "admin"]);
 
-    const payload = await parseJson(request, createSplitTransactionSchema);
+    const payload = await parseJson(request, createTransactionSchema);
 
-    const created = await createSplitTransaction(
-      payload as CreateSplitTransactionInput,
-      context.userId,
-    );
+    const created = await createTransaction(payload, context.userId);
     return ok(created, 201);
   } catch (error) {
     return toErrorResponse(error);

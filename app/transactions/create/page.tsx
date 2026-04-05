@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 
-import { TransactionCreateForm } from "@/components/transactions/TransactionCreateForm";
+import { TransactionSingleCreateForm } from "@/components/transactions/TransactionSingleCreateForm";
 import { authOptions } from "@/lib/auth/options";
 
 export default async function CreateTransactionPage(): Promise<React.JSX.Element> {
@@ -15,5 +15,5 @@ export default async function CreateTransactionPage(): Promise<React.JSX.Element
     redirect("/");
   }
 
-  return <TransactionCreateForm initialPaidByUserId={session.user.id} />;
+  return <TransactionSingleCreateForm initialPaidByUserId={session.user.id} />;
 }

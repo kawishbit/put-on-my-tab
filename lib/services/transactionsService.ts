@@ -36,6 +36,29 @@ export interface SplitTransactionCreationResult {
   transactions: Transaction[];
 }
 
+export interface CreateTransactionInput {
+  name: string;
+  transactionRemark?: string | null;
+  transactionDate?: string;
+  paidBy: string;
+  amount: number;
+  type: TransactionType;
+  status?: TransactionStatus;
+  category?: string | null;
+}
+
+export interface TransactionCreationResult {
+  transactionId: string;
+  groupKey: string;
+  transaction: Transaction;
+}
+
+export interface BulkTransactionImportResult {
+  importedCount: number;
+  failedCount: number;
+  failures: string[];
+}
+
 export interface TransactionListItem extends Transaction {
   paid_by_user_name: string | null;
   paid_by_user_email: string | null;
@@ -108,6 +131,186 @@ type GroupIdentityRow = {
   transaction_id: string;
   group_key: string;
 };
+
+type TransactionInsertPayload = {
+  name: string;
+  transaction_remark: string | null;
+  transaction_date: string;
+  paid_by: string;
+  amount: number;
+  type: TransactionType;
+  status: TransactionStatus;
+  group_key: string;
+  category: string | null;
+  is_deleted: boolean;
+  remarks: string | null;
+  created_by: string;
+  updated_by: string;
+};
+
+type SingleTransactionImportRecord = {
+  name?: unknown;
+  transactionRemark?: unknown;
+  transaction_date?: unknown;
+  transactionDate?: unknown;
+  amount?: unknown;
+  paidBy?: unknown;
+  type?: unknown;
+  status?: unknown;
+  category?: unknown;
+};
+
+type SplitTransactionImportRecord = {
+  name?: unknown;
+  transactionRemark?: unknown;
+  transaction_date?: unknown;
+  transactionDate?: unknown;
+  amount?: unknown;
+  paidBy?: unknown;
+  status?: unknown;
+  category?: unknown;
+  partiesInvolved?: unknown;
+  party_splits?: unknown;
+  partySplits?: unknown;
+};
+
+function normalizeSearchValue(value: string): string {
+  return value.trim().toLowerCase();
+}
+
+function parseTransactionStatus(value: unknown): TransactionStatus {
+  if (value === "pending" || value === "cancelled") {
+    return value;
+  }
+
+  return "completed";
+}
+
+function parseTransactionType(value: unknown): TransactionType {
+  return value === "withdraw" ? "withdraw" : "deposit";
+}
+
+function toOptionalString(value: unknown): string | undefined {
+  if (typeof value !== "string") {
+    return undefined;
+  }
+
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : undefined;
+}
+
+function resolveUserIdFromReference(
+  reference: string,
+  users: UserLookupRow[],
+  fieldName: string,
+): string {
+  const raw = reference.trim();
+
+  if (!raw) {
+    throw new Error(`${fieldName} is required.`);
+  }
+
+  const exactMatch = users.find((user) => user.user_id === raw);
+  if (exactMatch) {
+    return exactMatch.user_id;
+  }
+
+  const query = normalizeSearchValue(raw);
+  const matches = users.filter((user) => {
+    const name = normalizeSearchValue(user.name);
+    const email = normalizeSearchValue(user.email);
+    return name.includes(query) || email.includes(query);
+  });
+
+  if (matches.length === 0) {
+    throw new Error(
+      `${fieldName} "${raw}" did not match any user by id, name, or email.`,
+    );
+  }
+
+  if (matches.length > 1) {
+    throw new Error(
+      `${fieldName} "${raw}" is ambiguous. Use a more specific value or user id.`,
+    );
+  }
+
+  return matches[0].user_id;
+}
+
+function resolveCategoryIdFromReference(
+  reference: string | undefined,
+  categories: CategoryLookupRow[],
+): string | null {
+  if (!reference) {
+    return null;
+  }
+
+  const raw = reference.trim();
+  if (!raw) {
+    return null;
+  }
+
+  const exactMatch = categories.find(
+    (category) => category.transaction_category_id === raw,
+  );
+  if (exactMatch) {
+    return exactMatch.transaction_category_id;
+  }
+
+  const query = normalizeSearchValue(raw);
+  const matches = categories.filter((category) =>
+    normalizeSearchValue(category.label).includes(query),
+  );
+
+  if (matches.length === 0) {
+    throw new Error(
+      `category "${raw}" did not match any category by id or label.`,
+    );
+  }
+
+  if (matches.length > 1) {
+    throw new Error(
+      `category "${raw}" is ambiguous. Use a more specific value or category id.`,
+    );
+  }
+
+  return matches[0].transaction_category_id;
+}
+
+async function loadImportLookups(): Promise<{
+  users: UserLookupRow[];
+  categories: CategoryLookupRow[];
+}> {
+  const [usersResult, categoriesResult] = await Promise.all([
+    supabase.from("users").select("user_id,name,email"),
+    supabase
+      .from("transaction_categories")
+      .select("transaction_category_id,label"),
+  ]);
+
+  if (usersResult.error) {
+    throw new ApiError(
+      500,
+      "users_fetch_failed",
+      usersResult.error.message,
+      usersResult.error,
+    );
+  }
+
+  if (categoriesResult.error) {
+    throw new ApiError(
+      500,
+      "categories_fetch_failed",
+      categoriesResult.error.message,
+      categoriesResult.error,
+    );
+  }
+
+  return {
+    users: usersResult.data ?? [],
+    categories: categoriesResult.data ?? [],
+  };
+}
 
 function buildPartySplits(
   paidBy: string,
@@ -537,6 +740,329 @@ export async function createSplitTransaction(
     groupKey,
     transactionIds,
     transactions,
+  };
+}
+
+export async function createTransaction(
+  input: CreateTransactionInput,
+  actorUserId: string,
+): Promise<TransactionCreationResult> {
+  const groupKey = randomUUID();
+  const transactionDate =
+    input.transactionDate ?? new Date().toISOString().slice(0, 10);
+
+  const { data, error } = await supabase
+    .from("transactions")
+    .insert({
+      name: input.name,
+      transaction_remark: input.transactionRemark ?? null,
+      transaction_date: transactionDate,
+      paid_by: input.paidBy,
+      amount: input.amount,
+      type: input.type,
+      status: input.status ?? "completed",
+      group_key: groupKey,
+      category: input.category ?? null,
+      is_deleted: false,
+      remarks: null,
+      created_by: actorUserId,
+      updated_by: actorUserId,
+    } as never)
+    .select("*")
+    .single();
+
+  if (error || !data) {
+    throw new ApiError(
+      500,
+      "transaction_create_failed",
+      error?.message ?? "Failed to create transaction",
+      error,
+    );
+  }
+
+  const transaction = data as Transaction;
+
+  await recomputeUserBalances(actorUserId);
+
+  return {
+    transactionId: transaction.transaction_id,
+    groupKey,
+    transaction,
+  };
+}
+
+export async function importTransactionsFromJson(
+  records: unknown[],
+  actorUserId: string,
+  defaultPaidBy?: string,
+): Promise<BulkTransactionImportResult> {
+  const { users, categories } = await loadImportLookups();
+  const transactionDateFallback = new Date().toISOString().slice(0, 10);
+
+  const rowsToInsert: TransactionInsertPayload[] = [];
+  const failures: string[] = [];
+
+  for (const [index, record] of records.entries()) {
+    if (!record || typeof record !== "object") {
+      failures.push(`Item ${index + 1}: invalid object.`);
+      continue;
+    }
+
+    try {
+      const candidate = record as SingleTransactionImportRecord;
+      const name =
+        typeof candidate.name === "string" ? candidate.name.trim() : "";
+
+      if (!name) {
+        throw new Error("Transaction name is required.");
+      }
+
+      const amount = Number(candidate.amount);
+      if (!Number.isFinite(amount) || amount <= 0) {
+        throw new Error("Amount must be a positive number.");
+      }
+
+      const paidByReference =
+        typeof candidate.paidBy === "string"
+          ? candidate.paidBy
+          : (defaultPaidBy ?? actorUserId);
+
+      const paidBy = resolveUserIdFromReference(
+        paidByReference,
+        users,
+        "paidBy",
+      );
+
+      const category = resolveCategoryIdFromReference(
+        toOptionalString(candidate.category),
+        categories,
+      );
+
+      rowsToInsert.push({
+        name,
+        transaction_remark:
+          toOptionalString(candidate.transactionRemark) ?? null,
+        transaction_date:
+          toOptionalString(candidate.transaction_date) ??
+          toOptionalString(candidate.transactionDate) ??
+          transactionDateFallback,
+        paid_by: paidBy,
+        amount,
+        type: parseTransactionType(candidate.type),
+        status: parseTransactionStatus(candidate.status),
+        group_key: randomUUID(),
+        category,
+        is_deleted: false,
+        remarks: null,
+        created_by: actorUserId,
+        updated_by: actorUserId,
+      });
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Failed to import item.";
+      failures.push(`Item ${index + 1}: ${message}`);
+    }
+  }
+
+  if (rowsToInsert.length > 0) {
+    const { error } = await supabase
+      .from("transactions")
+      .insert(rowsToInsert as never);
+
+    if (error) {
+      throw new ApiError(
+        500,
+        "transaction_bulk_import_failed",
+        error.message,
+        error,
+      );
+    }
+
+    await recomputeUserBalances(actorUserId);
+  }
+
+  return {
+    importedCount: rowsToInsert.length,
+    failedCount: failures.length,
+    failures,
+  };
+}
+
+export async function importSplitTransactionsFromJson(
+  records: unknown[],
+  actorUserId: string,
+  defaultPaidBy?: string,
+): Promise<BulkTransactionImportResult> {
+  const { users, categories } = await loadImportLookups();
+  const transactionDateFallback = new Date().toISOString().slice(0, 10);
+
+  const rowsToInsert: TransactionInsertPayload[] = [];
+  const failures: string[] = [];
+  let importedGroups = 0;
+
+  for (const [index, record] of records.entries()) {
+    if (!record || typeof record !== "object") {
+      failures.push(`Item ${index + 1}: invalid object.`);
+      continue;
+    }
+
+    try {
+      const candidate = record as SplitTransactionImportRecord;
+      const name =
+        typeof candidate.name === "string" ? candidate.name.trim() : "";
+
+      if (!name) {
+        throw new Error("Transaction name is required.");
+      }
+
+      const amount = Number(candidate.amount);
+      if (!Number.isFinite(amount) || amount <= 0) {
+        throw new Error("Amount must be a positive number.");
+      }
+
+      const paidByReference =
+        typeof candidate.paidBy === "string"
+          ? candidate.paidBy
+          : (defaultPaidBy ?? actorUserId);
+
+      const paidBy = resolveUserIdFromReference(
+        paidByReference,
+        users,
+        "paidBy",
+      );
+
+      const category = resolveCategoryIdFromReference(
+        toOptionalString(candidate.category),
+        categories,
+      );
+
+      const transactionDate =
+        toOptionalString(candidate.transaction_date) ??
+        toOptionalString(candidate.transactionDate) ??
+        transactionDateFallback;
+
+      const status = parseTransactionStatus(candidate.status);
+      const partyReferences = Array.isArray(candidate.partiesInvolved)
+        ? candidate.partiesInvolved.filter(
+            (value): value is string => typeof value === "string",
+          )
+        : [];
+
+      const resolvedParties = Array.from(
+        new Set(
+          partyReferences
+            .map((reference) =>
+              resolveUserIdFromReference(reference, users, "partiesInvolved"),
+            )
+            .filter((partyId) => partyId !== paidBy),
+        ),
+      );
+
+      if (resolvedParties.length === 0) {
+        throw new Error("At least one party must be involved.");
+      }
+
+      const splitSource = (candidate.party_splits ?? candidate.partySplits) as
+        | Record<string, unknown>
+        | undefined;
+
+      let resolvedPartySplits: Record<string, number> | undefined;
+      if (splitSource && typeof splitSource === "object") {
+        resolvedPartySplits = {};
+
+        for (const [participantReference, splitValue] of Object.entries(
+          splitSource,
+        )) {
+          const participantId = resolveUserIdFromReference(
+            participantReference,
+            users,
+            "party_splits",
+          );
+          const numericSplit = Number(splitValue);
+
+          if (!Number.isFinite(numericSplit) || numericSplit <= 0) {
+            throw new Error(
+              `Custom split is missing or invalid for participant ${participantReference}.`,
+            );
+          }
+
+          resolvedPartySplits[participantId] = numericSplit;
+        }
+      }
+
+      const partySplits = buildPartySplits(
+        paidBy,
+        resolvedParties,
+        amount,
+        resolvedPartySplits,
+      );
+      const groupKey = randomUUID();
+
+      rowsToInsert.push({
+        name,
+        transaction_remark:
+          toOptionalString(candidate.transactionRemark) ?? null,
+        transaction_date: transactionDate,
+        paid_by: paidBy,
+        amount,
+        type: "deposit",
+        status,
+        group_key: groupKey,
+        category,
+        is_deleted: false,
+        remarks: null,
+        created_by: actorUserId,
+        updated_by: actorUserId,
+      });
+
+      for (const split of partySplits) {
+        rowsToInsert.push({
+          name,
+          transaction_remark:
+            toOptionalString(candidate.transactionRemark) ?? null,
+          transaction_date: transactionDate,
+          paid_by: split.userId,
+          amount: split.amount,
+          type: "withdraw",
+          status,
+          group_key: groupKey,
+          category,
+          is_deleted: false,
+          remarks: null,
+          created_by: actorUserId,
+          updated_by: actorUserId,
+        });
+      }
+
+      importedGroups += 1;
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Failed to import item.";
+      failures.push(`Item ${index + 1}: ${message}`);
+    }
+  }
+
+  if (rowsToInsert.length > 0) {
+    const { error } = await supabase
+      .from("transactions")
+      .insert(rowsToInsert as never);
+
+    if (error) {
+      throw new ApiError(
+        500,
+        "transaction_bulk_import_failed",
+        error.message,
+        error,
+      );
+    }
+
+    await recomputeUserBalances(actorUserId);
+  }
+
+  return {
+    importedCount: importedGroups,
+    failedCount: failures.length,
+    failures,
   };
 }
 

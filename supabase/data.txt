@@ -128,3 +128,50 @@ yt premium 2024-11-18 to 2026-03-18 154290 2_kawish (51430) 2_dilshad 1_yahya (2
 dilshad gopay from 2023-11-05 - 2026-04-05 40000
 yahya 2025-05-08	Payment - Bank Jago	Rp374.070
 ibnu 2026-03-22	Payment - Server PC 	Rp657.000
+
+
+
+09/01 | bk-k | "Grab to GAA" | "Transport" | 19000
+13/01 | bk-k | "Grab to BDO" | "Transport" | 19000
+13/01 | bk-k | "Grab to GAA" | "Transport" | 11000
+14/01 | bk-k | "Grab to BDO" | "Transport" | 11000
+14/01 | bk-k | "Grab to GAA" | "Transport" | 19000
+15/01 | bk-k | "Grab to GAA" | "Transport" | 19000
+21/01 | bk-k | "Grab to BDO" | "Transport" | 11000
+19/01 | bk-k | "Grab to GAA" | "Transport" | 19000
+27/01 | ky-y | "Grab to GAA" | "Transport" | 11000
+28/01 | ky-y | "Grab to GAA" | "Transport" | 11000
+29/01 | ky-y | "Grab to GAA" | "Transport" | 6000
+12/02 | bk-k | "Grab to BDO" | "Transport" | 11000
+12/02 | bk-k | "Grab to GAA" | "Transport" | 23500
+13/02 | bk-k | "Grab to BDO" | "Transport" | 17500
+18/02 | bky-b | "Grab to GAA" | "Transport" | 13000 
+04/03 | bk-k | "Grab to BDO" | "Transport" | 12000
+04/03 | bk-k | "Grab to GAA" | "Transport" | 12000
+05/03 | bk-k | "Grab to BDO" | "Transport" | 12500
+26/02 | bk-k | "Grab to BDO" | "Transport" | 12000
+05/03 | bky-k | "Grab to GAA" | "Transport" | 18000
+06/03 | bk-k | "Grab to GAA" | "Transport" | 15500
+13/03 | bky-k | "Grab to GAA" | "Transport" | 23000
+13/03 | bk-k | "Grab to BDO" | "Transport" | 15000
+12/03 | bky-k | "Grab to GAA" | "Transport" | 22000
+11/03 | bk-k | "Grab to BDO" | "Transport" | 12000
+11/03 | bk-k | "Grab to GAA" | "Transport" | 19000
+18/03 | bk-k | "Grab to BDO" | "Transport" | 24000
+30/03 | bk-k | "Grab to GAA" | "Transport" | 25000
+01/04 | ky-k | "Grab to GAA" | "Transport" | 19000
+08/02 | bky-k | "2 Aqua Gallons" | "Food" | 42000
+21/01 | bky-k | "2 Aqua Gallons" | "Food" | 42000
+23/02 | bky-y | "2 Aqua Gallons" | "Food" | 50600
+15/02 | bky-k | "2 Aqua Gallons" | "Food" | 50600
+04/03 | bky-k | "2 Aqua Gallons" | "Food" | 50600
+13/03 | bky-b | "2 Aqua Gallons" | "Food" | 50600
+13/03 | bky-k | "KFC Dinner" | "Food" | 80000
+13/03 | ky-y | "Pocari Sweat" | "Food" | 20000
+20/01 | bky-k | "Cleaning Service" | "Utilities" | 150000
+08/03 | byk-b | "Cleaning Service" | "Utilities" | 150000
+18/02 | bky-y | "Spoon" | "Shopping" | 18000
+18/02 | ky-k | "Detergen" | "Shopping" | 15000
+18/02 | ky-k | "Vixal" | "Shopping" | 19000
+13/03 | bky-k | "Tissue" | "Shopping" | 25900
+13/03 | bky-k | "Plastic Bag" | "Shopping" | 21800
