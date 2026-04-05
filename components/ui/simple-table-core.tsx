@@ -39,7 +39,7 @@ export function SimpleTableBody({
   return (
     <tbody
       className={cn(
-        "divide-y divide-slate-100 bg-white dark:divide-white/8 dark:bg-transparent",
+        "text-sm divide-y divide-slate-100 bg-white dark:divide-white/8 dark:bg-transparent",
         className,
       )}
     >

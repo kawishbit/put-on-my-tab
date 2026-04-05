@@ -97,7 +97,7 @@ function getApiErrorMessage(payload: unknown, fallback: string): string {
 }
 
 function formatDateTime(value: string): string {
-  return new Date(value).toLocaleString();
+  return new Date(value).toLocaleDateString();
 }
 
 function getDownloadFileName(
