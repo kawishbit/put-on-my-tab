@@ -15,6 +15,7 @@ interface DepositTransactionRow {
   amount: number;
   status: "pending" | "completed" | "cancelled";
   category: string | null;
+  transaction_date: string;
   created_at: string;
 }
 
@@ -25,6 +26,7 @@ interface UserTransactionRow {
   status: "pending" | "completed" | "cancelled";
   category: string | null;
   type: "deposit" | "withdraw";
+  transaction_date: string;
   created_at: string;
 }
 
@@ -162,6 +164,22 @@ function getCurrentAndPreviousMonthKeys(referenceDate: Date): {
   };
 }
 
+function getRecentMonthKeys(referenceDate: Date, monthsCount: number): string[] {
+  const keys: string[] = [];
+  const base = new Date(
+    Date.UTC(referenceDate.getUTCFullYear(), referenceDate.getUTCMonth(), 1),
+  );
+
+  for (let offset = monthsCount - 1; offset >= 0; offset -= 1) {
+    const month = new Date(
+      Date.UTC(base.getUTCFullYear(), base.getUTCMonth() - offset, 1),
+    );
+    keys.push(formatMonthKey(month));
+  }
+
+  return keys;
+}
+
 export async function getAdminDashboardData(): Promise<AdminDashboardData> {
   const [usersResult, depositsResult, categoriesResult] = await Promise.all([
     supabase
@@ -172,7 +190,7 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
     supabase
       .from("transactions")
       .select(
-        "transaction_id,group_key,name,paid_by,amount,status,category,created_at",
+        "transaction_id,group_key,name,paid_by,amount,status,category,transaction_date,created_at",
       )
       .eq("is_deleted", false)
       .eq("type", "deposit")
@@ -251,16 +269,19 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
   const monthlyTotals = new Map<string, number>();
 
   for (const transaction of completedDeposits) {
-    const monthKey = formatMonthKey(new Date(transaction.created_at));
+    const monthKey = formatMonthKey(new Date(transaction.transaction_date));
     monthlyTotals.set(
       monthKey,
       (monthlyTotals.get(monthKey) ?? 0) + Number(transaction.amount),
     );
   }
 
+  const recentMonthKeys = new Set(getRecentMonthKeys(new Date(), 7));
+
   const monthlyExpenditure: MonthlyExpenditurePoint[] = Array.from(
     monthlyTotals.entries(),
   )
+    .filter(([monthKey]) => recentMonthKeys.has(monthKey))
     .sort(([left], [right]) => left.localeCompare(right))
     .map(([monthKey, amount]) => ({
       monthKey,
@@ -399,7 +420,9 @@ export async function getUserDashboardData(
       .maybeSingle(),
     supabase
       .from("transactions")
-      .select("transaction_id,name,amount,status,category,type,created_at")
+      .select(
+        "transaction_id,name,amount,status,category,type,transaction_date,created_at",
+      )
       .eq("is_deleted", false)
       .eq("paid_by", userId)
       .eq("type", "withdraw")
@@ -457,16 +480,19 @@ export async function getUserDashboardData(
   const monthlyTotals = new Map<string, number>();
 
   for (const transaction of completedTransactions) {
-    const monthKey = formatMonthKey(new Date(transaction.created_at));
+    const monthKey = formatMonthKey(new Date(transaction.transaction_date));
     monthlyTotals.set(
       monthKey,
       (monthlyTotals.get(monthKey) ?? 0) + Number(transaction.amount),
     );
   }
 
+  const recentMonthKeys = new Set(getRecentMonthKeys(new Date(), 7));
+
   const monthlyExpenditure: MonthlyExpenditurePoint[] = Array.from(
     monthlyTotals.entries(),
   )
+    .filter(([monthKey]) => recentMonthKeys.has(monthKey))
     .sort(([left], [right]) => left.localeCompare(right))
     .map(([monthKey, amount]) => ({
       monthKey,
