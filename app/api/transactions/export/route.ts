@@ -9,7 +9,13 @@ import type { TransactionType } from "@/types/database";
 
 const transactionStatusSchema = z.enum(["pending", "completed", "cancelled"]);
 const transactionTypeSchema = z.enum(["deposit", "withdraw"]);
-const sortBySchema = z.enum(["created_at", "amount", "name", "status", "type"]);
+const sortBySchema = z.enum([
+  "transaction_date",
+  "amount",
+  "name",
+  "status",
+  "type",
+]);
 const sortOrderSchema = z.enum(["asc", "desc"]);
 
 function formatCsvDate(value: string): string {
@@ -91,7 +97,7 @@ export async function GET(request: Request): Promise<Response> {
         "Type",
         "Status",
         "Category",
-        "Created At",
+        "Transaction Date",
         "Updated At",
       ],
       transactions.items.map((transaction) => [
@@ -105,7 +111,7 @@ export async function GET(request: Request): Promise<Response> {
         transaction.type,
         transaction.status,
         transaction.category_label ?? "Uncategorized",
-        formatCsvDate(transaction.created_at),
+        formatCsvDate(transaction.transaction_date),
         formatCsvDate(transaction.updated_at),
       ]),
     );

@@ -84,7 +84,7 @@ export interface ListTransactionsInput {
   search?: string;
   page?: number;
   pageSize?: number;
-  sortBy?: "created_at" | "amount" | "name" | "status" | "type";
+  sortBy?: "transaction_date" | "amount" | "name" | "status" | "type";
   sortOrder?: "asc" | "desc";
 }
 
@@ -534,7 +534,7 @@ export async function listTransactions(filters?: {
   search?: string;
   page?: number;
   pageSize?: number;
-  sortBy?: "created_at" | "amount" | "name" | "status" | "type";
+  sortBy?: "transaction_date" | "amount" | "name" | "status" | "type";
   sortOrder?: "asc" | "desc";
 }): Promise<TransactionListResult> {
   const page = Math.max(filters?.page ?? 1, 1);
@@ -542,7 +542,7 @@ export async function listTransactions(filters?: {
   const fromIndex = (page - 1) * pageSize;
   const toIndex = fromIndex + pageSize - 1;
 
-  const sortBy = filters?.sortBy ?? "created_at";
+  const sortBy = filters?.sortBy ?? "transaction_date";
   const sortOrder = filters?.sortOrder ?? "desc";
 
   let query = supabase
@@ -591,7 +591,7 @@ export async function listTransactions(filters?: {
 export async function listTransactionsForExport(
   filters?: ListTransactionsInput,
 ): Promise<ListTransactionsExportResult> {
-  const sortBy = filters?.sortBy ?? "created_at";
+  const sortBy = filters?.sortBy ?? "transaction_date";
   const sortOrder = filters?.sortOrder ?? "desc";
 
   let query = supabase

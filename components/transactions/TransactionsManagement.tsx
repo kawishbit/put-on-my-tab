@@ -45,7 +45,7 @@ type TransactionListItem = {
   status: TransactionStatus;
   group_key: string;
   category: string | null;
-  created_at: string;
+  transaction_date: string;
   updated_at: string;
   is_deleted: boolean;
   remarks: string | null;
@@ -75,7 +75,7 @@ type FiltersState = {
   category: string;
   paidBy: string;
   search: string;
-  sortBy: "created_at" | "amount" | "name" | "status" | "type";
+  sortBy: "transaction_date" | "amount" | "name" | "status" | "type";
   sortOrder: "asc" | "desc";
   pageSize: number;
 };
@@ -118,7 +118,7 @@ const INITIAL_FILTERS: FiltersState = {
   category: "",
   paidBy: "",
   search: "",
-  sortBy: "created_at",
+  sortBy: "transaction_date",
   sortOrder: "desc",
   pageSize: 20,
 };
@@ -556,7 +556,7 @@ export function TransactionsManagement({
               }}
               className="app-field"
             >
-              <option value="created_at">Created at</option>
+              <option value="transaction_date">Transaction date</option>
               <option value="amount">Amount</option>
               <option value="name">Name</option>
               <option value="status">Status</option>
@@ -666,7 +666,7 @@ export function TransactionsManagement({
                     {transaction.status}
                   </SimpleTableCell>
                   <SimpleTableCell className="text-slate-700 dark:text-slate-300">
-                    {formatDateTime(transaction.created_at)}
+                    {formatDateTime(transaction.transaction_date)}
                   </SimpleTableCell>
                   <SimpleTableCell className="text-slate-700 dark:text-slate-300">
                     {transaction.category_label ?? "Uncategorized"}

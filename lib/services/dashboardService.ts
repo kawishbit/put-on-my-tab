@@ -164,7 +164,10 @@ function getCurrentAndPreviousMonthKeys(referenceDate: Date): {
   };
 }
 
-function getRecentMonthKeys(referenceDate: Date, monthsCount: number): string[] {
+function getRecentMonthKeys(
+  referenceDate: Date,
+  monthsCount: number,
+): string[] {
   const keys: string[] = [];
   const base = new Date(
     Date.UTC(referenceDate.getUTCFullYear(), referenceDate.getUTCMonth(), 1),
