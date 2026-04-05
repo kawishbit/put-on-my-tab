@@ -194,7 +194,7 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
       )
       .eq("is_deleted", false)
       .eq("type", "deposit")
-      .order("created_at", { ascending: false }),
+      .order("transaction_date", { ascending: false }),
     supabase
       .from("transaction_categories")
       .select("transaction_category_id,label")
@@ -321,7 +321,7 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
         ? (categoriesById.get(transaction.category)?.label ??
           "Unknown category")
         : "Uncategorized",
-      createdAt: transaction.created_at,
+      createdAt: transaction.transaction_date,
     }));
 
   const categoryAmountMap = new Map<string, number>();
@@ -426,7 +426,7 @@ export async function getUserDashboardData(
       .eq("is_deleted", false)
       .eq("paid_by", userId)
       .eq("type", "withdraw")
-      .order("created_at", { ascending: false }),
+      .order("transaction_date", { ascending: false }),
     supabase
       .from("transaction_categories")
       .select("transaction_category_id,label")
@@ -511,7 +511,7 @@ export async function getUserDashboardData(
         ? (categoriesById.get(transaction.category)?.label ??
           "Unknown category")
         : "Uncategorized",
-      createdAt: transaction.created_at,
+      createdAt: transaction.transaction_date,
     }));
 
   const categoryTotals = new Map<string, number>();

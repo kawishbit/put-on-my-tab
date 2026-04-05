@@ -527,8 +527,8 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
             </section>
           </div>
 
-          <div className="mt-6 grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-            <section className="rounded-2xl border border-slate-200 bg-white/95 p-4 dark:border-white/10 dark:bg-slate-800/50">
+          <div className="mt-6 grid gap-6 xl:grid-cols-12">
+            <section className="rounded-2xl border border-slate-200 bg-white/95 p-4 xl:col-span-8 dark:border-white/10 dark:bg-slate-800/50">
               <h3 className="font-heading text-lg font-semibold text-slate-900 dark:text-slate-100">
                 Last 10 Transactions
               </h3>
@@ -622,7 +622,7 @@ export default async function DashboardPage(): Promise<React.JSX.Element> {
               </SimpleTableRoot>
             </section>
 
-            <section className="rounded-2xl border border-slate-200 bg-white/95 p-4 dark:border-white/10 dark:bg-slate-800/50">
+            <section className="rounded-2xl border border-slate-200 bg-white/95 p-4 xl:col-span-4 dark:border-white/10 dark:bg-slate-800/50">
               <h3 className="font-heading text-lg font-semibold text-slate-900 dark:text-slate-100">
                 Category Breakdown
               </h3>
