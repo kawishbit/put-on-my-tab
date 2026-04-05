@@ -1,0 +1,130 @@
+14/09/2025	Payment - YOGYA rice cooker (Kawish,Bayu,Yudi){Kawish}	=-1*ROUND(309900/3;2)
+14/09/2025	Payment - YOGYA nice face tissue (Kawish,Bayu,Yudi){Kawish}	=-1*ROUND(36900/3;2)
+14/09/2025	Payment - Rice Container (Kawish,Bayu,Yudi){Kawish}	=-1*ROUND(93690/3;2)
+14/09/2025	Top up - Electric Kettle (Kawish,Bayu,Yudi){Bayu}	Rp60.000,00
+14/09/2025	Payment - Electric Kettle (Kawish,Bayu,Yudi){Bayu}	=-1*ROUND(D7/3;2)
+20/09/2025	Top Up - 1 Le Minerale Gallon {Bayu}	Rp25.000,00
+20/09/2025	Payment - 1 Le Minerale Gallon {Bayu}	=-1*ROUND(25000/3;2)
+22/09/2025	Top Up - Electricity Bill {Bayu}	Rp200.000,00
+22/09/2025	Payment - Electricity Bill {Bayu}	=-1*ROUND(200000/3;2)
+23/09/2025	Payment - Grab to BDO (Kawish,Bayu){Kawish}	=-1*ROUND(11000/2;2)
+24/09/2025	Payment - 2 Aqua Gallons {Kawish}	=-1*ROUND(42000/3;2)
+28/09/2025	Payment - Broom {Kawish}	=-1*ROUND(46500/3;2)
+28/09/2025	Payment - Colander {Kawish}	=-1*ROUND(32500/3;2)
+28/09/2025	Payment - Fork & Spoon {Kawish}	=-1*ROUND(29000/3;2)
+28/09/2025	Payment - Foldable Broom {Kawish}	=-1*ROUND(74500/3;2)
+30/09/2025	Payment - Rent {Kawish}	=-1*ROUND(3325000;2)
+01/10/2025	Payment - Electricity Bill {Kawish}	=-1*ROUND(600000/3;2)
+04/10/2025	Payment - GrabFood {Kawish}	=-1*19000
+04/10/2025	Payment - YOGYA salt container {Kawish}	=-1*ROUND(15000/3;2)
+04/10/2025	Payment - MR DIY Kettle {Kawish}	=-1*ROUND(42000/3;2)
+06/10/2025	Payment - 2 Aqua Gallons {Kawish}	=-1*ROUND(42000/3;2)
+07/10/2025	Payment - Grab to BDO (Kawish,Bayu){Kawish}	=-1*ROUND(11000/2;2)
+09/10/2025	Top up - Grab to BDO (Kawish,Bayu){Bayu}	Rp16.000,00
+09/10/2025	Payment - Grab to BDO (Kawish,Bayu){Bayu}	=-1*ROUND(16000/2;2)
+09/10/2025	Payment - Grab to GAA (Kawish,Bayu,Yudi){Kawish}	=-1*ROUND(34000/3;2)
+10/10/2025	Payment - GrabFood {Kawish}	=-1*23205
+16/10/2025	Payment - 2 Aqua Gallons {Kawish}	=-1*ROUND(42000/3;2)
+20/10/2025	Top Up - GrabFood {Bayu}	Rp37.940,00
+20/10/2025	Payment - GrabFood {Bayu}	=-1*20487
+22/10/2025	Payment - GrabFood {Kawish}	=-1*20487
+23/10/2025	Payment - GrabFood {Kawish}	=-1*20748
+23/10/2025	Top up - Grab to GAA (Kawish,Bayu){Bayu}	Rp40.000,00
+23/10/2025	Payment - Grab to GAA (Kawish,Bayu){Bayu}	=-1*ROUND(40000/2;2)
+28/10/2025	Top Up - Rent Fee 	Rp150.000,00
+28/10/2025	Payment - Rent Fee 	=-1*ROUND(150000/3;2)
+30/10/2025	Payment - Grab to GAA (Kawish,Bayu,Chuong,Dendi){Kawish}	=-1*ROUND(11000/3;2)
+30/10/2025	Payment - Electricity Bill {Kawish}	=-1*ROUND(600000/3;2)
+01/11/2025	Payment - Rent {Kawish}	=-1*ROUND(3325000;2)
+01/11/2025	Top Up - Bayu CIMB Transfer	Rp7.150.000,00
+03/11/2025	Payment - Grab to BDO (Kawish,Bayu){Kawish}	=-1*ROUND(11000/2;2)
+10/11/2025	Top up - Grab to BDO (Kawish,Bayu,Yudi){Bayu}	Rp11.000,00
+10/11/2025	Payment - Grab to BDO (Kawish,Bayu,Yudi){Bayu}	=-1*ROUND(11000/3;2)
+10/11/2025	Payment - Grab to GAA (Kawish,Bayu,Yudi){Yudi}	=-1*ROUND(31000/3;2)
+11/11/2025	Top up - Grab to BDO (Kawish,Bayu){Bayu}	Rp11.000,00
+11/11/2025	Payment - Grab to BDO (Kawish,Bayu){Bayu}	=-1*ROUND(11000/2;2)
+11/11/2025	Payment - 2 Aqua Gallons {Yudi}	=-1*ROUND(42000/3;2)
+11/11/2025	Payment - Tip Cleaning Service {Yudi}	=-1*ROUND(50000/3;2)
+11/11/2025	Payment - Grab to GAA (Kawish,Bayu,Yudi){Yudi}	=-1*ROUND(31000/3;2)
+12/11/2025	Top up - Grab to BDO (Kawish,Bayu,Yudi){Bayu}	Rp11.000,00
+12/11/2025	Payment - Grab to BDO (Kawish,Bayu,Yudi){Bayu}	=-1*ROUND(11000/3;2)
+12/11/2025	Payment - Grab to GAA (Kawish,Bayu,Yudi){Yudi}	=-1*ROUND(18000/3;2)
+12/11/2025	Top up - Mashed Potato {Bayu}	Rp8.000,00
+13/11/2025	Top up - Grab to BDO (Kawish,Bayu,Yudi){Bayu}	Rp11.000,00
+13/11/2025	Payment - Grab to BDO (Kawish,Bayu,Yudi){Bayu}	=-1*ROUND(11000/3;2)
+13/11/2025	Top up - Grab to GAA (Kawish,Bayu){Bayu}	Rp11.000,00
+13/11/2025	Payment - Grab to GAA (Kawish,Bayu){Bayu}	=-1*ROUND(11000/2;2)
+14/11/2025	Top up - Grab to GAA (Kawish,Bayu){Bayu}	Rp17.000,00
+14/11/2025	Payment - Grab to GAA (Kawish,Bayu){Bayu}	=-1*ROUND(17000/2;2)
+17/11/2025	Top up - Grab to BDO (Kawish,Bayu,Yudi){Bayu}	Rp11.000,00
+17/11/2025	Payment - Grab to BDO (Kawish,Bayu,Yudi){Bayu}	=-1*ROUND(11000/3;2)
+17/11/2025	Top up - Grab to GAA (Kawish,Bayu){Bayu}	Rp11.000,00
+17/11/2025	Payment - Grab to GAA (Kawish,Bayu){Bayu}	=-1*ROUND(11000/2;2)
+17/11/2025	Top Up - Water Bill	Rp274.000,00
+17/11/2025	Payment - Water Bill	=-1*ROUND(274000/3;2)
+18/11/2025	Top up - Grab to BDO (Kawish,Bayu){Bayu}	Rp11.000,00
+18/11/2025	Payment - Grab to BDO (Kawish,Bayu){Bayu}	=-1*ROUND(11000/2;2)
+19/11/2025	Top up - Grab to BDO (Kawish,Bayu,Yudi){Bayu}	Rp11.000,00
+19/11/2025	Payment - Grab to BDO (Kawish,Bayu,Yudi){Bayu}	=-1*ROUND(11000/3;2)
+19/11/2025	Payment - Grab to GAA (Kawish,Bayu,Yudi){Kawish}	=-1*ROUND(37000/3;2)
+20/11/2025	Top up - Grab to BDO (Kawish,Bayu){Bayu}	Rp11.000,00
+20/11/2025	Payment - Grab to BDO (Kawish,Bayu){Bayu}	=-1*ROUND(11000/2;2)
+20/11/2025	Payment - Grab to GAA (Kawish,Bayu,Yudi){Yudi}	=-1*ROUND(11000/3;2)
+21/11/2025	Top up - Grab to BDO (Kawish,Bayu){Bayu}	Rp16.000,00
+21/11/2025	Payment - Grab to BDO (Kawish,Bayu){Bayu}	=-1*ROUND(16000/2;2)
+21/11/2025	Payment - Grab to GAA (Kawish,Bayu,Yudi){Yudi}	=-1*ROUND(16000/3;2)
+24/11/2025	Payment - Grab to BDO (Kawish,Bayu,Yudi){Yudi}	=-1*ROUND(11000/3;2)
+24/11/2025	Payment - Grab to GAA (Kawish,Bayu,Yudi){Yudi}	=-1*ROUND(11000/3;2)
+25/11/2025	Payment - Grab to BDO (Kawish,Bayu,Yudi){Yudi}	=-1*ROUND(11000/3;2)
+25/11/2025	Top up - Grab to GAA (Kawish,Bayu,Yudi){Bayu}	Rp11.000,00
+25/11/2025	Payment - Grab to GAA (Kawish,Bayu,Yudi){Bayu}	=-1*ROUND(11000/3;2)
+26/11/2025	Top up - Grab to BDO (Kawish,Bayu,Yudi){Bayu}	Rp11.000,00
+26/11/2025	Payment - Grab to BDO (Kawish,Bayu,Yudi){Bayu}	=-1*ROUND(11000/3;2)
+27/11/2025	Payment - Grab to BDO (Kawish,Bayu,Yudi){Yudi}	=-1*ROUND(14000/3;2)
+27/11/2025	Top up - Grab to GAA (Kawish,Bayu){Bayu}	Rp11.000,00
+27/11/2025	Payment - Grab to GAA (Kawish,Bayu){Bayu}	=-1*ROUND(11000/2;2)
+30/11/2025	Top Up - Cleaning Service	Rp100.000,00
+30/11/2025	Payment - Cleaning Service	=-1*ROUND(100000/3;2)
+30/11/2025	Payment - Rent 3 months 	=-1*ROUND(3*3325000;2)
+30/11/2025	Payment - Rent 3 months Cashback	=-1*ROUND(3000000;2)
+01/12/2025	Payment - Grab to GAA (Kawish,Bayu,Yudi){Yudi}	=-1*ROUND(23000/3;2)
+04/12/2025	Top up - Grab to BDO (Kawish,Bayu){Bayu}	Rp11.000,00
+04/12/2025	Payment - Grab to BDO (Kawish,Bayu){Bayu}	=-1*ROUND(11000/2;2)
+04/12/2025	Payment - Grab to GAA (Kawish,Bayu,Yudi){Yudi}	=-1*ROUND(39500/3;2)
+05/12/2025	Top up - Grab to BDO (Kawish,Bayu){Bayu}	Rp11.000,00
+05/12/2025	Payment - Grab to BDO (Kawish,Bayu){Bayu}	=-1*ROUND(11000/2;2)
+05/12/2025	Top up - Grab to GAA (Kawish,Bayu,Yudi){Bayu}	Rp43.500,00
+05/12/2025	Payment - Grab to GAA (Kawish,Bayu,Yudi){Bayu}	=-1*ROUND(43500/3;2)
+05/12/2025	Top Up - Bayu CIMB Transfer	Rp12.700.000,00
+08/12/2025	Payment - 2 Aqua Gallons {Yudi}	=-1*ROUND(42000/3;2)
+09/12/2025	Top up - Grab to BDO (Kawish,Bayu){Bayu}	Rp18.000,00
+09/12/2025	Payment - Grab to BDO (Kawish,Bayu){Bayu}	=-1*ROUND(18000/2;2)
+09/12/2025	Payment - Grab to GAA KBY-K	=-1*ROUND(24000/3;2)
+10/12/2025	Top up - Grab to BDO KB-B	Rp18.000,00
+10/12/2025	Payment - Grab to BDO KB-B	=-1*ROUND(18000/2;2)
+10/12/2025	Top up - Grab to GAA KBY-B	Rp18.000,00
+10/12/2025	Payment - Grab to GAA KBY-B	=-1*ROUND(18000/3;2)
+20/12/2025	Top up - Cleaning Service B	Rp150.000,00
+20/12/2025	Payment - Cleaning Service B	=-1*ROUND(150000/3;2)
+01/01/2026	Top up - Cleaning Service B	Rp150.000,00
+01/01/2026	Payment - Cleaning Service B	=-1*ROUND(150000/3;2)
+02/01/2026	Trash Bag - K 	=-1*ROUND(21800/3;2)
+28/11/2025	Electricity Bill - K 	=-1*ROUND(800000/3;2)
+03/01/2026	Electricity Bill - K 	=-1*ROUND(800000/3;2)
+06/01/2026	Payment - Grab to GAA KBY-K	=-1*ROUND(19000/3;2)
+08/01/2026	Payment - Grab to GAA KBY-K	=-1*ROUND(19000/3;2)
+01/01/2026	Payment - 2 Aqua Gallons {Yudi}	=-1*ROUND(42000/3;2)
+20/12/2025	Payment - 2 Aqua Gallons {Yudi}	=-1*ROUND(42000/3;2)
+08/01/2026	Payment - 2 Aqua Gallons {Yudi}	=-1*ROUND(42000/3;2)
+09/01/2026	Payment - Grab to GAA KB-K	=-1*ROUND(19000/2;2)
+13/01/2026	Payment - Grab to BDO KB-K	=-1*ROUND(19000/2;2)
+13/01/2026	Payment - Grab to GAA KB-K	=-1*ROUND(11000/2;2)
+14/01/2026	Payment - Grab to BDO KB-K	=-1*ROUND(11000/2;2)
+
+
+
+yt premium 2023-11-18 to 2024-10-18 109890 2_kawish (36630) 2_dilshad 1_yahya (18315) 1_ibnu
+yt premium 2024-11-18 to 2026-03-18 154290 2_kawish (51430) 2_dilshad 1_yahya (25715) 1_ibnu
+dilshad gopay from 2023-11-05 - 2026-04-05 40000
+yahya 2025-05-08	Payment - Bank Jago	Rp374.070
+ibnu 2026-03-22	Payment - Server PC 	Rp657.000

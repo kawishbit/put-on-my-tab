@@ -103,31 +103,13 @@
     "partiesInvolved": ["Kawish", "Bayu", "Yudi"]
   },
   {
-    "name": "30/09/2025 Payment - Grab to BDO (Kawish,Rey,Yudi){Rey} =-1*ROUND(16000/3;2) =O19+N20",
+    "name": "Grab to GAA",
     "transactionRemark": "",
-    "transaction_date": "2025-09-15",
-    "amount": "11000",
-    "paidBy": "Kawish",
+    "transaction_date": "2025-09-30",
+    "amount": "17000",
+    "paidBy": "Reyn",
     "category": "Transport",
-    "partiesInvolved": ["Reyn", "Bayu", "Yudi"]
-  },
-  {
-    "name": "30/09/2025 Top Up - Grab to GAA (Kawish,Rey,Yudi){Rey} Rp17.000,00 =O20+N21",
-    "transactionRemark": "",
-    "transaction_date": "2025-09-15",
-    "amount": "11000",
-    "paidBy": "Kawish",
-    "category": "Transport",
-    "partiesInvolved": ["Reyn", "Bayu", "Yudi"]
-  },
-  {
-    "name": "30/09/2025 Payment - Grab to GAA (Kawish,Rey,Yudi){Rey} =-1*ROUND(17000/3;2) =O21+N22",
-    "transactionRemark": "",
-    "transaction_date": "2025-09-15",
-    "amount": "11000",
-    "paidBy": "Kawish",
-    "category": "Transport",
-    "partiesInvolved": ["Reyn", "Bayu", "Yudi"]
+    "partiesInvolved": ["Kawish", "Bayu", "Yudi"]
   },
   {
     "name": "01/10/2025 Top up - Grab to GAA (Kawish,Yudi,Rey){Rey} Rp16.000,00 =O22+N23",
