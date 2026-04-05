@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Manrope, Space_Grotesk } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 import { AuthSessionProvider } from "@/components/auth/AuthSessionProvider";
 import { LegacyServiceWorkerCleanup } from "@/components/auth/LegacyServiceWorkerCleanup";
 import { AppShell } from "@/components/layout/AppShell";
@@ -59,6 +60,7 @@ export default function RootLayout({
           </AuthSessionProvider>
           <ThemeToggle />
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
